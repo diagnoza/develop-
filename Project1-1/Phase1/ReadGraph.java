@@ -134,7 +134,7 @@ public class ReadGraph
 			int maximum = 0;
 			//Returns the number of edges for the node that has the highest number of them
 			for(int i=0;i<n;i++){
-			maximum = Math.max(maximum,nodes[i]);
+				maximum = Math.max(maximum,nodes[i]);
 			}
 			System.out.println("The maximum is: "+maximum);
 			
