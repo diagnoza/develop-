@@ -123,7 +123,18 @@ public class ReadGraph
 			//! INSERT YOUR CODE HERE!
 			
 			//EXCEPTIONS GO HERE
+			// if (isCompleteGraph(n, e)) {
+			// 	System.out.println("This is a complete graph.");
+			// } else {
+			// 	System.out.println("This is NOT a complete graph.");
+			// }
 
+			if (isBipartite(n, e)) {
+				System.out.println("This is a bipartite.");
+			} else {
+				System.out.println("This is NOT a bipartite.");
+			}
+			//MAIN CODE
 			int[] nodes = new int[n];
 			//Loop that counts the number of times a node appears in the set of edges
 			for(int i=0;i<m;i++){
@@ -145,5 +156,119 @@ public class ReadGraph
 				
 			
 		}
+
+		//EXCEPTIONS - METHODS
+		/*
+		A bipartite is a graph whose vertices can be divided into two disjoint and independent sets 
+		U and V such that every edge connects a vertex in U to one in V
+		*/
+		public static boolean isBipartite(int numberOfVertice, ColEdge e[]) {
+
+			//Choose 1 fixed vertex to find set U
+			int fixVertex1 = e[0].u;
+			//Create an array for set U - an array that stores other vertices that are not linked to the first fixed vetex
+			int[] setU = new int[numberOfVertice];
+			int setULength = 0;
+
+			//Check every vertex to see if it is linked to the first vertex, add it to set U if it is not linked.
+			for (int i = 1; i <= numberOfVertice; i++) {
+				boolean isLinked = false;
+				for (int j = 0; j < e.length; j++) {
+					if ((e[j].u == fixVertex1 && e[j].v == i) || (e[j].v == fixVertex1 && e[j].u == i)) {
+						isLinked = true;
+						break;
+					}
+				}
+
+				if (!isLinked) {
+					setU[setULength] = i;
+					setULength++;
+				}
+			}
+
+			//Choose 1 fixed vertex (not in set U) to create set V
+			int fixVertex2 = 0;
+			boolean hasFound = false;
+			int index = 1;
+			//Check all vertices to see if there is any vertex that is not in set U
+			while(!hasFound && index <= numberOfVertice) {
+				if (!findNumber(index, setU)) {
+					hasFound = true;
+					fixVertex2 = index;
+				} else {
+					index++;
+				}
+			}
+			//If there is no other vetex that is not linked to the first fixed vertex, then the graph is Bipartite
+			if (!hasFound) {
+				return true;
+			}
+			//If there is a vertex that is not in set U...
+			int[] setV = new int[numberOfVertice];
+			int setVLength = 0;
+
+			for (int i = 1; i <= numberOfVertice; i++) {
+				boolean isLinked = false;
+				for (int j = 0; j < e.length; j++) {
+					if ((e[j].u == fixVertex2 && e[j].v == i) || (e[j].v == fixVertex2 && e[j].u == i)) {
+						isLinked = true;
+						break;
+					}
+				}
+
+				if (!isLinked) {
+					setV[setVLength] = i;
+					setVLength++;
+				}
+			}
+
+
+			boolean isBipartite = true;
+			//If there is a vertex that is not in U and not in V, then the graph is not bipartite
+			for (int i = 1; i <= numberOfVertice; i++) {
+				if (!findNumber(i, setU) && !findNumber(i, setV)) {
+					isBipartite = false;
+				}
+			}
+
+			return isBipartite;
+		}
+
+		public static boolean findNumber(int number, int[] array){
+			boolean findNumber = false;
+			int index = 0;
+			while (!findNumber && index < array.length) {
+				if (array[index] == number) {
+					findNumber = true;
+				} else {
+					index++;
+				}
+			}
+			return findNumber;
+		}
+
+		//A complete graph is a graph in which every pair of distinct vertices is connected by a unique edge
+		public static boolean isCompleteGraph(int numberOfVertice, ColEdge e[]) {
+			boolean isCompleteGraph = true;
+
+			//Check every vertex to see if it is linked to all other vertices
+			for (int i = 1; i <= numberOfVertice; i++) {
+				for (int j = i + 1; j <= numberOfVertice; j++) {
+					boolean hasAllLinked = false;
+					for (int k = 0; k < e.length; k++) {
+						if ((e[k].u == i && e[k].v == j) || (e[k].v == i && e[k].u == j)) {
+							hasAllLinked = true;
+						}
+					}
+					if (!hasAllLinked) {
+						isCompleteGraph = false;
+						break;
+					}
+				}
+			}
+
+			return isCompleteGraph;
+		}
+
 
 }
