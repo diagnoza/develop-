@@ -123,17 +123,11 @@ public class ReadGraph
 			//! INSERT YOUR CODE HERE!
 			
 			//EXCEPTIONS GO HERE
-			// if (isCompleteGraph(n, e)) {
-			// 	System.out.println("This is a complete graph.");
-			// } else {
-			// 	System.out.println("This is NOT a complete graph.");
-			// }
+			
+			//if (EXCEPTIONS...) then sout("Chromatic number is...")
+			//Else do the main codes 
 
-			if (isBipartite(n, e)) {
-				System.out.println("This is a bipartite.");
-			} else {
-				System.out.println("This is NOT a bipartite.");
-			}
+
 			//MAIN CODE
 			int[] nodes = new int[n];
 			//Loop that counts the number of times a node appears in the set of edges
