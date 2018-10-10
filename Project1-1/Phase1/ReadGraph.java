@@ -121,8 +121,7 @@ public class ReadGraph
 			//! 
 			//! there will be n vertices in the graph, numbered 1 to n
 			//! INSERT YOUR CODE HERE!
-			
-			//EXCEPTIONS GO HERE
+
 			
 			if (hasNoVertex(n)) {
 				System.out.println("Chromatic number = 0.");
@@ -140,13 +139,16 @@ public class ReadGraph
 				//At this point, the lower-bound of the graph is 3.
 				//Apply Brooks' theorem to check the upper-bound
 				//If lower-bound = upper-bound --> chromatic number 
+			} else {
+				System.out.println("The upperbound is: " + Brooks(n ,m ,e));
+				System.out.println("The lowerbound is: 3");
+				//BRUCE FORCE GOES HERE
 			}
-			System.out.println(Brooks(n ,m ,e));
 		}
 
 		//BROOKS THEOREM METHOD
 		/**
-		We use the Brooks theorem to determine the maximum number of edges a vertex has.
+		We use the Brooks theorem to determine the upperbound by the maximum number of edges a vertex has.
 		*/
 		public static int Brooks(int n, int m, ColEdge e[]){
 			int[] nodes = new int[n];
