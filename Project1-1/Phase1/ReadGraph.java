@@ -135,14 +135,20 @@ public class ReadGraph
 			} else if (isCompleteGraph(n, e)) {
 				//The chromatic number of a complete graph = the number of vertices
 				System.out.println("Chromatic number = " + n + ".");
-			} else {
+			} else if (Brooks(n, m, e) == 3){
+				System.out.println("Chromatic number = 3.");
 				//At this point, the lower-bound of the graph is 3.
 				//Apply Brooks' theorem to check the upper-bound
 				//If lower-bound = upper-bound --> chromatic number 
 			}
+			System.out.println(Brooks(n ,m ,e));
 
 
-			//MAIN CODE
+		//BROOKS THEOREM METHOD
+		/**
+		We use the Brooks theorem to determine the maximum number of edges a vertex has.
+		*/
+		public static int Brooks(int n, int m, ColEdge e[]){
 			int[] nodes = new int[n];
 			//Loop that counts the number of times a node appears in the set of edges
 			for(int i=0;i<m;i++){
@@ -155,13 +161,9 @@ public class ReadGraph
 			for(int i=0;i<n;i++){
 				maximum = Math.max(maximum,nodes[i]);
 			}
-			System.out.println("The maximum is: "+maximum);
-			
-			//BRUTE-FORCE GOES HERE
-			
-			
-			
-				
+			/*System.out.println("The maximum is: "+maximum);*/
+			return maximum;
+		}		
 			
 		}
 
