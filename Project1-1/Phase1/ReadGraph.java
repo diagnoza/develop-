@@ -172,88 +172,47 @@ public class ReadGraph
 		This method checks if a graph is bipartite
 		*/
 		public static boolean isBipartite(int numberOfVertice, ColEdge e[]) {
+			//Create an array that stores the colors of each vertex.
+			//There are two colors 1 and -1
+			//Value 0 of this array means the vextex has not been assigned any color
+			int[] color = new int[numberOfVertice];
 
-			//Choose 1 fixed vertex to find set U
-			int fixVertex1 = e[0].u;
-			//Create an array for set U - an array that stores other vertices that are not linked to the first fixed vetex
-			int[] setU = new int[numberOfVertice];
-			int setULength = 0;
+			//Assign the color 1 to the first vertex
+			color[0] = 1;
 
-			//Check every vertex to see if it is linked to the first vertex, add it to set U if it is not linked.
-			for (int i = 1; i <= numberOfVertice; i++) {
-				boolean isLinked = false;
-				for (int j = 0; j < e.length; j++) {
-					if ((e[j].u == fixVertex1 && e[j].v == i) || (e[j].v == fixVertex1 && e[j].u == i)) {
-						isLinked = true;
-						break;
+			//Create an array list that stores the vetices that need to be checked
+			ArrayList<Integer> checkingVertices = new ArrayList<Integer>();
+
+			//Add the first vertex to the checking list
+			checkingVertices.add(1);
+
+			while (checkingVertices.size() != 0){
+				//Check the first vertex of the list and remove it from the list
+				int checkingVertex = checkingVertices.get(0);
+				checkingVertices.remove(0);
+
+				//Find other vertices that are linked to the checking vertex
+				for (int i = 1; i <= numberOfVertice; i++) {
+					for (int j = 0; j < e.length; j++) {
+						if ((e[j].u == checkingVertex && e[j].v == i) || (e[j].v == checkingVertex && e[j].u == i)) {
+							if (color[i-1] == 0) {
+								//If the vertex has not been assigned a color, then assign a color to it
+								//The color assigned must be different from the checking vertex's color
+								color[i-1] = -color[checkingVertex-1];
+								checkingVertices.add(i);
+							} else if(color[i-1] == color[checkingVertex-1]){
+								//If the vertex has the same color as the checking vertex, then it is not valid
+								//So the graph cannot be assigned with 2 colors
+								//So the graph is not a bipartite
+								return false;
+							}
+						}
 					}
 				}
-
-				if (!isLinked) {
-					setU[setULength] = i;
-					setULength++;
-				}
 			}
-
-			//Choose 1 fixed vertex (not in set U) to create set V
-			int fixVertex2 = 0;
-			boolean hasFound = false;
-			int index = 1;
-			//Check all vertices to see if there is any vertex that is not in set U
-			while(!hasFound && index <= numberOfVertice) {
-				if (!findNumber(index, setU)) {
-					hasFound = true;
-					fixVertex2 = index;
-				} else {
-					index++;
-				}
-			}
-			//If there is no other vetex that is not linked to the first fixed vertex, then the graph is Bipartite
-			if (!hasFound) {
-				return true;
-			}
-			//If there is a vertex that is not in set U...
-			int[] setV = new int[numberOfVertice];
-			int setVLength = 0;
-
-			for (int i = 1; i <= numberOfVertice; i++) {
-				boolean isLinked = false;
-				for (int j = 0; j < e.length; j++) {
-					if ((e[j].u == fixVertex2 && e[j].v == i) || (e[j].v == fixVertex2 && e[j].u == i)) {
-						isLinked = true;
-						break;
-					}
-				}
-
-				if (!isLinked) {
-					setV[setVLength] = i;
-					setVLength++;
-				}
-			}
-
-
-			boolean isBipartite = true;
-			//If there is a vertex that is not in U and not in V, then the graph is not bipartite
-			for (int i = 1; i <= numberOfVertice; i++) {
-				if (!findNumber(i, setU) && !findNumber(i, setV)) {
-					isBipartite = false;
-				}
-			}
-
-			return isBipartite;
-		}
-
-		public static boolean findNumber(int number, int[] array){
-			boolean findNumber = false;
-			int index = 0;
-			while (!findNumber && index < array.length) {
-				if (array[index] == number) {
-					findNumber = true;
-				} else {
-					index++;
-				}
-			}
-			return findNumber;
+			//All the vertices have been assigned with the color 1 or -1
+			//So the graph is Bipartite
+			return true;
 		}
 
 		/**
@@ -266,13 +225,13 @@ public class ReadGraph
 			//Check every vertex to see if it is linked to all other vertices
 			for (int i = 1; i <= numberOfVertice; i++) {
 				for (int j = i + 1; j <= numberOfVertice; j++) {
-					boolean hasAllLinked = false;
+					boolean hasLinked = false;
 					for (int k = 0; k < e.length; k++) {
 						if ((e[k].u == i && e[k].v == j) || (e[k].v == i && e[k].u == j)) {
-							hasAllLinked = true;
+							hasLinked = true;
 						}
 					}
-					if (!hasAllLinked) {
+					if (!hasLinked) {
 						isCompleteGraph = false;
 						break;
 					}
