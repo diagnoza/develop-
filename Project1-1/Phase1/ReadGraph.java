@@ -124,8 +124,22 @@ public class ReadGraph
 			
 			//EXCEPTIONS GO HERE
 			
-			//if (EXCEPTIONS...) then sout("Chromatic number is...")
-			//Else do the main codes 
+			if (hasNoVertex(n)) {
+				System.out.println("Chromatic number = 0.");
+			} else if (hasNoEdge(m)){
+				System.out.println("Chromatic number = 1.");
+			} else if (isBipartite(n, e)){
+				System.out.println("Chromatic number = 2.");
+			} else if (isOddCycle(n, m, e)){
+				System.out.println("Chromatic number = 3.");
+			} else if (isCompleteGraph(n, e)) {
+				//The chromatic number of a complete graph = the number of vertices
+				System.out.println("Chromatic number = " + n + ".");
+			} else {
+				//At this point, the lower-bound of the graph is 3.
+				//Apply Brooks' theorem to check the upper-bound
+				//If lower-bound = upper-bound --> chromatic number 
+			}
 
 
 			//MAIN CODE
@@ -152,9 +166,10 @@ public class ReadGraph
 		}
 
 		//EXCEPTIONS - METHODS
-		/*
+		/**
 		A bipartite is a graph whose vertices can be divided into two disjoint and independent sets 
 		U and V such that every edge connects a vertex in U to one in V
+		This method checks if a graph is bipartite
 		*/
 		public static boolean isBipartite(int numberOfVertice, ColEdge e[]) {
 
@@ -241,7 +256,10 @@ public class ReadGraph
 			return findNumber;
 		}
 
-		//A complete graph is a graph in which every pair of distinct vertices is connected by a unique edge
+		/**
+		A complete graph is a graph in which every pair of distinct vertices is connected by a unique edge
+		This method checks if a graph is a complete graph
+		*/
 		public static boolean isCompleteGraph(int numberOfVertice, ColEdge e[]) {
 			boolean isCompleteGraph = true;
 
@@ -262,6 +280,71 @@ public class ReadGraph
 			}
 
 			return isCompleteGraph;
+		}
+
+		public static boolean hasNoVertex(int n)//n = vertices
+		{	//if there is no vertices then chromatic number is 0 and graph does not exits.
+			
+			
+			if(n == 0)
+			{         
+				
+				//System.out.println("this graph doesnt exist");
+				return true;
+			}
+			//System.out.println("this graph  exist");
+	
+				return false;
+		}
+	
+	
+		public static boolean hasNoEdge(int m)
+		{
+			//m == number of edges
+			//if no edges then chromatic number is 1
+			if(m==0)
+			{
+				return true;
+			}
+		
+			return false;
+		}
+	
+	 
+		/**
+		 An odd cycle is a graph with the number of vertices is odd
+		 and the number of edges = number of vertices
+		 and every vertex has 2 edge.
+		 The chromatic number of oddCycle graph is 3.
+		*/
+	
+		public static boolean isOddCycle(int n, int m, ColEdge e[]) {
+			//n == no.of vertices ,, m == number of edges
+			boolean cyclic = true;
+			
+			//if number of vertices is even return false;
+			if(n%2==0) return false;
+			
+			if(m!=n)return false;
+			
+			 for(int i = 1;i<=n;i++)
+			 {	
+			 	 int count =0;
+			 	 for(int j = 0;j<e.length;j++)
+			 	 {	
+			 	 	 
+			 	 	 if(e[j].u==i||e[j].v==i)
+			 	 	 {
+			 	 	 	 count++;
+			 	 	 }
+			 	 }
+			 	
+			 	 if(count!=2)
+			 	 {
+			 	 	 cyclic = false;
+			 	 }
+			 }
+			 return cyclic;
 		}
 
 
