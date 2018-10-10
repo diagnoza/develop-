@@ -142,7 +142,7 @@ public class ReadGraph
 				//If lower-bound = upper-bound --> chromatic number 
 			}
 			System.out.println(Brooks(n ,m ,e));
-
+		}
 
 		//BROOKS THEOREM METHOD
 		/**
@@ -164,8 +164,6 @@ public class ReadGraph
 			/*System.out.println("The maximum is: "+maximum);*/
 			return maximum;
 		}		
-			
-		}
 
 		//EXCEPTIONS - METHODS
 		/**
