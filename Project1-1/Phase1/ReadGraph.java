@@ -174,7 +174,7 @@ public class ReadGraph
 		//for (int i = 1; i < n + 1; i++) System.out.println("Node " + i + " connects to: " + adjList.get(i));
 
         //System.out.println(adjList.get(1).size());
-        System.out.println(BruteForce(n, adjList)); 
+        System.out.println("Chromatic number = " + BruteForce(n, adjList)); 
         //quicksort(0, n - 1, nodes, vertexDegree);
     }
 		
