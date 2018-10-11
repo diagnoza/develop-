@@ -152,7 +152,7 @@ public class ReadGraph
 			} else {
 				System.out.println("The upperbound is: " + Brooks(calculateDegreeArray(n ,m ,e),n));
 				System.out.println("The lowerbound is: 3");
-				return;
+
 			}
 
 			int[] nodes = new int[n];
