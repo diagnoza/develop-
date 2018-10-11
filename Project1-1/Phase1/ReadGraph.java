@@ -171,10 +171,10 @@ public class ReadGraph
             adjList.get(e[i].v).add(e[i].u);
             //if(e[i].v == i) adjList.get(i).add(e[i].u);
         }
-		for (int i = 1; i < n + 1; i++) System.out.println("Node " + i + " connects to: " + adjList.get(i));
+		//for (int i = 1; i < n + 1; i++) System.out.println("Node " + i + " connects to: " + adjList.get(i));
 
         //System.out.println(adjList.get(1).size());
-        System.out.println(BruteForce(n, adjList));
+        System.out.println(BruteForce(n, adjList)); 
         //quicksort(0, n - 1, nodes, vertexDegree);
     }
 		
@@ -238,7 +238,7 @@ public class ReadGraph
     	}
 
 		//BRUTE FORCE METHOD
-		public static int BruteForce (int n, ArrayList<LinkedList<Integer>> adjList) {
+		public static int BruteForce(int n, ArrayList<LinkedList<Integer>> adjList) {
         	int[] colors = new int[n];
         	int counter = 0; //attempts counter
         	int chromatic = 2;
@@ -249,7 +249,7 @@ public class ReadGraph
 
         	while (true) {
             	if (chromaticOld != 0){
-                	System.out.println ("Attempt " + counter++ + "...");
+                	//System.out.println ("Attempt " + counter++ + "...");
                 	if(isValid(adjList, colors, n)) return chromatic;
             }
 
