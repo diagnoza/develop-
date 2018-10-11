@@ -129,23 +129,30 @@ public class ReadGraph
 			
 			if (hasNoVertex(n)) {
 				System.out.println("Chromatic number = 0.");
+				return;
 			} else if (hasNoEdge(m)){
 				System.out.println("Chromatic number = 1.");
+				return;
 			} else if (isBipartite(n, e)){
 				System.out.println("Chromatic number = 2.");
+				return;
 			} else if (isOddCycle(n, m, e)){
 				System.out.println("Chromatic number = 3.");
+				return;
 			} else if (isCompleteGraph(n, e)) {
 				//The chromatic number of a complete graph = the number of vertices
 				System.out.println("Chromatic number = " + n + ".");
+				return;
 			} else if (Brooks(calculateDegreeArray(n,m,e),n) == 3){
 				System.out.println("Chromatic number = 3.");
+				return;
 				//At this point, the lower-bound of the graph is 3.
 				//Apply Brooks' theorem to check the upper-bound
 				//If lower-bound = upper-bound --> chromatic number 
 			} else {
 				System.out.println("The upperbound is: " + Brooks(calculateDegreeArray(n ,m ,e),n));
 				System.out.println("The lowerbound is: 3");
+				return;
 			}
 
 			int[] nodes = new int[n];
@@ -191,7 +198,7 @@ public class ReadGraph
 			//Returns the number of edges for the node that has the highest number of them
 			for(int i=0;i<n;i++)
 				maximum = Math.max(maximum,nodes[i]);
-				
+
 			return maximum;
 		}	
 
