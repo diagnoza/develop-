@@ -1,12 +1,16 @@
 import java.io.*;
 import java.util.*;
 
-		class ColEdge
-			{
-			int u;
-			int v;
-			}
-		
+class ColEdge implements Comparable<ColEdge>{
+    int u; //some vertex 1
+    int colorU = -1;
+    int v; //some vertex 2
+    int colorV = -1;
+
+    public int compareTo(ColEdge other) {
+        return Integer.compare(this.u, other.u);
+    }
+}
 public class ReadGraph
 		{
 		
@@ -134,41 +138,131 @@ public class ReadGraph
 			} else if (isCompleteGraph(n, e)) {
 				//The chromatic number of a complete graph = the number of vertices
 				System.out.println("Chromatic number = " + n + ".");
-			} else if (Brooks(n, m, e) == 3){
+			} else if (Brooks(calculateDegreeArray(n,m,e),n) == 3){
 				System.out.println("Chromatic number = 3.");
 				//At this point, the lower-bound of the graph is 3.
 				//Apply Brooks' theorem to check the upper-bound
 				//If lower-bound = upper-bound --> chromatic number 
 			} else {
-				System.out.println("The upperbound is: " + Brooks(n ,m ,e));
+				System.out.println("The upperbound is: " + Brooks(calculateDegreeArray(n ,m ,e),n));
 				System.out.println("The lowerbound is: 3");
-				//BRUCE FORCE GOES HERE
 			}
-		}
 
+			int[] nodes = new int[n];
+        	int[] vertexDegree = new int[n];
+
+        	vertexDegree = calculateDegreeArray(n, m, e);
+        	for (int i = 0; i < n; i++) 
+				nodes[i] = i;
+
+		ArrayList<LinkedList<Integer>> adjList = new ArrayList<LinkedList<Integer>>();
+
+        for (int i = 0; i < n + 1; i++) adjList.add(new LinkedList<Integer>());
+
+        for (int i = 0; i < m; i++){
+            adjList.get(e[i].u).add(e[i].v);
+            adjList.get(e[i].v).add(e[i].u);
+            //if(e[i].v == i) adjList.get(i).add(e[i].u);
+        }
+		for (int i = 1; i < n + 1; i++) System.out.println("Node " + i + " connects to: " + adjList.get(i));
+
+        //System.out.println(adjList.get(1).size());
+        System.out.println(BruteForce(n, adjList));
+        //quicksort(0, n - 1, nodes, vertexDegree);
+    }
+		
+		public static int[] calculateDegreeArray(int n, int m, ColEdge e[]){
+        int[] nodes = new int[n];
+        //Loop that counts the number of times a node appears in the set of edges
+        for(int i=0;i<m;i++){
+            nodes[e[i].u-1]++;
+            nodes[e[i].v-1]++;
+        }
+        /*System.out.println("The maximum is: "+maximum);*/
+        return nodes;
+    	}
 		//BROOKS THEOREM METHOD
-		/**
+		/*
 		We use the Brooks theorem to determine the upperbound by the maximum number of edges a vertex has.
 		*/
-		public static int Brooks(int n, int m, ColEdge e[]){
-			int[] nodes = new int[n];
-			//Loop that counts the number of times a node appears in the set of edges
-			for(int i=0;i<m;i++){
-				nodes[e[i].u-1]++;
-				nodes[e[i].v-1]++;
-			}
+		public static int Brooks(int[] nodes, int n){
 			//Maximum is set to the minimum number of edges possible, which is 0
 			int maximum = 0;
 			//Returns the number of edges for the node that has the highest number of them
-			for(int i=0;i<n;i++){
+			for(int i=0;i<n;i++)
 				maximum = Math.max(maximum,nodes[i]);
-			}
-			/*System.out.println("The maximum is: "+maximum);*/
+				
 			return maximum;
-		}		
+		}	
 
+		//QUICKSORT ALGORITHM
+		public static void quicksort(int left, int right, int[] nodes, int[] vertexDegree){
+
+            int i,j,pivot;
+
+            i = (left + right) / 2;
+            pivot = vertexDegree[i]; vertexDegree[i] = vertexDegree[right];
+            for(j = i = left; i < right; i++)
+                if(vertexDegree[i] < pivot) {
+
+                    int temp = vertexDegree[i];
+                    vertexDegree[i] = vertexDegree[j];
+                    vertexDegree[j] = temp;
+
+                    temp = nodes[i];
+                    nodes[i] = nodes[j];
+                    nodes[j] = temp;
+
+                    j++;
+                }
+            vertexDegree[right] = vertexDegree[j]; vertexDegree[j] = pivot;
+            if(left < j - 1)  quicksort(left, j - 1, nodes, vertexDegree);
+            if(j + 1 < right) quicksort(j + 1, right, nodes, vertexDegree);
+
+    	}	
+		public static boolean isValid (ArrayList<LinkedList<Integer>> adjList, int[] colors, int numberOfVertices) {
+        //CHECK IF THE COLORING IS VALID
+
+       		for (int i = 0; i < numberOfVertices; i++)
+            	for (int j = 0; j < adjList.get(i + 1).size(); j++)
+                	if(colors[i] == colors[adjList.get(i + 1).get(j) - 1]) return false;
+
+    		return true;
+    	}
+
+		//BRUTE FORCE METHOD
+		public static int BruteForce (int n, ArrayList<LinkedList<Integer>> adjList) {
+        	int[] colors = new int[n];
+        	int counter = 0; //attempts counter
+        	int chromatic = 2;
+        	int i;
+        	int chromaticOld = 0;
+
+        	for (i = 0; i < n; i++) colors[i] = 0;
+
+        	while (true) {
+            	if (chromaticOld != 0){
+                	System.out.println ("Attempt " + counter++ + "...");
+                	if(isValid(adjList, colors, n)) return chromatic;
+            }
+
+            while (true) {
+                for (i = 0; i < n; i++) {
+                    colors[i]++;
+                    if (colors[i] == chromatic - 1) chromaticOld++;
+                    if (colors[i] < chromatic) break;
+                    colors[i] = 0;
+                    chromaticOld--;
+                }
+
+                if (i < n) break;
+                chromatic++;
+
+            }
+        }
+    }
 		//EXCEPTIONS - METHODS
-		/**
+		/*
 		A bipartite is a graph whose vertices can be divided into two disjoint and independent sets 
 		U and V such that every edge connects a vertex in U to one in V
 		This method checks if a graph is bipartite
@@ -217,7 +311,7 @@ public class ReadGraph
 			return true;
 		}
 
-		/**
+		/*
 		A complete graph is a graph in which every pair of distinct vertices is connected by a unique edge
 		This method checks if a graph is a complete graph
 		*/
@@ -272,7 +366,7 @@ public class ReadGraph
 		}
 	
 	 
-		/**
+		/*
 		 An odd cycle is a graph with the number of vertices is odd
 		 and the number of edges = number of vertices
 		 and every vertex has 2 edge.
