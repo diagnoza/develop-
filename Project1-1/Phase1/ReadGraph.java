@@ -130,7 +130,7 @@ public class ReadGraph {
             //At this point, the lower-bound of the graph is 3.
             //Apply Brooks' theorem to check the upper-bound
             //If lower-bound = upper-bound --> chromatic number
-        }
+        } else {
 
 
         //ArrayList of linked lists, for each and every node contains its adjacent nodes
@@ -166,8 +166,8 @@ public class ReadGraph {
 
 
             System.out.println("Failed to calculate the chromatic number so far. Proceed with brute force method? y/n: ");
-            if(scan.nextLine().equals("y")) System.out.println(BruteForce(n, lowerbound, adjList));
-
+            if(scan.nextLine().equals("y")) System.out.println("Chromatic number = " + BruteForce(n, lowerbound, adjList));
+        }	
     }
 
 
@@ -187,7 +187,7 @@ public class ReadGraph {
                     List<Integer> common = new ArrayList<Integer>(adjList.get(i));
                     common.retainAll(adjList.get(j));
 
-                    System.out.println(common.size());
+                    //System.out.println(common.size());
                     if (common.size() == lower) counter++;
 
                 }
@@ -356,7 +356,7 @@ public class ReadGraph {
     }
 
 
-    public static int BruteForce (int n, int chromaticBegins, ArrayList<LinkedList<Integer>> adjList) {
+    public static int BruteForce(int n, int chromaticBegins, ArrayList<LinkedList<Integer>> adjList) {
         int[] colors = new int[n];
         int counter = 0; //attempts counter
         int chromatic = 4;
@@ -392,7 +392,7 @@ public class ReadGraph {
     }
 
 
-    public static boolean isValid (ArrayList<LinkedList<Integer>> adjList, int[] colors, int numberOfVertices) {
+    public static boolean isValid(ArrayList<LinkedList<Integer>> adjList, int[] colors, int numberOfVertices) {
         //CHECK IF THE COLORING IS VALID
 
         for (int i = 0; i < numberOfVertices; i++)
