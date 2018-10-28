@@ -133,40 +133,40 @@ public class ReadGraph {
         } else {
 
 
-        //ArrayList of linked lists, for each and every node contains its adjacent nodes
-        ArrayList<LinkedList<Integer>> adjList = new ArrayList<LinkedList<Integer>>();
-        for (int i = 0; i < n + 1; i++) adjList.add(new LinkedList<Integer>());
-
-        for (int i = 0; i < m; i++){
-            adjList.get(e[i].u).add(e[i].v);
-            adjList.get(e[i].v).add(e[i].u);
-        }
-
-        //Same, but considered node is also the first element of each list respectively (used in calculateLowerBound() only)
-        ArrayList<LinkedList<Integer>> adjList2 = new ArrayList<LinkedList<Integer>>();
-        for (int i = 0; i < n + 1; i++) adjList2.add(new LinkedList<Integer>());
-
-        for (int i = 1; i < n + 1; i++){
-            adjList2.get(i).add(i);
-            for (int j = 0; j < adjList.get(i).size(); j++)
-                adjList2.get(i).add(adjList.get(i).get(j));
-        }
-
-
-        Scanner scan = new Scanner(System.in);
-        int[] nodes = new int[n];
-        for (int i = 0; i < n; i++) nodes[i] = i;
-
-        int upperbound = Brooks(calculateDegreeArray(n, m, e),n);
-        int lowerbound = calculateLowerBound(upperbound ,adjList2);
-
-            System.out.println("The upperbound is: " + upperbound);
-            if(lowerbound == 0) System.out.println("No clique found. Cannot calculate the lowerbound for a given graph.");
-            else System.out.println("The lowerbound is: " + lowerbound);
-
-
-            System.out.println("Failed to calculate the chromatic number so far. Proceed with brute force method? y/n: ");
-            if(scan.nextLine().equals("y")) System.out.println("Chromatic number = " + BruteForce(n, lowerbound, adjList));
+        	//ArrayList of linked lists, for each and every node contains its adjacent nodes
+        	ArrayList<LinkedList<Integer>> adjList = new ArrayList<LinkedList<Integer>>();
+        	for (int i = 0; i < n + 1; i++) adjList.add(new LinkedList<Integer>());
+	
+	        	for (int i = 0; i < m; i++){
+	        	    adjList.get(e[i].u).add(e[i].v);
+	        	    adjList.get(e[i].v).add(e[i].u);
+	        	}
+	
+	        	//Same, but considered node is also the first element of each list respectively (used in calculateLowerBound() only)
+	        	ArrayList<LinkedList<Integer>> adjList2 = new ArrayList<LinkedList<Integer>>();
+	        	for (int i = 0; i < n + 1; i++) adjList2.add(new LinkedList<Integer>());
+	
+	        	for (int i = 1; i < n + 1; i++){
+	        	    adjList2.get(i).add(i);
+	        	    for (int j = 0; j < adjList.get(i).size(); j++)
+	        	        adjList2.get(i).add(adjList.get(i).get(j));
+	        	}
+	
+	
+	        	Scanner scan = new Scanner(System.in);
+	        	int[] nodes = new int[n];
+	        	for (int i = 0; i < n; i++) nodes[i] = i;
+	
+	        	int upperbound = Brooks(calculateDegreeArray(n, m, e),n);
+	        	int lowerbound = calculateLowerBound(upperbound ,adjList2);
+	
+	        	    System.out.println("The upperbound is: " + upperbound);
+	        	    if(lowerbound == 0) System.out.println("No clique found. Cannot calculate the lowerbound for a given graph.");
+	        	    else System.out.println("The lowerbound is: " + lowerbound);
+	
+	
+	        	    System.out.println("Failed to calculate the chromatic number so far. Proceed with brute force method? y/n: ");
+        	    if(scan.nextLine().equals("y")) System.out.println("Chromatic number = " + BruteForce(n, lowerbound, adjList));
         }	
     }
 
@@ -311,49 +311,73 @@ public class ReadGraph {
     }
 
 
+    //A bipartite is a graph whose vertices can be divided into two disjoint and independent sets 
+    //U and V such that every edge connects a vertex in U to one in V
     public static boolean isBipartite(int numberOfVertice, ColEdge e[]) {
         //Create an array that stores the colors of each vertex.
         //There are two colors 1 and -1
         //Value 0 of this array means the vextex has not been assigned any color
-        int[] color = new int[numberOfVertice];
-
-        //Assign the color 1 to the first vertex
-        color[0] = 1;
-
-        //Create an array list that stores the vetices that need to be checked
-        ArrayList<Integer> checkingVertices = new ArrayList<Integer>();
-
-        //Add the first vertex to the checking list
-        checkingVertices.add(1);
-
-        while (checkingVertices.size() != 0){
-            //Check the first vertex of the list and remove it from the list
-            int checkingVertex = checkingVertices.get(0);
-            checkingVertices.remove(0);
-
-            //Find other vertices that are linked to the checking vertex
-            for (int i = 1; i <= numberOfVertice; i++) {
-                for (int j = 0; j < e.length; j++) {
-                    if ((e[j].u == checkingVertex && e[j].v == i) || (e[j].v == checkingVertex && e[j].u == i)) {
-                        if (color[i-1] == 0) {
-                            //If the vertex has not been assigned a color, then assign a color to it
-                            //The color assigned must be different from the checking vertex's color
-                            color[i-1] = -color[checkingVertex-1];
-                            checkingVertices.add(i);
-                        } else if(color[i-1] == color[checkingVertex-1]){
-                            //If the vertex has the same color as the checking vertex, then it is not valid
-                            //So the graph cannot be assigned with 2 colors
-                            //So the graph is not a bipartite
-                            return false;
+        int[] color = new int[numberOfVertice + 1];
+    
+            //Assign the color 1 to the first vertex
+            color[1] = 1;
+    
+            //Create an array list that stores the vetices that need to be checked
+            ArrayList<Integer> checkingVertices = new ArrayList<Integer>();
+    
+            //Add the first vertex to the checking list
+            checkingVertices.add(1);
+    
+            boolean hasDone = false;
+    
+            while (!hasDone) {
+                while (checkingVertices.size() != 0){
+                    //Check the first vertex of the list and remove it from the list
+                    int checkingVertex = checkingVertices.get(0);
+                    checkingVertices.remove(0);
+    
+                        //Find other vertices that are linked to the checking vertex
+                        for (int i = 2; i <= numberOfVertice; i++) {
+                            for (int j = 0; j < e.length; j++) {
+                                if ((e[j].u == checkingVertex && e[j].v == i) || (e[j].v == checkingVertex && e[j].u == i)) {
+                                    if (color[i] == 0) {
+                                        //If the vertex has not been assigned a color, then assign a color to it
+                                        //The color assigned must be different from the checking vertex's color
+                                        color[i] = -color[checkingVertex];
+                                        checkingVertices.add(i);
+                                    } else if(color[i] == color[checkingVertex]){
+                                        //If the vertex has the same color as the checking vertex, then it is not valid
+                                        //So the graph cannot be assigned with 2 colors
+                                        //So the graph is not a bipartite
+                                        return false;
+                                    } 
+                                }
+                            }
                         }
+                }
+    
+                boolean foundUncolored = false;
+                int i = 1;
+    
+                while (!foundUncolored && i < color.length) {
+                    if (color[i] == 0) {
+                        color[i] = 1;
+                        checkingVertices.add(i);
+                        foundUncolored = true;
+                    } else{
+                        i++;
                     }
                 }
-            }
-        }
-        //All the vertices have been assigned with the color 1 or -1
-        //So the graph is Bipartite
-        return true;
+                if (!foundUncolored) {
+                    hasDone = true;
+                }
+             }
+    
+            //All the vertices have been assigned with the color 1 or -1
+            //So the graph is Bipartite
+            return true;
     }
+
 
 
     public static int BruteForce(int n, int chromaticBegins, ArrayList<LinkedList<Integer>> adjList) {
