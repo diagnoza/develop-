@@ -29,6 +29,7 @@ public class CalculateChromatic {
 
             for (int i = 0; i < m; i++) {
                 adjList[e[i].u][e[i].v] = true;
+                adjList[e[i].v][e[i].u] = true;
             }
 
 
