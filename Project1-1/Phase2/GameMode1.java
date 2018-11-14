@@ -1,11 +1,6 @@
-package com.tuanh;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 public class GameMode1 extends GameMode{
 
-    public GameMode1(int chromaticNumber, int[] userColoring, ArrayList<LinkedList<Integer>> connections) {
+    public GameMode1(int chromaticNumber, int[] userColoring, boolean[][] connections) {
         super(chromaticNumber, userColoring, connections);
     }
 
