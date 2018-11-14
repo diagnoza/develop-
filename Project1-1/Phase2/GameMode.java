@@ -1,15 +1,10 @@
-package com.tuanh;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 public abstract class GameMode {
     private int chromaticNumber;
     private int[] userColoring;
-    private ArrayList<LinkedList<Integer>> connections;
+    private boolean[][] connections;
     private static int[] coloredGraph;
 
-    public GameMode(int chromaticNumber, int[] userColoring, ArrayList<LinkedList<Integer>> connections) {
+    public GameMode(int chromaticNumber, int[] userColoring, boolean[][] connections) {
         this.chromaticNumber = chromaticNumber;
         this.userColoring = userColoring;
         this.connections = connections;
@@ -31,11 +26,11 @@ public abstract class GameMode {
         this.userColoring = userColoring;
     }
 
-    public ArrayList<LinkedList<Integer>> getConnections() {
+    public boolean[][] getConnections() {
         return connections;
     }
 
-    public void setConnections(ArrayList<LinkedList<Integer>> connections) {
+    public void setConnections(boolean[][] connections) {
         this.connections = connections;
     }
 
@@ -55,18 +50,18 @@ public abstract class GameMode {
     public abstract void run();
 
     public boolean forceEnd(){
-
-    }
-
-    public boolean isValid(int chosenVertex, int chosenColor){
-        for (Integer checkNeighbors: connections.get(chosenVertex)) {
-            if (userColoring[checkNeighbors] == chosenColor){
-                return false;
-            }
-        }
-
         return true;
     }
+
+//    public boolean isValid(int chosenVertex, int chosenColor){
+//        for (Integer checkNeighbors: connections.get(chosenVertex)) {
+//            if (userColoring[checkNeighbors] == chosenColor){
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
 
 }
