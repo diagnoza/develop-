@@ -8,8 +8,9 @@ public class GameMode3 {
 //        int[] colouredGraph = new int[randomGameMode.vertices];
 //        int userColor;
 //        int currentVertex = 0;
-//        boolean used = false;
+//        boolean used;
 //        while(currentVertex<randomGameMode.vertices){
+//            used = false;
 //            userColor = in.nextInt();
 //            for(int i=0;i<randomGameMode.vertices;i++)
 //                if(colouredGraph[i]==userColor&&randomGraph[currentVertex][i]==true){
