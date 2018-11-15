@@ -1,8 +1,8 @@
 public abstract class GameMode {
-    private int chromaticNumber;
-    private int[] userColoring;
-    private boolean[][] connections;
-    private static int[] coloredGraph;
+    protected int chromaticNumber;
+    protected int[] userColoring;
+    protected boolean[][] connections;
+    protected static int[] coloredGraph;
 
     public GameMode(int chromaticNumber, int[] userColoring, boolean[][] connections) {
         this.chromaticNumber = chromaticNumber;

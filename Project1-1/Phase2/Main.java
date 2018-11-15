@@ -116,9 +116,7 @@ public class Main {
                     edgeNumber++;
                 }
 
-        CalculateChromatic cal = new CalculateChromatic();
-        int chromaticNumber = cal.getChromatic(m, n, e);
-
+        int chromaticNumber = CalculateChromatic.getChromatic(m, n, e);
 
     }
 }
