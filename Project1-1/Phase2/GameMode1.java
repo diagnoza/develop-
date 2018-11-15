@@ -6,12 +6,12 @@ public class GameMode1 extends GameMode{
 
     public boolean isEnd(){
         int maxColor = 0;
-        for (int i = 0; i < super.getUserColoring().length; i++) {
-            if (super.getUserColoring()[i] > maxColor) {
-                maxColor = super.getUserColoring()[i];
+        for (int i = 0; i < super.userColoring.length; i++) {
+            if (super.userColoring[i] > maxColor) {
+                maxColor = super.userColoring[i];
             }
         }
-        return (maxColor == super.getChromaticNumber());
+        return (maxColor == super.chromaticNumber);
     }
 
     public void run(){
