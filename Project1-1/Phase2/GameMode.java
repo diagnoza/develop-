@@ -10,41 +10,6 @@ public abstract class GameMode {
         this.connections = connections;
     }
 
-    public int getChromaticNumber() {
-        return chromaticNumber;
-    }
-
-    public void setChromaticNumber(int chromaticNumber) {
-        this.chromaticNumber = chromaticNumber;
-    }
-
-    public int[] getUserColoring() {
-        return userColoring;
-    }
-
-    public void setUserColoring(int[] userColoring) {
-        this.userColoring = userColoring;
-    }
-
-    public boolean[][] getConnections() {
-        return connections;
-    }
-
-    public void setConnections(boolean[][] connections) {
-        this.connections = connections;
-    }
-
-    public static int[] getColoredGraph() {
-        return coloredGraph;
-    }
-
-    public static void setColoredGraph(int[] coloredGraph) {
-        GameMode.coloredGraph = coloredGraph;
-    }
-
-
-
-
     public abstract boolean isEnd();
 
     public abstract void run();
