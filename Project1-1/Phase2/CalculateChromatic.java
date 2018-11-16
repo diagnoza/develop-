@@ -103,8 +103,8 @@ public class CalculateChromatic {
         int[] nodes = new int[n];
         //Loop that counts the number of times a node appears in the set of edges
         for (int i = 0; i < m; i++) {
-            nodes[e[i].u - 1]++;
-            nodes[e[i].v - 1]++;
+            nodes[e[i].u]++;
+            nodes[e[i].v]++;
         }
         /*System.out.println("The maximum is: "+maximum);*/
         return nodes;
