@@ -12,6 +12,8 @@ public abstract class GameMode {
 
     public abstract void run();
 
+    public abstract int[] getHint();
+
     public boolean forceEnd(){
         return true;
     }
@@ -28,4 +30,3 @@ public abstract class GameMode {
 
 
 }
-

@@ -57,6 +57,11 @@ public class GameMode2 extends GameMode {
 
         private int count;
     }
+
+    public int[] getHint(){
+        int[] arr = new int[1];
+        return arr;
+    }
 }
 
 
