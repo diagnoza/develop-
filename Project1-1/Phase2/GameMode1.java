@@ -22,7 +22,7 @@ public class GameMode1 extends GameMode{
                     numberOfColorsUsed++;
             }
         }
-        return (numberOfColorsUsed == super.chromaticNumber);
+        return (numberOfColorsUsed == super.chromaticNumber) && CalculateChromatic.isValid(connections, userColoring, userColoring.length);
     }
 
     public void run(){
@@ -38,7 +38,7 @@ public class GameMode1 extends GameMode{
             //if (isValid)
             super.userColoring[node] = color;
 
-        } while (this.isEnd());
+        } while (!this.isEnd());
     }
 
 }
