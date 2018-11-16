@@ -10,8 +10,6 @@ public abstract class GameMode {
         this.connections = connections;
     }
 
-    public abstract boolean isEnd();
-
     public abstract void run();
 
     public boolean forceEnd(){
