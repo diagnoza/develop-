@@ -30,4 +30,9 @@ public class GameMode3 extends GameMode {
             }
         }
     }
+
+    public int[] getHint(){
+        int[] arr = new int[1];
+        return arr;
+    }
 }
