@@ -1,0 +1,145 @@
+package Windows;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*; 
+
+public class Menu extends MouseAdapter {
+	public static boolean pageOne = true;
+	public static boolean pageTwo = false;
+	
+	public static void createWindow() {
+		/*Creating the window*/
+		JFrame mainWindow = new JFrame("Main Menu");
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		/*FIRST PAGE*/
+		JLabel Title = new JLabel(); //TITLE
+		Title.setText("Game Title");
+		Title.setFont(Title.getFont().deriveFont(96.0f));
+		Title.setForeground(Color.yellow);
+		Title.setVisible(pageOne);
+		Title.setBounds(240,25,2000,100);
+		
+		JButton Bt = new JButton(); //PLAY-BUTTON
+		Bt.setBounds(380,200,200,100); //setBounds(x,y,width,height)
+		Bt.setVisible(pageOne);
+		Bt.setText("Play");
+		Bt.setFont(Bt.getFont().deriveFont(36.0f));
+		
+		JButton Bt2 = new JButton(); //QUIT-BUTTON
+		Bt2.setBounds(380,350,200,100); //setBounds(x,y,width,height)
+		Bt2.setVisible(pageOne);
+		Bt2.setText("Quit");
+		Bt2.setFont(Bt2.getFont().deriveFont(36.0f));
+		Bt2.addActionListener(new ActionListener() {
+				@Override //Overrides the super-class method
+				public void actionPerformed(ActionEvent e) {
+					System.exit(0);
+				}
+		});
+		
+		JLabel background = new JLabel(new ImageIcon("Windows/Backgrounds/NC2.jpg"));
+		background.setVisible(pageOne);
+		mainWindow.setSize(959,719);
+		mainWindow.setSize(960,720);
+		background.setLayout(new FlowLayout());
+		
+		/*SECOND PAGE*/
+		JLabel Title2 = new JLabel(); //TITLE2
+		Title2.setText("Select gamemode");
+		Title2.setFont(Title2.getFont().deriveFont(96.0f));
+		Title2.setVisible(pageTwo);
+		Title2.setBounds(80,10,2000,120);
+		
+		JButton Ct = new JButton(); //GAMEMODE1
+		Ct.setBounds(380,200,200,100); //setBounds(x,y,width,height)
+		Ct.setVisible(pageTwo);
+		Ct.setText("Gamemode 1");
+		Ct.setFont(Ct.getFont().deriveFont(36.0f));
+		Ct.addActionListener(new ActionListener() {
+				@Override //Overrides the super-class method
+				public void actionPerformed(ActionEvent e) {
+					//Add actions here
+				}
+		});
+		
+		JButton Ct2 = new JButton(); //GAMEMODE2
+		Ct2.setBounds(380,350,200,100); //setBounds(x,y,width,height)
+		Ct2.setVisible(pageTwo);
+		Ct2.setText("Gamemode 2");
+		Ct2.setFont(Ct2.getFont().deriveFont(36.0f));
+		Ct2.addActionListener(new ActionListener() {
+				@Override //Overrides the super-class method
+				public void actionPerformed(ActionEvent e) {
+					//Add actions here
+				}
+		});
+		
+		JButton Ct3 = new JButton(); //GAMEMODE3
+		Ct3.setBounds(380,500,200,100); //setBounds(x,y,width,height)
+		Ct3.setVisible(pageTwo);
+		Ct3.setText("Gamemode 3");
+		Ct3.setFont(Ct3.getFont().deriveFont(36.0f));
+		Ct3.addActionListener(new ActionListener() {
+				@Override //Overrides the super-class method
+				public void actionPerformed(ActionEvent e) {
+					//Add actions here
+				}
+		});
+		
+		JButton Ct4 = new JButton(); //BACK-BUTTON
+		Ct4.setBounds(0,614,140,70); //setBounds(x,y,width,height)
+		Ct4.setVisible(pageTwo);
+		Ct4.setText("Back");
+		Ct4.setFont(Ct4.getFont().deriveFont(36.0f));
+		
+		/*Changing pages*/
+		Bt.addActionListener(new ActionListener() { //PLAY BUTTON
+				@Override //Overrides the super-class method
+				public void actionPerformed(ActionEvent e) {
+					pageOne = false;
+					pageTwo = true;
+					visi(Title,Bt,Bt2,background,Ct,Ct2,Ct3,Ct4,Title2);
+				}
+		});
+		Ct4.addActionListener(new ActionListener() { //BACK-BUTTON
+				@Override //Overrides the super-class method
+				public void actionPerformed(ActionEvent e) {
+					pageOne = true;
+					pageTwo = false;
+					visi(Title,Bt,Bt2,background,Ct,Ct2,Ct3,Ct4,Title2);
+				}
+		});
+		
+		/*Displaying the window*/         
+		mainWindow.setLayout(new BorderLayout()); //Give the window a borderlayout)
+												   //Dividing the window in 5 region(North,east,south,west,center)
+		mainWindow.setResizable(false); //Window can't be resized
+		mainWindow.setVisible(true);  //visibility of the window
+		/**mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);  //fullscreen */
+		mainWindow.setBounds(240,60,960,720);
+		
+		/*Adding the objects to the window*/
+		mainWindow.add(Title); //Adding the titles
+		mainWindow.add(Title2);
+		mainWindow.add(Bt); //Adding the buttons
+		mainWindow.add(Bt2);
+		mainWindow.add(Ct);
+		mainWindow.add(Ct2);
+		mainWindow.add(Ct3);
+		mainWindow.add(Ct4);
+		mainWindow.add(background); //Adding the background
+	}
+	public static void visi(JLabel Title,JButton Bt,JButton Bt2,JLabel background,JButton Ct,
+		JButton Ct2,JButton Ct3,JButton Ct4,JLabel Title2){
+		Title.setVisible(pageOne);
+		Bt.setVisible(pageOne);
+		Bt2.setVisible(pageOne);
+		background.setVisible(pageOne);
+		Ct.setVisible(pageTwo);
+		Ct2.setVisible(pageTwo);
+		Ct3.setVisible(pageTwo);
+		Ct4.setVisible(pageTwo);
+		Title2.setVisible(pageTwo);
+	}
+}
