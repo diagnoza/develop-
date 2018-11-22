@@ -2,6 +2,7 @@ package Windows;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*; 
+import javax.swing.border.*;
 
 public class Menu extends MouseAdapter {
 	public static boolean pageOne = true;
@@ -66,6 +67,7 @@ public class Menu extends MouseAdapter {
 		Ct.setVisible(pageTwo);
 		Ct.setText("Gamemode 1");
 		Ct.setBackground(Color.red);
+		Ct.setBorder(new LineBorder(Color.BLACK));
 		Ct.setFont(Ct.getFont().deriveFont(36.0f));
 		Ct.addActionListener(new ActionListener() {
 				@Override //Overrides the super-class method
@@ -158,6 +160,25 @@ public class Menu extends MouseAdapter {
 				public void mousePressed(MouseEvent e) {
 				}
 				public void mouseClicked(MouseEvent e) {
+				}
+		});
+		
+		/*GAMEMODES*/
+		Ct.addMouseListener(new MouseListener() { //GAMEMODE1 BUTTON
+				@Override //Overrides the super-class method
+				public void mouseEntered(MouseEvent e) {
+					Ct.setBackground(Color.orange);
+				}
+				public void mouseExited(MouseEvent e) {
+					Ct.setBackground(Color.red);
+				}
+				public void mouseReleased(MouseEvent e) {
+				}
+				public void mousePressed(MouseEvent e) {
+				}
+				public void mouseClicked(MouseEvent e) {
+					SecondFrame.createWindow();
+					mainWindow.dispose();
 				}
 		});
 		
