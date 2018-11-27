@@ -14,7 +14,7 @@ public class GameMode3 extends GameMode {
 //        boolean[][] randomGraph = randomGameMode.createGraph();
 
         int userColor;
-        int currentVertex = 0;
+//        int currentVertex = 0;
         boolean used;
         while (currentVertex < userColoring.length) {
             used = false;
@@ -32,7 +32,28 @@ public class GameMode3 extends GameMode {
     }
 
     public int[] getHint(){
-        int[] arr = new int[1];
+        int[] arr = new int[2];
+        arr[0] = currentVertex;
+        int max = 0;
+        for (int i = 0; i < userColoring.length; i++) if (userColoring[i] > max) max = userColoring[i];
+
+        //Loop through all available colors
+        for (int i = 1; i <= max; i++) {
+            boolean condition = true;
+            for (int j = 0; j < connections.length; j++)
+                if (connections[currentVertex][j] && userColoring[j] == i) {
+                    condition = false;
+                    break;
+                }
+
+            if (condition) {
+                arr[1] = i;
+                return arr;
+            }
+        }
+
+        arr[1] = max + 1;
         return arr;
     }
+    private int currentVertex = 0;
 }
