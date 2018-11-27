@@ -58,21 +58,21 @@ public class Menu extends MouseAdapter {
 		Title2.setBounds(80,10,2000,120);
 		
 		JLabel Info1 = new JLabel(); //EXPLANATION1
-		Info1.setText("<html>First line<br>Second line</html>");
+		Info1.setText(" ");
 		Info1.setFont(Info1.getFont().deriveFont(18.0f));
 		Info1.setForeground(Color.white);
 		Info1.setVisible(pageTwo);
 		Info1.setBounds(550,168,360,100);
 			
 		JLabel Info2 = new JLabel(); //EXPLANATION2
-		Info2.setText("<html>First line<br>Second line</html>");
+		Info2.setText(" ");
 		Info2.setFont(Info2.getFont().deriveFont(18.0f));
 		Info2.setForeground(Color.green);
 		Info2.setVisible(pageTwo);
 		Info2.setBounds(550,168,360,100);
 		
 		JLabel Info3 = new JLabel(); //EXPLANATION3
-		Info3.setText("<html>First line<br>Second line</html>");
+		Info3.setText(" ");
 		Info3.setFont(Info3.getFont().deriveFont(18.0f));
 		Info3.setForeground(Color.blue);
 		Info3.setVisible(pageTwo);
@@ -182,7 +182,7 @@ public class Menu extends MouseAdapter {
 		Ct5.addMouseListener(new MouseListener() { //PLAY BUTTON
 				@Override //Overrides the super-class method
 				public void mouseEntered(MouseEvent e) {
-					Info1.setText("<html>First line<br>Second line</html>");
+					Info1.setText("<html>Find the Chromatic Number of the graph.</html>");
 				}
 				public void mouseExited(MouseEvent e) {
 					Info1.setText(" ");
@@ -198,7 +198,7 @@ public class Menu extends MouseAdapter {
 		Ct6.addMouseListener(new MouseListener() { //PLAY BUTTON
 			@Override //Overrides the super-class method
 			public void mouseEntered(MouseEvent e) {
-				Info2.setText("<html>First line<br>Second line</html>");
+				Info2.setText("<html>Please color the graph in the given time.</html>");
 			}
 			public void mouseExited(MouseEvent e) {
 				Info2.setText(" ");
@@ -214,7 +214,7 @@ public class Menu extends MouseAdapter {
 		Ct7.addMouseListener(new MouseListener() { //PLAY BUTTON
 			@Override //Overrides the super-class method
 			public void mouseEntered(MouseEvent e) {
-				Info3.setText("<html>First line<br>Second line</html>");
+				Info3.setText("<html>Please color a random graph.<br>NOTE: Once the color of the vertices is chosen, you can't change the color it again.</html>");
 			}
 			public void mouseExited(MouseEvent e) {
 				Info3.setText(" ");

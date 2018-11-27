@@ -6,9 +6,11 @@ import java.awt.event.*;
 import javax.swing.*; 
 
 public class SecondFrame {
+	private static javax.swing.Timer timer;
 	public static int GM = 0; //Which gamemode
 	public static int z = 10; //Number of vertices
 	public static int y = 30; //Number of edges
+	public static int x = 0; //Timer variable
 	public static void createWindow(int gm){
 		GM = gm;
 		
@@ -77,6 +79,8 @@ public class SecondFrame {
 		Dt4.setText("Back");
 		Dt4.setFont(Dt4.getFont().deriveFont(36.0f));
 		
+		timer = new javax.swing.Timer(100, getButtonAction(f1,f2));
+		
 		/*Button-Clicks*/
 		D.addMouseListener(new MouseListener() { //1st HIGHER NODE BUTTON
 			@Override //Overrides the super-class method
@@ -85,8 +89,11 @@ public class SecondFrame {
 			public void mouseExited(MouseEvent e) {
 			}
 			public void mouseReleased(MouseEvent e) {
+				timer.stop();
 			}
 			public void mousePressed(MouseEvent e) {
+				x = 1;
+				timer.start();
 			}
 			public void mouseClicked(MouseEvent e) {
 				if (z<20 && z>-1){ //If-statement so that number of nodes does not exceed 20
@@ -103,8 +110,11 @@ public class SecondFrame {
 			public void mouseExited(MouseEvent e) {
 			}
 			public void mouseReleased(MouseEvent e) {
+				timer.stop();
 			}
 			public void mousePressed(MouseEvent e) {
+				x = 2;
+				timer.start();
 			}
 			public void mouseClicked(MouseEvent e) {
 				if (z<21 && z>0){ //If-statement so that number of nodes does not exceed 0
@@ -121,8 +131,11 @@ public class SecondFrame {
 			public void mouseExited(MouseEvent e) {
 			}
 			public void mouseReleased(MouseEvent e) {
+				timer.stop();
 			}
 			public void mousePressed(MouseEvent e) {
+				x = 3;
+				timer.start();
 			}
 			public void mouseClicked(MouseEvent e) {
 				if (y<60 && y>-1){ //If-statement so that number of nodes does not exceed 20
@@ -139,28 +152,17 @@ public class SecondFrame {
 			public void mouseExited(MouseEvent e) {
 			}
 			public void mouseReleased(MouseEvent e) {
+				timer.stop();
 			}
 			public void mousePressed(MouseEvent e) {
+				x = 4;
+				timer.start();
 			}
 			public void mouseClicked(MouseEvent e) {
 				if (y<61 && y>0){ //If-statement so that number of nodes does not exceed 0
 					y--;
 					f2.setText(number(y));
 				}
-			}
-		});
-		
-		D5.addMouseListener(new MouseListener() { //2nd LOWER NODE BUTTON
-			@Override //Overrides the super-class method
-			public void mouseEntered(MouseEvent e) {
-			}
-			public void mouseExited(MouseEvent e) {
-			}
-			public void mouseReleased(MouseEvent e) {
-			}
-			public void mousePressed(MouseEvent e) {
-			}
-			public void mouseClicked(MouseEvent e) {
 			}
 		});
 		
@@ -196,6 +198,38 @@ public class SecondFrame {
 		SecondWindow.add(Dt4);
 		SecondWindow.add(background);
 	}
+	private static ActionListener getButtonAction(JTextField f1, JTextField f2) {
+        ActionListener action = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	if(x==1){
+            		if (z<20 && z>-1){ //If-statement so that number of nodes does not exceed 20
+            			z++;
+            			f1.setText(number(z));
+            		}
+				}
+				if(x==2){
+					if (z<21 && z>0){ //If-statement so that number of nodes does not exceed 0
+						z--;
+						f1.setText(number(z));
+					}
+				}
+				if(x==3){
+					if (y<60 && y>-1){ //If-statement so that number of nodes does not exceed 20
+						y++;
+						f2.setText(number(y));
+					}
+				}
+				if(x==4){
+					if (y<61 && y>0){ //If-statement so that number of nodes does not exceed 0
+						y--;
+						f2.setText(number(y));
+					}
+				}
+            }
+        };
+        return action;
+    }
 	public static String number(int x){
 		String sequence = Integer.toString(x);
 		return sequence;

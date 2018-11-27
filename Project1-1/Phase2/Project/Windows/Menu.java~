@@ -1,3 +1,5 @@
+/**COMPILE WITH "javac -classpath . *.java" **/
+
 package Windows;
 import java.awt.*;
 import java.awt.event.*;
@@ -61,6 +63,20 @@ public class Menu extends MouseAdapter {
 		Info1.setForeground(Color.white);
 		Info1.setVisible(pageTwo);
 		Info1.setBounds(550,168,360,100);
+			
+		JLabel Info2 = new JLabel(); //EXPLANATION2
+		Info2.setText("<html>First line<br>Second line</html>");
+		Info2.setFont(Info2.getFont().deriveFont(18.0f));
+		Info2.setForeground(Color.green);
+		Info2.setVisible(pageTwo);
+		Info2.setBounds(550,168,360,100);
+		
+		JLabel Info3 = new JLabel(); //EXPLANATION3
+		Info3.setText("<html>First line<br>Second line</html>");
+		Info3.setFont(Info3.getFont().deriveFont(18.0f));
+		Info3.setForeground(Color.blue);
+		Info3.setVisible(pageTwo);
+		Info3.setBounds(550,168,360,100);
 		
 		JButton Ct = new JButton(); //GAMEMODE1
 		Ct.setBounds(100,200,300,100); //setBounds(x,y,width,height)
@@ -108,7 +124,7 @@ public class Menu extends MouseAdapter {
 		Ct4.setText("Back");
 		Ct4.setFont(Ct4.getFont().deriveFont(36.0f));
 		
-		JTextArea A1 = new JTextArea(10,30); //TEXT-AREA1
+		JTextArea A1 = new JTextArea(10,30); //TEXT-AREA1 [NOT IMPLEMENTED]
 		A1.setSize(200,100);
 		A1.setVisible(true);
 		
@@ -119,6 +135,22 @@ public class Menu extends MouseAdapter {
 		Ct5.setBackground(Color.green);
 		Ct5.setEnabled(false);
 		Ct5.setFont(Ct5.getFont().deriveFont(36.0f));
+		
+		JButton Ct6= new JButton(); //INFO-BUTTON2
+		Ct6.setBounds(400,350,100,100); //setBounds(x,y,width,height)
+		Ct6.setVisible(pageTwo);
+		Ct6.setText("?");
+		Ct6.setBackground(Color.green);
+		Ct6.setEnabled(false);
+		Ct6.setFont(Ct6.getFont().deriveFont(36.0f));
+		
+		JButton Ct7= new JButton(); //INFO-BUTTON3
+		Ct7.setBounds(400,500,100,100); //setBounds(x,y,width,height)
+		Ct7.setVisible(pageTwo);
+		Ct7.setText("?");
+		Ct7.setBackground(Color.green);
+		Ct7.setEnabled(false);
+		Ct7.setFont(Ct7.getFont().deriveFont(36.0f));
 		
 		/*Changing pages*/
 		Bt.addMouseListener(new MouseListener() { //PLAY BUTTON
@@ -134,7 +166,7 @@ public class Menu extends MouseAdapter {
 				public void mouseClicked(MouseEvent e) {
 					pageOne = false;
 					pageTwo = true;
-					visi(Title,Bt,Bt2,Ct,Ct2,Ct3,Ct4,Ct5,Title2,Info1);
+					visi(Title,Bt,Bt2,Ct,Ct2,Ct3,Ct4,Ct5,Ct6,Ct7,Title2,Info1,Info2,Info3);
 				}
 		});
 		Ct4.addActionListener(new ActionListener() { //BACK-BUTTON
@@ -142,7 +174,7 @@ public class Menu extends MouseAdapter {
 				public void actionPerformed(ActionEvent e) {
 					pageOne = true;
 					pageTwo = false;
-					visi(Title,Bt,Bt2,Ct,Ct2,Ct3,Ct4,Ct5,Title2,Info1);
+					visi(Title,Bt,Bt2,Ct,Ct2,Ct3,Ct4,Ct5,Ct6,Ct7,Title2,Info1,Info2,Info3);
 				}
 		});
 		
@@ -163,6 +195,38 @@ public class Menu extends MouseAdapter {
 				}
 		});
 		
+		Ct6.addMouseListener(new MouseListener() { //PLAY BUTTON
+			@Override //Overrides the super-class method
+			public void mouseEntered(MouseEvent e) {
+				Info2.setText("<html>First line<br>Second line</html>");
+			}
+			public void mouseExited(MouseEvent e) {
+				Info2.setText(" ");
+			}
+			public void mouseReleased(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+
+		Ct7.addMouseListener(new MouseListener() { //PLAY BUTTON
+			@Override //Overrides the super-class method
+			public void mouseEntered(MouseEvent e) {
+				Info3.setText("<html>First line<br>Second line</html>");
+			}
+			public void mouseExited(MouseEvent e) {
+				Info3.setText(" ");
+			}
+			public void mouseReleased(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		
 		/*GAMEMODES*/
 		Ct.addMouseListener(new MouseListener() { //GAMEMODE1 BUTTON
 				@Override //Overrides the super-class method
@@ -177,7 +241,41 @@ public class Menu extends MouseAdapter {
 				public void mousePressed(MouseEvent e) {
 				}
 				public void mouseClicked(MouseEvent e) {
-					SecondFrame.createWindow();
+					SecondFrame.createWindow(1);
+					mainWindow.dispose();
+				}
+		});
+		Ct2.addMouseListener(new MouseListener() { //GAMEMODE1 BUTTON
+				@Override //Overrides the super-class method
+				public void mouseEntered(MouseEvent e) {
+					Ct2.setBackground(Color.orange);
+				}
+				public void mouseExited(MouseEvent e) {
+					Ct2.setBackground(Color.red);
+				}
+				public void mouseReleased(MouseEvent e) {
+				}
+				public void mousePressed(MouseEvent e) {
+				}
+				public void mouseClicked(MouseEvent e) {
+					SecondFrame.createWindow(2);
+					mainWindow.dispose();
+				}
+		});
+		Ct3.addMouseListener(new MouseListener() { //GAMEMODE1 BUTTON
+				@Override //Overrides the super-class method
+				public void mouseEntered(MouseEvent e) {
+					Ct3.setBackground(Color.orange);
+				}
+				public void mouseExited(MouseEvent e) {
+					Ct3.setBackground(Color.red);
+				}
+				public void mouseReleased(MouseEvent e) {
+				}
+				public void mousePressed(MouseEvent e) {
+				}
+				public void mouseClicked(MouseEvent e) {
+					SecondFrame.createWindow(3);
 					mainWindow.dispose();
 				}
 		});
@@ -200,14 +298,19 @@ public class Menu extends MouseAdapter {
 		mainWindow.add(Ct3);
 		mainWindow.add(Ct4);
 		mainWindow.add(Ct5);
+		mainWindow.add(Ct6);
+		mainWindow.add(Ct7);
 		mainWindow.add(Info1);
+		mainWindow.add(Info2);
+		mainWindow.add(Info3);
 	//	mainWindow.add(A1);
 		mainWindow.add(background); //Adding the background
 		
 		
 	}
 	public static void visi(JLabel Title,JButton Bt,JButton Bt2,JButton Ct,
-		JButton Ct2,JButton Ct3,JButton Ct4,JButton Ct5,JLabel Title2,JLabel Info1){
+		JButton Ct2,JButton Ct3,JButton Ct4,JButton Ct5,JButton Ct6,JButton Ct7,
+		JLabel Title2,JLabel Info1,JLabel Info2,JLabel Info3){
 		Title.setVisible(pageOne);
 		Bt.setVisible(pageOne);
 		Bt2.setVisible(pageOne);
@@ -216,7 +319,11 @@ public class Menu extends MouseAdapter {
 		Ct3.setVisible(pageTwo);
 		Ct4.setVisible(pageTwo);
 		Ct5.setVisible(pageTwo);
+		Ct6.setVisible(pageTwo);
+		Ct7.setVisible(pageTwo);
 		Title2.setVisible(pageTwo);
 		Info1.setVisible(pageTwo);
+		Info2.setVisible(pageTwo);
+		Info3.setVisible(pageTwo);
 	}
 }
