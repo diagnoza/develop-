@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GameMode1 extends GameMode {
@@ -43,30 +45,35 @@ public class GameMode1 extends GameMode {
 
     public int[] getHint() {
         int[] arr = new int[2];
+        //arr[0] is the vertex, a[1] is the color
         int max = 0;
-        boolean condition;
-        for (int i = 0; i < userColoring.length; i++) {
-
-            if (userColoring[i] == 0) arr[0] = i;
-        }
-
         for (int i = 0; i < userColoring.length; i++) if (userColoring[i] > max) max = userColoring[i];
 
-        for (int i = 1; i <= max; i++) {
-            condition = true;
-            for (int j = 0; j < connections.length; j++)
-                if (connections[arr[0]][j])
-                    if (userColoring[j] == i) {
+        List<Integer> uncoloredVertices = new ArrayList<>();
+
+        for (int i = 0; i < userColoring.length; i++) {
+            if (userColoring[i] == 0) uncoloredVertices.add(i);
+        }
+
+        for (Integer vertex: uncoloredVertices) {
+            //Loop through all available colors
+            for (int i = 1; i <= max; i++) {
+                boolean condition = true;
+                for (int j = 0; j < connections.length; j++)
+                    if (connections[vertex][j] && userColoring[j] == i) {
                         condition = false;
                         break;
                     }
 
-            if (condition) {
-                arr[1] = i;
-                return arr;
+                if (condition) {
+                    arr[0] = vertex;
+                    arr[1] = i;
+                    return arr;
+                }
             }
         }
 
+        arr[0] = uncoloredVertices.get(0);
         arr[1] = max + 1;
         return arr;
 
