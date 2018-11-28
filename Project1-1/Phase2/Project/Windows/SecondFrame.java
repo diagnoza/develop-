@@ -121,6 +121,10 @@ public class SecondFrame {
 					z--;
 					f1.setText(number(z));
 				}
+				if(2*y>z*(z-1)) {
+					y=z*(z-1)/2;
+					f2.setText(number(y));
+				}
 			}
 		});
 		
