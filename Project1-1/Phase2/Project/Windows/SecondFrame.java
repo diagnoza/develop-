@@ -142,10 +142,11 @@ public class SecondFrame {
 				timer.start();
 			}
 			public void mouseClicked(MouseEvent e) {
-				if (y<60 && y>-1){ //If-statement so that number of nodes does not exceed 20
+				if (y<60 && y>-1 && y<z*(z-1)/2){ //If-statement so that number of nodes does not exceed 20
 					y++;
 					f2.setText(number(y));
 				}
+				if (y>=z*(z-1)/2) JOptionPane.showMessageDialog(null, "You can't have more edges for this number of nodes!");
 			}
 		});
 		
