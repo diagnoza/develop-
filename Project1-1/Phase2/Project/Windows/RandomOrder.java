@@ -20,21 +20,22 @@ public class RandomOrder {
         boolean[][] graph = new boolean[vertices][vertices];
         int randomParameter;
         int randomParameter2;
+	int edgesCounter = 0;
         for (int i = 0; i < vertices; i++) {
             do {
                 randomParameter = rand.nextInt(vertices);
             } while (randomParameter == i);
+	    if(!graph[i][randomParameter]) edgesCounter++;
             graph[i][randomParameter] = true;
             graph[randomParameter][i] = true;
         }
-        int edgesCounter = vertices;
         while (edgesCounter < edges) {
             randomParameter = rand.nextInt(vertices);
             randomParameter2 = rand.nextInt(vertices);
             if (randomParameter2 != randomParameter && graph[randomParameter][randomParameter2] != true) {
                 graph[randomParameter][randomParameter2] = true;
                 graph[randomParameter2][randomParameter] = true;
-                edgesCounter++;
+		edgesCounter++;
             }
         }
         return graph;
