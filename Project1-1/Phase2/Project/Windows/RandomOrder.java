@@ -1,3 +1,4 @@
+package Windows;
 import java.util.Random;
 
 public class RandomOrder {

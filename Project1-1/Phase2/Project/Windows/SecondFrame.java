@@ -165,6 +165,22 @@ public class SecondFrame {
 				}
 			}
 		});
+
+		D5.addMouseListener(new MouseListener(){
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+			public void mouseReleased(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseClicked(MouseEvent e) {
+				GraphFrame.createWindow();
+				SecondWindow.dispose();
+			}
+		});
 		
 		/*Back button*/
 		Dt4.addMouseListener(new MouseListener() { //BACK BUTTON CLICK

@@ -1,11 +1,11 @@
-//package Windows;
+package Windows;
 import java.awt.*;
 import java.awt.geom.*;
 import java.lang.Math;
 import javax.swing.*;
 public class GraphDisplay extends JComponent{
     public void paintComponent(Graphics g){
-        RandomOrder test = new RandomOrder(15,20);
+        RandomOrder test = new RandomOrder(SecondFrame.z,SecondFrame.y);
         boolean[][] test2 = test.createGraph();
         Graphics2D g2 = (Graphics2D) g;
         double degree = 0;
