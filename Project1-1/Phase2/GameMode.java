@@ -18,15 +18,14 @@ public abstract class GameMode {
         return true;
     }
 
-//    public boolean isValid(int chosenVertex, int chosenColor){
-//        for (Integer checkNeighbors: connections.get(chosenVertex)) {
-//            if (userColoring[checkNeighbors] == chosenColor){
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
+    public boolean isValid(int chosenVertex, int chosenColor){
+        for (int i = 0; i < connections.length; i++) {
+            if (connections[i][chosenVertex] && userColoring[i] == chosenColor){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 }
