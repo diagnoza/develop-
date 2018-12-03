@@ -76,7 +76,40 @@ public class GameMode1 extends GameMode {
         arr[0] = uncoloredVertices.get(0);
         arr[1] = max + 1;
         return arr;
+    }
 
+    public int[] getHint2(){
+        int[] result = new int[2];
+        //result[0] is the spare color, result[1]  is the replacing color
+
+        int assumedSpareColor;
+        int replacingColor;
+
+        //Find the available colors
+        int max = 0;
+        for (int i = 0; i < userColoring.length; i++) if (userColoring[i] > max) max = userColoring[i];
+
+        //Loop through all available colors to see which one is not needed
+        for (assumedSpareColor = 1; assumedSpareColor <= max; assumedSpareColor++) {
+            int[] tmp = new int[userColoring.length];
+            System.arraycopy(userColoring, 0, tmp, 0, userColoring.length);
+
+            //Loop through all other colors to see which one can be used to replace
+            for (replacingColor = 1; replacingColor <= max; replacingColor++) {
+                if (replacingColor == assumedSpareColor) continue;
+
+                for (int i = 0; i < userColoring.length; i++) {
+                    if (tmp[i] == assumedSpareColor) tmp[i] = replacingColor;
+                }
+
+                if (CalculateChromatic.isValid(connections, tmp, tmp.length)) {
+                    result[0] = assumedSpareColor;
+                    result[1] = replacingColor;
+                    return result;
+                }
+            }
+        }
+        return null;
     }
 
 }
