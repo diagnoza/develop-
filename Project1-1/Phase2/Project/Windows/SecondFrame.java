@@ -117,7 +117,7 @@ public class SecondFrame {
 				timer.start();
 			}
 			public void mouseClicked(MouseEvent e) {
-				if (z<21 && z>0){ //If-statement so that number of nodes does not exceed 0
+				if (z<21 && z>2){ //If-statement so that number of nodes does not exceed 0
 					z--;
 					f1.setText(number(z));
 				}
@@ -164,7 +164,7 @@ public class SecondFrame {
 				timer.start();
 			}
 			public void mouseClicked(MouseEvent e) {
-				if (y<61 && y>0){ //If-statement so that number of nodes does not exceed 0
+				if (y<61 && y>z){ //If-statement so that number of nodes does not exceed 0
 					y--;
 					f2.setText(number(y));
 				}
