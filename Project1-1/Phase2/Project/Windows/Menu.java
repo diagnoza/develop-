@@ -82,7 +82,8 @@ public class Menu extends MouseAdapter {
 		Ct.setBounds(100,200,300,100); //setBounds(x,y,width,height)
 		Ct.setVisible(pageTwo);
 		Ct.setText("Gamemode 1");
-		Ct.setBackground(Color.red);
+		Ct.setBackground(Color.RED);
+		Ct.setOpaque(true);
 		Ct.setBorder(new LineBorder(Color.BLACK));
 		Ct.setFont(Ct.getFont().deriveFont(36.0f));
 		Ct.addActionListener(new ActionListener() {
@@ -284,7 +285,7 @@ public class Menu extends MouseAdapter {
 		mainWindow.setLayout(new BorderLayout()); //Give the window a borderlayout)
 												   //Dividing the window in 5 region(North,east,south,west,center)
 		mainWindow.setResizable(false); //Window can't be resized
-		mainWindow.setVisible(true);  //visibility of the window
+		
 		/**mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);  //fullscreen */
 		mainWindow.setBounds(240,60,960,720);
 		
@@ -306,7 +307,7 @@ public class Menu extends MouseAdapter {
 	//	mainWindow.add(A1);
 		mainWindow.add(background); //Adding the background
 		
-		
+		mainWindow.setVisible(true);  //visibility of the window
 	}
 	public static void visi(JLabel Title,JButton Bt,JButton Bt2,JButton Ct,
 		JButton Ct2,JButton Ct3,JButton Ct4,JButton Ct5,JButton Ct6,JButton Ct7,
