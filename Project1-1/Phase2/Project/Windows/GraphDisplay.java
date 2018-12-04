@@ -5,8 +5,6 @@ import java.awt.geom.*;
 import java.lang.Math;
 import javax.swing.*;
 public class GraphDisplay extends JComponent{
-    private boolean isFirst;
-    private int color;
     public Ellipse2D[] verticesGraphically = new Ellipse2D[GraphFrame.test.vertices];
     public GraphDisplay(){
         super();
@@ -14,7 +12,7 @@ public class GraphDisplay extends JComponent{
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
-                for(int i=0;i<SecondFrame.z;i++){
+                for(int i=0;i<GraphFrame.test.vertices;i++){
                     if(verticesGraphically[i].contains(e.getX(),e.getY())){
                         GraphFrame.colorArray[i]=GraphFrame.colorIndex;
                         GraphFrame.componentGraph = new GraphDisplay();
@@ -32,19 +30,21 @@ public class GraphDisplay extends JComponent{
         int vertices = GraphFrame.test.vertices;
         for(int i=0;i<vertices;i++){
             verticesGraphically[i]= new Ellipse2D.Double(275+200*Math.sin(degree),300+200*Math.cos(degree),50,50);
-            
+        
             degree+=(2*Math.PI/vertices);
         }
+        g2.setStroke(new BasicStroke(2.0F));
         for(int i=0;i<vertices;i++){
             for(int j=0;j<vertices;j++){
                 if(GraphFrame.test2[i][j]){
+                    if(GraphFrame.colorArray[i]==GraphFrame.colorArray[j]&&GraphFrame.colorArray[i]!=0) g2.setColor(Color.RED);
+                    else g2.setColor(Color.BLACK);
                     g2.draw(new Line2D.Double(verticesGraphically[i].getX()+25,verticesGraphically[i].getY()+25,verticesGraphically[j].getX()+25,verticesGraphically[j].getY()+25));
                 }
             }
         }
         for(int i=0;i<vertices;i++){
             g2.setColor(GraphFrame.colors[GraphFrame.colorArray[i]].getBackground());
-            g2.draw(verticesGraphically[i]);
             g2.fill(verticesGraphically[i]);
         }
     }
