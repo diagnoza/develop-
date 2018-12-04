@@ -6,35 +6,18 @@ import java.lang.Math;
 import javax.swing.*;
 public class GraphDisplay extends JComponent{
     private boolean isFirst;
-    private int node;
     private int color;
-    public GraphDisplay(boolean isFirst){
+    public Ellipse2D[] verticesGraphically = new Ellipse2D[GraphFrame.test.edges];
+    public GraphDisplay(){
         super();
-        this.isFirst = isFirst;
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e){
-                for(int i=0;i<5;i++){
-                    if(verticesGraphically[i].contains(e.getX(),e.getY())){
-                        GraphFrame.componentGraph = new GraphDisplay(i);
-                        GraphFrame.graphWindow.revalidate();
-                        GraphFrame.graphWindow.repaint();
-                        GraphFrame.graphWindow.revalidate();
-                    }
-                }
-            }
-        });
-    } 
-    public GraphDisplay(int node){
-        super();
-        this.node = node;
         //this.color = color;
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
                 for(int i=0;i<SecondFrame.z;i++){
                     if(verticesGraphically[i].contains(e.getX(),e.getY())){
-                        GraphFrame.componentGraph = new GraphDisplay(i);
+                        GraphFrame.colorArray[i]=GraphFrame.colorIndex;
+                        GraphFrame.componentGraph = new GraphDisplay();
                         GraphFrame.graphWindow.revalidate();
                         GraphFrame.graphWindow.repaint();
                         GraphFrame.graphWindow.revalidate();
@@ -43,8 +26,6 @@ public class GraphDisplay extends JComponent{
             }
         });
     }
-    public Ellipse2D[] verticesGraphically = new Ellipse2D[GraphFrame.test.edges];
-    public static int[] colorArray = new int[20];
     public void paintComponent(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
         double degree = 0;
@@ -62,7 +43,7 @@ public class GraphDisplay extends JComponent{
             }
         }
         for(int i=0;i<vertices;i++){
-            if(!isFirst) g2.setColor(GraphFrame.colors[colorArray[i]].getBackground());
+            g2.setColor(GraphFrame.colors[GraphFrame.colorArray[i]].getBackground());
             g2.draw(verticesGraphically[i]);
             g2.fill(verticesGraphically[i]);
         }
