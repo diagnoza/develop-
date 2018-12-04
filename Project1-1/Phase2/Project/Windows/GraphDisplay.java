@@ -7,7 +7,7 @@ import javax.swing.*;
 public class GraphDisplay extends JComponent{
     private boolean isFirst;
     private int color;
-    public Ellipse2D[] verticesGraphically = new Ellipse2D[GraphFrame.test.edges];
+    public Ellipse2D[] verticesGraphically = new Ellipse2D[GraphFrame.test.vertices];
     public GraphDisplay(){
         super();
         //this.color = color;
