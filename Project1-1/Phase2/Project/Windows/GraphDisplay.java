@@ -5,18 +5,27 @@ import java.awt.geom.*;
 import java.lang.Math;
 import javax.swing.*;
 public class GraphDisplay extends JComponent{
-    public Ellipse2D[] verticesGraphically = new Ellipse2D[GraphFrame.test.vertices];
+
     public GraphDisplay(){
+        //creates new JComponent
         super();
-        //this.color = color;
+        //creates new MouseListener that checks which node of the graph is clicked
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e){
+                //go through all the nodes
                 for(int i=0;i<GraphFrame.test.vertices;i++){
-                    if(verticesGraphically[i].contains(e.getX(),e.getY())){
+                    
+                    //check if the point clicked by mouse is within the area of any of the nodes
+                    if(GraphFrame.verticesGraphically[i].contains(e.getX(),e.getY())){
+                        
+                        //sets the color of node "i" to the currently selected color in GraphFrame
                         GraphFrame.colorArray[i]=GraphFrame.colorIndex;
+
+                        //generates and displays a new graph after making changes to the node
                         GraphFrame.componentGraph = new GraphDisplay();
-                        GraphFrame.graphWindow.revalidate();
+
+                        //removing the old graph and displaying the new one
                         GraphFrame.graphWindow.repaint();
                         GraphFrame.graphWindow.revalidate();
                     }
@@ -28,8 +37,9 @@ public class GraphDisplay extends JComponent{
         Graphics2D g2 = (Graphics2D) g;
         double degree = 0;
         int vertices = GraphFrame.test.vertices;
+        //creates all nodes of the graph
         for(int i=0;i<vertices;i++){
-            verticesGraphically[i]= new Ellipse2D.Double(275+200*Math.sin(degree),300+200*Math.cos(degree),50,50);
+            GraphFrame.verticesGraphically[i]= new Ellipse2D.Double(275+200*Math.sin(degree),300+200*Math.cos(degree),50,50);
         
             degree+=(2*Math.PI/vertices);
         }
@@ -39,13 +49,13 @@ public class GraphDisplay extends JComponent{
                 if(GraphFrame.test2[i][j]){
                     if(GraphFrame.colorArray[i]==GraphFrame.colorArray[j]&&GraphFrame.colorArray[i]!=0) g2.setColor(Color.RED);
                     else g2.setColor(Color.BLACK);
-                    g2.draw(new Line2D.Double(verticesGraphically[i].getX()+25,verticesGraphically[i].getY()+25,verticesGraphically[j].getX()+25,verticesGraphically[j].getY()+25));
+                    g2.draw(new Line2D.Double(GraphFrame.verticesGraphically[i].getX()+25,GraphFrame.verticesGraphically[i].getY()+25,GraphFrame.verticesGraphically[j].getX()+25,GraphFrame.verticesGraphically[j].getY()+25));
                 }
             }
         }
         for(int i=0;i<vertices;i++){
             g2.setColor(GraphFrame.colors[GraphFrame.colorArray[i]].getBackground());
-            g2.fill(verticesGraphically[i]);
+            g2.fill(GraphFrame.verticesGraphically[i]);
         }
     }
 }
