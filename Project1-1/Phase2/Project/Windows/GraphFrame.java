@@ -1,3 +1,4 @@
+
 package Windows;
 import java.awt.*;
 import java.awt.geom.*;
@@ -29,6 +30,10 @@ public class GraphFrame{
     //initializes the array of displayable vertices
     public static Ellipse2D[] verticesGraphically = new Ellipse2D[GraphFrame.test.vertices];
 
+    //Creating a variable for the time-limit
+    private static javax.swing.Timer timer;
+	public static int i = 179; //start time
+	
     public static void createWindow(){
         graphWindow = new JFrame("Display graph");
         graphWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -127,6 +132,23 @@ public class GraphFrame{
         //those two lines add the label for the currently selected color and the currently selected color
         leftMenuPanel.add(currentColorLabel);
         leftMenuPanel.add(currentColor);
+        
+        JLabel timeLabel = new JLabel("180");
+		timeLabel.setFont(new Font("Tahoma",Font.BOLD,16));
+        
+        timer = new Timer(1000,new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				timeLabel.setText(Integer.toString(i));
+				i--;
+				if(i<0){
+					JOptionPane.showMessageDialog(null,"TIME UP!!Try Again","Game End",JOptionPane.ERROR_MESSAGE);
+					System.exit(0);
+				}
+			}
+		});
+		timer.start();
+		
+		leftMenuPanel.add(timeLabel);
 
         //adds the test button to the right panel, because nothing else to display there yet
         rightMenuPanel.add(testButton2);
@@ -146,7 +168,6 @@ public class GraphFrame{
         - setting the background of the label displaying currently selected button to the currently selected color
         - setting the foreground of the label displaying currently selected button to the currently selected color
         - setting the colorIndex to the index of the JButton colors[] array, to use later in GraphDisplay to color nodes
-
         */
         class ButtonListener implements ActionListener{
             public void actionPerformed(ActionEvent e){
