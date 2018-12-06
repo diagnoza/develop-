@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.*; 
+import javax.swing.border.*;
 
 public class GraphFrame{
     //sets the index of the JButton colors[] array to 0
@@ -45,19 +46,16 @@ public class GraphFrame{
         JPanel graphPanel = new JPanel(new BorderLayout());
 
         //adds left part of the panel (color pickers etc)
-        JPanel leftMenuPanel = new JPanel();
-        leftMenuPanel.setPreferredSize(new Dimension(200,600));
+        JPanel leftMenuPanel = new JPanel(new GridLayout(5,1));
+        leftMenuPanel.setPreferredSize(new Dimension(180,600));
 
         //adds central part of the panel (displaying graph)
         JPanel centralMenuPanel = new JPanel();
         centralMenuPanel.setPreferredSize(new Dimension(600,600));
 
         //adds right part of the panel (TBD)
-        JPanel rightMenuPanel = new JPanel();
-        rightMenuPanel.setPreferredSize(new Dimension(200,600));
-
-        //testButton2 was just for testing the right side of the panel
-        JButton testButton2 = new JButton("I'm a test too");
+        JPanel rightMenuPanel = new JPanel(new BorderLayout());
+        rightMenuPanel.setPreferredSize(new Dimension(220,600));
 
         //creates the GridLayout to put color changing buttons in
         GridLayout colorPickerLayout = new GridLayout(4,5);
@@ -68,8 +66,10 @@ public class GraphFrame{
 
         //initializes the colorPickerPanel using the colorPickrLayout
         JPanel colorPickerPanel = new JPanel(colorPickerLayout);
+        colorPickerPanel.setBorder(BorderFactory.createEmptyBorder(0,15,0,15));
         
         JLabel colorPickerLabel = new JLabel("Colors:");
+        colorPickerLabel.setHorizontalAlignment(JLabel.CENTER);
         colorPickerLabel.setFont(colorPickerLabel.getFont().deriveFont(24.0f));
         leftMenuPanel.add(colorPickerLabel);
 
@@ -80,9 +80,10 @@ public class GraphFrame{
         for(int i=0;i<21;i++){
             colors[i] = new JButton();
             colors[i].setOpaque(true);
-            colors[i].setBorderPainted(false);
+            colors[i].setBorderPainted(true);
             colors[i].setPreferredSize(buttonSize);
             colors[i].putClientProperty("index", i);
+            colors[i].setBorder(new LineBorder(Color.BLACK));
         }
         
         /*those lines set the background of the buttons.
@@ -116,42 +117,81 @@ public class GraphFrame{
         //adds colorPickerPanel to the leftMenuPanel, below the "Colors" label
         leftMenuPanel.add(colorPickerPanel);
 
+        
         //sets the text and font size of the label above the currently selected color
-        JLabel currentColorLabel = new JLabel("Current color");
+        JLabel currentColorLabel = new JLabel("Current color:");
+        currentColorLabel.setHorizontalAlignment(JLabel.CENTER);
         currentColorLabel.setFont(colorPickerLabel.getFont().deriveFont(24.0f));
-
+        
+        JPanel currentColorPanel = new JPanel();
+        currentColorPanel.setBorder(BorderFactory.createEmptyBorder(0,15,0,15));
         //adds the label that displays the currently selected color
         JLabel currentColor = new JLabel();
         currentColor.setBackground(Color.BLACK);
         currentColor.setForeground(Color.BLACK);
         currentColor.setOpaque(true);
+        currentColor.setBorder(new LineBorder(Color.BLACK));
+        currentColorPanel.add(currentColor);
 
         //sets the size of the label displaying current color
-        currentColor.setPreferredSize(new Dimension(50, 50));
+        currentColor.setPreferredSize(new Dimension(70, 70));
+        currentColor.setMaximumSize(new Dimension(70,70));
+        currentColor.setMinimumSize(new Dimension(70,70));
 
         //those two lines add the label for the currently selected color and the currently selected color
         leftMenuPanel.add(currentColorLabel);
-        leftMenuPanel.add(currentColor);
+        leftMenuPanel.add(currentColorPanel);
         
-        JLabel timeLabel = new JLabel("180");
-		timeLabel.setFont(new Font("Tahoma",Font.BOLD,16));
+        JLabel timeLabel = new JLabel("Time left: 180");
+        timeLabel.setHorizontalAlignment(JLabel.CENTER);
+		timeLabel.setFont(new Font("Tahoma",Font.BOLD,23));
         
-        timer = new Timer(1000,new ActionListener(){
+        if(SecondFrame.GM==1) {timer = new Timer(1000,new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				timeLabel.setText(Integer.toString(i));
+				timeLabel.setText("Time left: " + Integer.toString(i));
 				i--;
 				if(i<0){
-					JOptionPane.showMessageDialog(null,"TIME UP!!Try Again","Game End",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"TIME'S UP!!Try Again","Game End",JOptionPane.ERROR_MESSAGE);
 					System.exit(0);
 				}
 			}
 		});
 		timer.start();
-		
-		leftMenuPanel.add(timeLabel);
+        
+        leftMenuPanel.add(timeLabel);
+    }
 
-        //adds the test button to the right panel, because nothing else to display there yet
-        rightMenuPanel.add(testButton2);
+        /*JPanel resignPanel = new JPanel();
+        resignPanel.setLayout(new BoxLayout(resignPanel,BoxLayout.Y_AXIS));*/
+        JButton resignButton = new JButton("Resign");
+        resignButton.setPreferredSize(new Dimension(180,80));
+        /*resignButton.setMinimumSize(new Dimension(180,80));
+        resignButton.setMaximumSize(new Dimension(180,80));*/
+        resignButton.setBackground(new Color(52,98,216));
+        resignButton.setForeground(Color.WHITE);
+        resignButton.setOpaque(true);
+        resignButton.setBorderPainted(false);
+        resignButton.setFont(resignButton.getFont().deriveFont(28.0f));
+        resignButton.addMouseListener(new MouseListener(){
+            @Override
+            public void mouseEntered(MouseEvent e) {
+				resignButton.setBackground(new Color(52,114,216));
+			}
+			public void mouseExited(MouseEvent e) {
+				resignButton.setBackground(new Color(52,98,216));
+			}
+			public void mouseReleased(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseClicked(MouseEvent e) {
+				SecondFrame.createWindow(SecondFrame.GM);
+				graphWindow.dispose();
+			}
+        });
+        /*resignPanel.add(resignButton);
+        rightMenuPanel.add(resignPanel,BorderLayout.SOUTH);*/
+        rightMenuPanel.add(resignButton,BorderLayout.SOUTH);
 
         graphPanel.add(leftMenuPanel,BorderLayout.LINE_START);
                 
