@@ -56,6 +56,10 @@ public class GraphDisplay extends JComponent{
         for(int i=0;i<vertices;i++){
             g2.setColor(GraphFrame.colors[GraphFrame.colorArray[i]].getBackground());
             g2.fill(GraphFrame.verticesGraphically[i]);
+            g2.setStroke(new BasicStroke(2.5F));
+            g2.setColor(Color.BLACK);
+            g2.draw(GraphFrame.verticesGraphically[i]);
+            g2.setStroke(new BasicStroke(2.0F));
         }
     }
 }
