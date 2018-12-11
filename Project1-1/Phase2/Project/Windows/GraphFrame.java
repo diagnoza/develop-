@@ -35,7 +35,7 @@ public class GraphFrame{
 
     public static int colorsCounter;
 
-    public static JLabel showChromatic = new JLabel("Chromatic number = " + chromaticNumber);
+    public static JLabel showChromatic;
 
     public static JButton Hint2 = new JButton("Hint2");
     
@@ -235,12 +235,8 @@ public class GraphFrame{
         rightMenuPanel.add(showChromatic);
         rightMenuPanel.add(Done);
 
-        /*JPanel resignPanel = new JPanel();
-        resignPanel.setLayout(new BoxLayout(resignPanel,BoxLayout.Y_AXIS));*/
         JButton resignButton = new JButton("Resign");
         resignButton.setPreferredSize(new Dimension(180,80));
-        /*resignButton.setMinimumSize(new Dimension(180,80));
-        resignButton.setMaximumSize(new Dimension(180,80));*/
         resignButton.setBackground(new Color(52,98,216));
         resignButton.setForeground(Color.WHITE);
         resignButton.setOpaque(true);
@@ -263,8 +259,6 @@ public class GraphFrame{
 				graphWindow.dispose();
 			}
         });
-        /*resignPanel.add(resignButton);
-        rightMenuPanel.add(resignPanel,BorderLayout.SOUTH);*/
         rightMenuPanel.add(resignButton,BorderLayout.SOUTH);
 
         graphPanel.add(leftMenuPanel,BorderLayout.LINE_START);
@@ -304,6 +298,7 @@ public class GraphFrame{
         verticesGraphically = new Ellipse2D[test.getVertices()];
         e = Main.transform(SecondFrame.y, SecondFrame.z, test2);
         chromaticNumber = CalculateChromatic.getChromatic(SecondFrame.y, SecondFrame.z, e);
+        showChromatic = new JLabel("Chromatic number = " + chromaticNumber);
         colorsCounter = 0;
         colorIndex=0;
 
