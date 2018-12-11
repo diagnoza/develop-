@@ -1,6 +1,5 @@
 /**COMPILE WITH "javac -classpath . *.java" **/
 
-package Windows;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*; 
@@ -17,11 +16,11 @@ public class Menu extends MouseAdapter {
 		
 		/*FIRST PAGE*/
 		JLabel Title = new JLabel(); //TITLE
-		Title.setText("Game Title");
-		Title.setFont(Title.getFont().deriveFont(96.0f));
-		Title.setForeground(Color.yellow);
+		Title.setText("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nyan cat's amazing <br>chromatic number adventure</html>");
+		Title.setFont(new Font("Impact", Font.BOLD, 60));
+		Title.setForeground(new Color(255,206,40));
 		Title.setVisible(pageOne);
-		Title.setBounds(240,25,2000,100);
+		Title.setBounds(81,-10,2000,200);
 		
 		JButton Bt = new JButton(); //PLAY-BUTTON
 		Bt.setBounds(380,200,200,100); //setBounds(x,y,width,height)
@@ -40,14 +39,8 @@ public class Menu extends MouseAdapter {
 		Bt2.setOpaque(true);
 		Bt2.setBorderPainted(false);
 		Bt2.setFont(Bt2.getFont().deriveFont(36.0f));
-		Bt2.addActionListener(new ActionListener() {
-				@Override //Overrides the super-class method
-				public void actionPerformed(ActionEvent e) {
-					System.exit(0);
-				}
-		});
 		
-		JLabel background = new JLabel(new ImageIcon("Windows/Backgrounds/NC2.jpg"));
+		JLabel background = new JLabel(new ImageIcon("Backgrounds/NC2.jpg"));
 		background.setVisible(true);
 		mainWindow.setSize(959,719);
 		mainWindow.setSize(960,720);
@@ -66,21 +59,21 @@ public class Menu extends MouseAdapter {
 		Info1.setFont(Info1.getFont().deriveFont(18.0f));
 		Info1.setForeground(Color.white);
 		Info1.setVisible(pageTwo);
-		Info1.setBounds(550,180,360,100);
+		Info1.setBounds(550,138,360,200);
 			
 		JLabel Info2 = new JLabel(); //EXPLANATION2
 		Info2.setText(" ");
 		Info2.setFont(Info2.getFont().deriveFont(18.0f));
 		Info2.setForeground(Color.white);
 		Info2.setVisible(pageTwo);
-		Info2.setBounds(550,180,360,100);
+		Info2.setBounds(550,186,360,100);
 		
 		JLabel Info3 = new JLabel(); //EXPLANATION3
 		Info3.setText(" ");
 		Info3.setFont(Info3.getFont().deriveFont(18.0f));
 		Info3.setForeground(Color.white);
 		Info3.setVisible(pageTwo);
-		Info3.setBounds(550,166,360,150);
+		Info3.setBounds(550,186,360,150);
 		
 		JButton Ct = new JButton(); //GAMEMODE1
 		Ct.setBounds(100,200,300,100); //setBounds(x,y,width,height)
@@ -130,7 +123,6 @@ public class Menu extends MouseAdapter {
 		JButton Ct4 = new JButton(); //BACK-BUTTON
 		Ct4.setBounds(814,614,140,70); //setBounds(x,y,width,height)
 		Ct4.setVisible(pageTwo);
-		Ct4.setOpaque(true);
 		Ct4.setText("Back");
 		Ct4.setFont(Ct4.getFont().deriveFont(36.0f));
 		
@@ -165,8 +157,10 @@ public class Menu extends MouseAdapter {
 		Bt.addMouseListener(new MouseListener() { //PLAY BUTTON
 				@Override //Overrides the super-class method
 				public void mouseEntered(MouseEvent e) {
+					Bt.setBackground(new Color(60,180,75));
 				}
 				public void mouseExited(MouseEvent e) {
+					Bt.setBackground(Color.green);
 				}
 				public void mouseReleased(MouseEvent e) {
 				}
@@ -176,6 +170,22 @@ public class Menu extends MouseAdapter {
 					pageOne = false;
 					pageTwo = true;
 					visi(Title,Bt,Bt2,Ct,Ct2,Ct3,Ct4,Ct5,Ct6,Ct7,Title2,Info1,Info2,Info3);
+				}
+		});
+		Bt2.addMouseListener(new MouseListener() { //QUIT BUTTON
+				@Override //Overrides the super-class method
+				public void mouseEntered(MouseEvent e) {
+					Bt2.setBackground(new Color(65,105,225));
+				}
+				public void mouseExited(MouseEvent e) {
+					Bt2.setBackground(Color.blue);
+				}
+				public void mouseReleased(MouseEvent e) {
+				}
+				public void mousePressed(MouseEvent e) {
+				}
+				public void mouseClicked(MouseEvent e) {
+					System.exit(0);
 				}
 		});
 		Ct4.addActionListener(new ActionListener() { //BACK-BUTTON
@@ -191,7 +201,7 @@ public class Menu extends MouseAdapter {
 		Ct5.addMouseListener(new MouseListener() { //INFO-BUTTON1
 				@Override //Overrides the super-class method
 				public void mouseEntered(MouseEvent e) {
-					Info1.setText("<html>TO THE BITTER END: <br>Find the Chromatic Number of the graph.</html>");
+					Info1.setText("<html>TO THE BITTER END: <br>Find the chromatic number of the graph. <br>The game will only end when <br>the right chromatic number is found.</html>");
 				}
 				public void mouseExited(MouseEvent e) {
 					Info1.setText(" ");
@@ -207,7 +217,7 @@ public class Menu extends MouseAdapter {
 		Ct6.addMouseListener(new MouseListener() { //INFO-BUTTON2
 			@Override //Overrides the super-class method
 			public void mouseEntered(MouseEvent e) {
-				Info2.setText("<html>BEST UPPER BOUND IN A FIXED TIME FRAME: <br>Please color the graph in the given time.</html>");
+				Info2.setText("<html>BEST UPPER BOUND IN A FIXED TIME FRAME: <br>See how less colors you can use <br>to draw a graph within the given time.</html>");
 			}
 			public void mouseExited(MouseEvent e) {
 				Info2.setText(" ");
@@ -223,7 +233,7 @@ public class Menu extends MouseAdapter {
 		Ct7.addMouseListener(new MouseListener() { //INFO-BUTTON3
 			@Override //Overrides the super-class method
 			public void mouseEntered(MouseEvent e) {
-				Info3.setText("<html>RANDOM ORDER: <br>Please color a random graph.<br>Once the color of the vertices is chosen, you can't change the color it again.</html>");
+				Info3.setText("<html>RANDOM ORDER: <br>You are given a random order of nodes to color. <br>Once you color a node, you cannot change it again. <br>Try to reach the least number of colors. </html>");
 			}
 			public void mouseExited(MouseEvent e) {
 				Info3.setText(" ");
@@ -317,8 +327,8 @@ public class Menu extends MouseAdapter {
 		
 	}
 	public static void visi(JLabel Title,JButton Bt,JButton Bt2,JButton Ct,
-		JButton Ct2,JButton Ct3,JButton Ct4,JButton Ct5,JButton Ct6,JButton Ct7,
-		JLabel Title2,JLabel Info1,JLabel Info2,JLabel Info3){
+							JButton Ct2,JButton Ct3,JButton Ct4,JButton Ct5,JButton Ct6,JButton Ct7,
+							JLabel Title2,JLabel Info1,JLabel Info2,JLabel Info3){
 		Title.setVisible(pageOne);
 		Bt.setVisible(pageOne);
 		Bt2.setVisible(pageOne);

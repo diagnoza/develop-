@@ -1,4 +1,3 @@
-package Windows;
 import java.util.Random;
 
 public class RandomOrder {
@@ -14,6 +13,10 @@ public class RandomOrder {
     public boolean isCorrect() {
         if (vertices > edges) return false;
         else return true;
+    }
+    
+    public int getVertices(){
+        return vertices;
     }
 
     public boolean[][] createGraph() {
