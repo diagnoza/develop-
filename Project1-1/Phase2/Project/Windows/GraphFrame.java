@@ -1,5 +1,3 @@
-
-package Windows;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
@@ -20,22 +18,36 @@ public class GraphFrame{
     public static GraphDisplay componentGraph;
 
     //creates a new random graph
-    public static final RandomOrder test = new RandomOrder(SecondFrame.z,SecondFrame.y);
+    public static RandomOrder test;
 
     //creates a new connection array for the created graph
-    public static boolean[][] test2 = test.createGraph();
+    public static boolean[][] test2;
 
     //defines a new JFrame to be accessible by GraphDisplay 
     public static JFrame graphWindow;
 
     //initializes the array of displayable vertices
-    public static Ellipse2D[] verticesGraphically = new Ellipse2D[GraphFrame.test.vertices];
+    public static Ellipse2D[] verticesGraphically;
+    
+    public static ColEdge[] e;
+
+    public static int chromaticNumber;
+
+    public static int colorsCounter;
+
+    public static JLabel showChromatic = new JLabel("Chromatic number = " + chromaticNumber);
+
+    public static JButton Hint2 = new JButton("Hint2");
+    
+    public static JLabel timeLabel;
 
     //Creating a variable for the time-limit
     private static javax.swing.Timer timer;
-	public static int i = 179; //start time
+	public static int i = 0; //start time
 	
     public static void createWindow(){
+    	resetWindow();
+    	showChromatic.setVisible(false);
         graphWindow = new JFrame("Display graph");
         graphWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         graphWindow.setSize(1000,600);
@@ -54,8 +66,67 @@ public class GraphFrame{
         centralMenuPanel.setPreferredSize(new Dimension(600,600));
 
         //adds right part of the panel (TBD)
-        JPanel rightMenuPanel = new JPanel(new BorderLayout());
+        JPanel rightMenuPanel = new JPanel(new FlowLayout());
         rightMenuPanel.setPreferredSize(new Dimension(220,600));
+        
+        //testButton2 was just for testing the right side of the panel
+        JButton Hint1 = new JButton("Hint1");
+        Hint1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showChromatic.setVisible(true);
+            }
+        });
+
+        Hint2 = new JButton("Hint2");
+        Hint2.setEnabled(false);
+        Hint2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GraphFrame.graphWindow.repaint();
+                GraphFrame.graphWindow.revalidate();
+            }
+        });
+        JButton Hint3 = new JButton("Hint3");
+        JButton Done = new JButton("Done");
+        Done.setPreferredSize(new Dimension(180,80));
+        Done.setBackground(new Color(60,180,75));
+        Done.setForeground(Color.WHITE);
+        Done.setOpaque(true);
+        Done.setBorderPainted(false);
+        Done.setFont(Done.getFont().deriveFont(28.0f));
+        Done.addMouseListener(new MouseListener(){
+            @Override
+            public void mouseEntered(MouseEvent e) {
+				Done.setBackground(new Color(79,187,93));
+			}
+			public void mouseExited(MouseEvent e) {
+				Done.setBackground(new Color(60,180,75));
+			}
+			public void mouseReleased(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseClicked(MouseEvent e) {
+				System.out.println(colorsCounter);
+				System.out.println(chromaticNumber);
+				System.out.println(GraphDisplay.isRed);
+				if (colorsCounter == chromaticNumber && !GraphDisplay.isRed){
+					timer.stop();
+                   		 JOptionPane.showMessageDialog(null,
+                    	        "Done indeed!\n" +
+                                    "It took you " + timeLabel.getText() + " seconds.",
+                                    "Congratulations!", JOptionPane.INFORMATION_MESSAGE);
+						graphWindow.dispose();
+						graphWindow = null;
+						Menu.createWindow();
+				}
+				else JOptionPane.showMessageDialog(null,
+                        "whoa dud, \n" +
+                                "you not done yet, keep playin this awesome game",
+                        "Error!", JOptionPane.WARNING_MESSAGE);
+			}
+        });
 
         //creates the GridLayout to put color changing buttons in
         GridLayout colorPickerLayout = new GridLayout(4,5);
@@ -64,7 +135,7 @@ public class GraphFrame{
         colorPickerLayout.setHgap(5);
         colorPickerLayout.setVgap(5);
 
-        //initializes the colorPickerPanel using the colorPickrLayout
+        //initializes the colorPickerPanel using the colorPickerLayout
         JPanel colorPickerPanel = new JPanel(colorPickerLayout);
         colorPickerPanel.setBorder(BorderFactory.createEmptyBorder(0,15,0,15));
         
@@ -117,7 +188,6 @@ public class GraphFrame{
         //adds colorPickerPanel to the leftMenuPanel, below the "Colors" label
         leftMenuPanel.add(colorPickerPanel);
 
-        
         //sets the text and font size of the label above the currently selected color
         JLabel currentColorLabel = new JLabel("Current color:");
         currentColorLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -142,14 +212,14 @@ public class GraphFrame{
         leftMenuPanel.add(currentColorLabel);
         leftMenuPanel.add(currentColorPanel);
         
-        JLabel timeLabel = new JLabel("Time left: 180");
+        timeLabel = new JLabel("Time used: 0");
         timeLabel.setHorizontalAlignment(JLabel.CENTER);
 		timeLabel.setFont(new Font("Tahoma",Font.BOLD,23));
         
-        if(SecondFrame.GM==1) {timer = new Timer(1000,new ActionListener(){
+        timer = new Timer(1000,new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				timeLabel.setText("Time left: " + Integer.toString(i));
-				i--;
+				timeLabel.setText("Time used: " + Integer.toString(i));
+				i++;
 				if(i<0){
 					JOptionPane.showMessageDialog(null,"TIME'S UP!!Try Again","Game End",JOptionPane.ERROR_MESSAGE);
 					System.exit(0);
@@ -159,7 +229,11 @@ public class GraphFrame{
 		timer.start();
         
         leftMenuPanel.add(timeLabel);
-    }
+        rightMenuPanel.add(Hint1);
+        rightMenuPanel.add(Hint2);
+        rightMenuPanel.add(Hint3);
+        rightMenuPanel.add(showChromatic);
+        rightMenuPanel.add(Done);
 
         /*JPanel resignPanel = new JPanel();
         resignPanel.setLayout(new BoxLayout(resignPanel,BoxLayout.Y_AXIS));*/
@@ -200,6 +274,7 @@ public class GraphFrame{
         graphPanel.add(rightMenuPanel,BorderLayout.LINE_END);
 
         graphWindow.add(graphPanel);
+        graphWindow.setLocation(250,150);
         graphWindow.setResizable(false);
         graphWindow.setVisible(true);
 
@@ -220,5 +295,17 @@ public class GraphFrame{
         //adds ActionListeners to all buttons from the panel allowing color selection
         for(int i=1;i<21;i++)
             colors[i].addActionListener(new ButtonListener());
+    }
+    public static void resetWindow(){
+        componentGraph = null;
+        colorArray = new int[20];
+        test = new RandomOrder(SecondFrame.z, SecondFrame.y);
+        test2 = test.createGraph();
+        verticesGraphically = new Ellipse2D[test.getVertices()];
+        e = Main.transform(SecondFrame.y, SecondFrame.z, test2);
+        chromaticNumber = CalculateChromatic.getChromatic(SecondFrame.y, SecondFrame.z, e);
+        colorsCounter = 0;
+        colorIndex=0;
+
     }
 }

@@ -1,11 +1,14 @@
-package Windows;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.lang.Math;
+import java.util.ArrayList;
 import javax.swing.*;
 public class GraphDisplay extends JComponent{
 
+	public static boolean isRed = false;
+    public static int node1, node2;
+    
     public GraphDisplay(){
         //creates new JComponent
         super();
@@ -14,13 +17,23 @@ public class GraphDisplay extends JComponent{
             @Override
             public void mousePressed(MouseEvent e){
                 //go through all the nodes
-                for(int i=0;i<GraphFrame.test.vertices;i++){
-                    
+                for(int i=0;i<GraphFrame.test.getVertices();i++){
+
                     //check if the point clicked by mouse is within the area of any of the nodes
                     if(GraphFrame.verticesGraphically[i].contains(e.getX(),e.getY())){
-                        
+
                         //sets the color of node "i" to the currently selected color in GraphFrame
                         GraphFrame.colorArray[i]=GraphFrame.colorIndex;
+                        ArrayList<Integer> diffNum = new ArrayList<>();
+
+                        for(int j=0; j<GraphFrame.colorArray.length; j++){
+                            if(!diffNum.contains(GraphFrame.colorArray[j])){
+                                diffNum.add(GraphFrame.colorArray[j]);
+                            }
+                        }
+
+                        GraphFrame.colorsCounter = diffNum.size() - 1;
+
 
                         //generates and displays a new graph after making changes to the node
                         GraphFrame.componentGraph = new GraphDisplay();
@@ -47,7 +60,13 @@ public class GraphDisplay extends JComponent{
         for(int i=0;i<vertices;i++){
             for(int j=0;j<vertices;j++){
                 if(GraphFrame.test2[i][j]){
-                    if(GraphFrame.colorArray[i]==GraphFrame.colorArray[j]&&GraphFrame.colorArray[i]!=0) g2.setColor(Color.RED);
+                    if(GraphFrame.colorArray[i]==GraphFrame.colorArray[j]&&GraphFrame.colorArray[i]!=0){
+                    	node1 = i;
+                    	node2 = j;
+                    	isRed = true;
+                    	GraphFrame.Hint2.setEnabled(true);
+                    	g2.setColor(Color.RED);
+                    }
                     else g2.setColor(Color.BLACK);
                     g2.draw(new Line2D.Double(GraphFrame.verticesGraphically[i].getX()+25,GraphFrame.verticesGraphically[i].getY()+25,GraphFrame.verticesGraphically[j].getX()+25,GraphFrame.verticesGraphically[j].getY()+25));
                 }
@@ -56,10 +75,10 @@ public class GraphDisplay extends JComponent{
         for(int i=0;i<vertices;i++){
             g2.setColor(GraphFrame.colors[GraphFrame.colorArray[i]].getBackground());
             g2.fill(GraphFrame.verticesGraphically[i]);
-            g2.setStroke(new BasicStroke(2.5F));
+            g2.setStroke(new BasicStroke(4.5F));
             g2.setColor(Color.BLACK);
             g2.draw(GraphFrame.verticesGraphically[i]);
-            g2.setStroke(new BasicStroke(2.0F));
+            g2.setStroke(new BasicStroke(4.0F));
         }
     }
 }

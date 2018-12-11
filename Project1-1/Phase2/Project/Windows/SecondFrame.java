@@ -1,6 +1,5 @@
 /**COMPILE WITH "javac -classpath . *.java" **/
 
-package Windows;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*; 
@@ -12,11 +11,12 @@ public class SecondFrame {
 	public static int z = 10; //Number of vertices
 	public static int y = 30; //Number of edges
 	public static int x = 0; //Timer variable
+	public static JFrame SecondWindow;
 	public static void createWindow(int gm){
 		GM = gm;
 		
 		//Creating the window
-		JFrame SecondWindow = new JFrame("Game Title");
+		SecondWindow = new JFrame("Game Title");
 		SecondWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		/*LABELS*/
@@ -59,7 +59,7 @@ public class SecondFrame {
 		f2.setVisible(true);
 		
 		/*Background*/
-		JLabel background = new JLabel(new ImageIcon("Windows/Backgrounds/NC3.jpg"));
+		JLabel background = new JLabel(new ImageIcon("Backgrounds/NC3.jpg"));
 		background.setVisible(true);
 		SecondWindow.setSize(959,719);
 		SecondWindow.setSize(960,720);
@@ -296,8 +296,12 @@ public class SecondFrame {
 			public void mousePressed(MouseEvent e) {
 			}
 			public void mouseClicked(MouseEvent e) {
-				GraphFrame.createWindow();
 				SecondWindow.dispose();
+				if (GM == 1) {
+					GraphFrame.createWindow();
+				}
+				else if (GM == 2) GraphFrame2.createWindow();
+				else if (GM == 3) GraphFrame3.createWindow();
 			}
 		});
 		
