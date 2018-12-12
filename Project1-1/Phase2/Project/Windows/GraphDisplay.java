@@ -8,7 +8,7 @@ public class GraphDisplay extends JComponent{
 
 	public static boolean isRed = false;
     public static int node1, node2;
-    
+
     public GraphDisplay(){
         //creates new JComponent
         super();
@@ -43,6 +43,15 @@ public class GraphDisplay extends JComponent{
                         GraphFrame.graphWindow.revalidate();
                     }
                 }
+								boolean isColored = true;
+								for(int i=0;i<GraphFrame.test2.length;i++){
+									if(GraphFrame.colorArray[i]==0){
+										isColored = false;
+										break;
+									}
+								}
+								if(isColored)
+									GraphFrame.Hint2.setEnabled(false);
             }
         });
     }
@@ -53,7 +62,7 @@ public class GraphDisplay extends JComponent{
         //creates all nodes of the graph
         for(int i=0;i<vertices;i++){
             GraphFrame.verticesGraphically[i]= new Ellipse2D.Double(275+200*Math.sin(degree),300+200*Math.cos(degree),50,50);
-        
+
             degree+=(2*Math.PI/vertices);
         }
         g2.setStroke(new BasicStroke(2.0F));
