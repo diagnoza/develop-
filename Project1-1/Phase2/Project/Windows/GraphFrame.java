@@ -1,13 +1,15 @@
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
-import javax.swing.*; 
+import javax.swing.*;
 import javax.swing.border.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GraphFrame{
     //sets the index of the JButton colors[] array to 0
     public static int colorIndex = 0;
-    
+
     //initializes the colorArray that keeps track of how the vertices are colored
     public static int[] colorArray = new int[20];
 
@@ -23,12 +25,12 @@ public class GraphFrame{
     //creates a new connection array for the created graph
     public static boolean[][] test2;
 
-    //defines a new JFrame to be accessible by GraphDisplay 
+    //defines a new JFrame to be accessible by GraphDisplay
     public static JFrame graphWindow;
 
     //initializes the array of displayable vertices
     public static Ellipse2D[] verticesGraphically;
-    
+
     public static ColEdge[] e;
 
     public static int chromaticNumber;
@@ -38,20 +40,26 @@ public class GraphFrame{
     public static JLabel showChromatic;
 
     public static JButton Hint2 = new JButton("Hint2");
-    
+
     public static JLabel timeLabel;
+
+    private static int[] colorHint;
+
+    private static Timer nodeSuggestion;
+
+    private static int timeUsed = 0;
 
     //Creating a variable for the time-limit
     private static javax.swing.Timer timer;
 	public static int i = 0; //start time
-	
+
     public static void createWindow(){
     	resetWindow();
     	showChromatic.setVisible(false);
         graphWindow = new JFrame("Display graph");
         graphWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         graphWindow.setSize(1000,600);
-        
+
         //initializes new graph
         componentGraph = new GraphDisplay();
         //initializes main panel
@@ -68,7 +76,7 @@ public class GraphFrame{
         //adds right part of the panel (TBD)
         JPanel rightMenuPanel = new JPanel(new FlowLayout());
         rightMenuPanel.setPreferredSize(new Dimension(220,600));
-        
+
         //testButton2 was just for testing the right side of the panel
         JButton Hint1 = new JButton("Hint1");
         Hint1.addActionListener(new ActionListener() {
@@ -78,14 +86,71 @@ public class GraphFrame{
             }
         });
 
+        GridLayout hint2Layout = new GridLayout(3,1);
+        JPanel hint2Confirmation = new JPanel(hint2Layout);
+        hint2Confirmation.setVisible(false);
+        hint2Confirmation.setPreferredSize(new Dimension(200,150));
+        hint2Confirmation.setOpaque(true);
+        hint2Confirmation.setBackground(new Color(252,165,15));
+        JLabel hint2ConfirmationLabel = new JLabel("<html>Do you want to use the <br>suggested coloring?</html>",JLabel.CENTER);
+        hint2ConfirmationLabel.setForeground(Color.WHITE);
+        JButton hint2Yes = new JButton("YES");
+        JButton hint2No = new JButton("NO");
+        hint2Confirmation.add(hint2ConfirmationLabel);
+        hint2Confirmation.add(hint2Yes);
+        hint2Confirmation.add(hint2No);
+
         Hint2 = new JButton("Hint2");
-        Hint2.setEnabled(false);
+        Hint2.setEnabled(true);
         Hint2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GraphFrame.graphWindow.repaint();
-                GraphFrame.graphWindow.revalidate();
+              colorHint = getHint();
+                nodeSuggestion = null;
+                nodeSuggestion = new Timer(666,new ActionListener(){
+                  boolean blackColor = false;
+                  public void actionPerformed(ActionEvent r){
+                    if(blackColor){
+                      colorArray[colorHint[0]]=0;
+                    }
+                    else{
+                    colorArray[colorHint[0]]=colorHint[1];
+                    }
+                    blackColor = !blackColor;
+                    componentGraph = new GraphDisplay();
+                    graphWindow.repaint();
+                    graphWindow.revalidate();
+
+                  }
+                });
+                nodeSuggestion.start();
+                Hint2.setEnabled(false);
+                hint2Confirmation.setVisible(true);
             }
+        });
+        hint2Yes.addActionListener(new ActionListener(){
+          @Override
+          public void actionPerformed(ActionEvent e){
+            hint2Confirmation.setVisible(false);
+            Hint2.setEnabled(true);
+            nodeSuggestion.stop();
+            colorArray[colorHint[0]]=colorHint[1];
+            componentGraph = new GraphDisplay();
+            graphWindow.repaint();
+            graphWindow.revalidate();
+          }
+        });
+        hint2No.addActionListener(new ActionListener(){
+          @Override
+          public void actionPerformed(ActionEvent e){
+            hint2Confirmation.setVisible(false);
+            Hint2.setEnabled(true);
+            nodeSuggestion.stop();
+            colorArray[colorHint[0]]=0;
+            componentGraph = new GraphDisplay();
+            graphWindow.repaint();
+            graphWindow.revalidate();
+          }
         });
         JButton Hint3 = new JButton("Hint3");
         JButton Done = new JButton("Done");
@@ -130,7 +195,7 @@ public class GraphFrame{
 
         //creates the GridLayout to put color changing buttons in
         GridLayout colorPickerLayout = new GridLayout(4,5);
-        
+
         //set the distances between buttons
         colorPickerLayout.setHgap(5);
         colorPickerLayout.setVgap(5);
@@ -138,7 +203,7 @@ public class GraphFrame{
         //initializes the colorPickerPanel using the colorPickerLayout
         JPanel colorPickerPanel = new JPanel(colorPickerLayout);
         colorPickerPanel.setBorder(BorderFactory.createEmptyBorder(0,15,0,15));
-        
+
         JLabel colorPickerLabel = new JLabel("Colors:");
         colorPickerLabel.setHorizontalAlignment(JLabel.CENTER);
         colorPickerLabel.setFont(colorPickerLabel.getFont().deriveFont(24.0f));
@@ -156,7 +221,7 @@ public class GraphFrame{
             colors[i].putClientProperty("index", i);
             colors[i].setBorder(new LineBorder(Color.BLACK));
         }
-        
+
         /*those lines set the background of the buttons.
         They are also used later when referring from GraphDisplay using colorArray and colorIndex*/
         colors[0].setBackground(Color.BLACK);
@@ -179,7 +244,7 @@ public class GraphFrame{
         colors[17].setBackground(new Color(128,128,0));
         colors[18].setBackground(new Color(255,215,180));
         colors[19].setBackground(new Color(0,0,128));
-        colors[20].setBackground(new Color(128,128,0));
+        colors[20].setBackground(new Color(128,128,128));
 
         //loop that adds all colors from the colorpicker to the colorPickerPanel
         for(int i=1;i<21;i++)
@@ -192,7 +257,7 @@ public class GraphFrame{
         JLabel currentColorLabel = new JLabel("Current color:");
         currentColorLabel.setHorizontalAlignment(JLabel.CENTER);
         currentColorLabel.setFont(colorPickerLabel.getFont().deriveFont(24.0f));
-        
+
         JPanel currentColorPanel = new JPanel();
         currentColorPanel.setBorder(BorderFactory.createEmptyBorder(0,15,0,15));
         //adds the label that displays the currently selected color
@@ -211,23 +276,19 @@ public class GraphFrame{
         //those two lines add the label for the currently selected color and the currently selected color
         leftMenuPanel.add(currentColorLabel);
         leftMenuPanel.add(currentColorPanel);
-        
+
         timeLabel = new JLabel("Time used: 0");
         timeLabel.setHorizontalAlignment(JLabel.CENTER);
 		timeLabel.setFont(new Font("Tahoma",Font.BOLD,23));
-        
+
         timer = new Timer(1000,new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				timeLabel.setText("Time used: " + Integer.toString(i));
-				i++;
-				if(i<0){
-					JOptionPane.showMessageDialog(null,"TIME'S UP!!Try Again","Game End",JOptionPane.ERROR_MESSAGE);
-					System.exit(0);
-				}
+				timeLabel.setText("Time used: " + Integer.toString(timeUsed));
+				timeUsed++;
 			}
 		});
 		timer.start();
-        
+
         leftMenuPanel.add(timeLabel);
         rightMenuPanel.add(Hint1);
         rightMenuPanel.add(Hint2);
@@ -257,12 +318,16 @@ public class GraphFrame{
 			public void mouseClicked(MouseEvent e) {
 				SecondFrame.createWindow(SecondFrame.GM);
 				graphWindow.dispose();
+        timer.stop();
+        timeUsed = 0;
 			}
         });
         rightMenuPanel.add(resignButton,BorderLayout.SOUTH);
 
+        rightMenuPanel.add(hint2Confirmation);
+
         graphPanel.add(leftMenuPanel,BorderLayout.LINE_START);
-                
+
         graphPanel.add(componentGraph,BorderLayout.CENTER);
 
         graphPanel.add(rightMenuPanel,BorderLayout.LINE_END);
@@ -302,5 +367,43 @@ public class GraphFrame{
         colorsCounter = 0;
         colorIndex=0;
 
+    }
+    public static int[] getHint() {
+        //test2[][] - boolean array of test2
+        //colorArray[] - array of vertices colors
+        int[] arr = new int[2];
+        //arr[0] is the vertex, a[1] is the color
+        List<Integer> uncoloredVertices = new ArrayList<>();
+        List<Integer> usedColors = new ArrayList<>();
+        for(int i = 0; i< colorArray.length;i++)
+          if(!usedColors.contains(colorArray[i])) usedColors.add(colorArray[i]);
+
+        for (int i = 0; i < test2.length; i++)
+            if (colorArray[i] == 0) uncoloredVertices.add(i);
+        for (Integer vertex: uncoloredVertices) {
+            //Loop through all available colors
+            for (Integer col: usedColors) {
+                boolean condition = true;
+                for (int j = 0; j < test2.length; j++)
+                    if (test2[vertex][j] && colorArray[j] == col) {
+                        condition = false;
+                        break;
+                    }
+
+                if (condition) {
+                    arr[0] = vertex;
+                    arr[1] = col;
+                    return arr;
+                }
+            }
+        }
+
+        arr[0] = uncoloredVertices.get(0);
+        for(int i=1;i<21;i++)
+          if(!usedColors.contains(i)){
+            arr[1] = i;
+            break;
+          }
+        return arr;
     }
 }
