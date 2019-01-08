@@ -171,10 +171,10 @@ public class ReadGraph_edited {
 	        	int[] nodes = new int[n];
 	        	for (int i = 0; i < n; i++) nodes[i] = i;
 	
-//	        	int getUpperboundGreedy = Brooks(calculateDegreeArray(n, m, e),n);
+//	        	int upperbound = Brooks(calculateDegreeArray(n, m, e),n);
 	        	int lowerbound = calculateLowerBound(upperbound ,adjList2);
 	
-	        	    System.out.println("The getUpperboundGreedy is: " + upperbound);
+	        	    System.out.println("The upperbound is: " + upperbound);
 	        	    if(lowerbound == 0) System.out.println("No clique found. Cannot calculate the lowerbound for a given graph.");
 	        	    else System.out.println("The lowerbound is: " + lowerbound);
 	
@@ -525,8 +525,8 @@ public class ReadGraph_edited {
     }
 
     /**
-     * This method use greedy algorithm to find the getUpperboundGreedy
-     * @return getUpperboundGreedy
+     * This method use greedy algorithm to find the upperbound
+     * @return upperbound
      */
     public static int getUpperboundGreedy(ArrayList<LinkedList<Integer>> adjList, int numberOfVertices, ColEdge e[]){
         //Create an array that stores the colors of each vertex. The index in the array is the vertex,
