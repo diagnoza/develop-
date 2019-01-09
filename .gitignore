@@ -4,3 +4,9 @@
 .idea
 *.iml
 out
+*.aux
+*.log
+*.gz
+*.bbl
+*.blg
+*.toc
