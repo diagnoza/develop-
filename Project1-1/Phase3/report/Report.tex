@@ -1,38 +1,137 @@
 \documentclass[a4paper]{report}
 \usepackage{apacite}
-\usepackage{authblk}
 \usepackage{graphicx}
 \graphicspath{{Images/}}
 
-\title{Find the smallest range for the chromatic number of a graph}
-\author{Tu Anh Dinh, Michal Jarski, Louis Mottet,\\Vaishnavi Velaga, Rudy Wessels, Oskar Wielgos}
-\affil{Department of Data Science and Knowledge Engineering, Maastricht University, Netherlands}
-
 
 \begin{document}
-	\date{}
-	\maketitle
-	
-	\begin{abstract}
+	%Cover
+	\begin{titlepage} 
+		\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 		
-	\end{abstract}
+		\center 
+		
+		\textsc{\large Project block 1.3}\\[0.5cm] 
+		
+		\HRule\\[0.4cm]
+		
+		{\huge\bfseries Find the smallest range for the chromatic number of a graph}\\[0.4cm] 
+		
+		\HRule\\[1.5cm]
+		
+		\textsc{\large Group 10}\\[0.5cm]
+
+		\begin{minipage}{0.6\textwidth}
+			\begin{flushleft}
+				Tu Anh Dinh\\Michal Jarski\\Louis Mottet
+			\end{flushleft}
+		\end{minipage}
+		~
+		\begin{minipage}{0.3\textwidth}
+			\begin{flushleft}
+				Vaishnavi Velaga\\Rudy Wessels\\Oskar Wielgos
+			\end{flushleft}
+		\end{minipage}
+		
+		\vspace{2cm}
+		
+		Summited: Wednesday January 23, 2019
+		
+		
+	\end{titlepage}
+	
+	
+	
+	
+	
+	%Title page
+	\begin{titlepage} 
+		\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+		
+		\center
+		
+		\textsc{\LARGE Maastricht University}\\[1.5cm]
+		
+		\textsc{\Large Department of Data Science and Knowledge Engineering}\\[0.5cm] 
+		
+		\textsc{\large Project block 1.3}\\[0.5cm] 
+		
+		\HRule\\[0.4cm]
+		
+		{\huge\bfseries Find the smallest range for the chromatic number of a graph}\\[0.4cm] 
+		
+		\HRule\\[1.5cm]
+		
+		\textsc{\large Group 10}\\[0.5cm]
+		
+		\begin{minipage}{0.6\textwidth}
+			\begin{flushleft}
+				Tu Anh Dinh\\Michal Jarski\\Louis Mottet
+			\end{flushleft}
+		\end{minipage}
+		~
+		\begin{minipage}{0.3\textwidth}
+			\begin{flushleft}
+				Vaishnavi Velaga\\Rudy Wessels\\Oskar Wielgos
+			\end{flushleft}
+		\end{minipage}
+	
+		 \vspace{1cm}
+		Summited: Wednesday January 23, 2019
+		\vspace{3cm}
+		\begin{flushleft}
+			Project coordinator: Prof. Jan Paredis
+		\end{flushleft}
+		
+	\end{titlepage}
+	
+
+	\chapter*{Preface}
+	\pagenumbering{gobble}
+
+	\addcontentsline{toc}{chapter}{Preface}
+	
+
+	\chapter*{Summary}
+	\addcontentsline{toc}{chapter}{Summary}
 	
 	\tableofcontents
 	
+	\chapter*{Abbreviations and symbols}
+	\addcontentsline{toc}{chapter}{List of abbreviations and symbols}
+	
+	
 	\chapter{Introduction}
+	\pagenumbering{arabic}
+
 	
 	\chapter{Methods}
+		\section{Decomposing the graph}
+		Seperate the disconnected graphs in the original graph\\
+		Use breadth-first search
+		
 		\section{Greedy algorithm}
+		Sort the vertices based on their constraints\\
+		Try to reuse available colors.
 		
 		\section{Special cases}
-		\subsection{Bipartite}
-		\subsection{Odd cycle}
-		\subsection{Complete graph}
+			\subsection{Bipartite}
+			Use breadth-first search
+			\subsection{Odd cycle}
+			\subsection{Complete graph}
+			Check if every vertex is connected to all other vertices
 		
 		\section{Genetic algorithm}
+			\subsection{Fitness function}
+			Based on the number of invalid coloring of each graph
+			\subsection{Selection method}
+			\subsection{Crossover}
+			\subsection{Mutation}
 		
 		\section{Brute force search}
 		
+		
+	\chapter{Experiments}
 		
 	\chapter{Results}
 	
@@ -45,4 +144,6 @@
 	\bibliography{references}
 	
 	\appendix
+	\chapter*{Appendix}
+	\addcontentsline{toc}{chapter}{Appendix}
 \end{document}
