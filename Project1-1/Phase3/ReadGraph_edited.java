@@ -113,14 +113,22 @@ public class ReadGraph_edited {
             }
         }
 
+
+
+
+
+
         //ArrayList of linked lists, for each and every node contains its adjacent nodes
         ArrayList<LinkedList<Integer>> adjList = new ArrayList<LinkedList<Integer>>();
+
         for (int i = 0; i < n + 1; i++) adjList.add(new LinkedList<Integer>());
 
         for (int i = 0; i < m; i++){
             adjList.get(e[i].u).add(e[i].v);
             adjList.get(e[i].v).add(e[i].u);
         }
+
+//        Decomposer.decompose(adjList, n, e);
 
         int upperbound = getUpperboundGreedy(adjList, n, e);
         System.out.println("NEW BEST UPPER BOUND = " + upperbound);

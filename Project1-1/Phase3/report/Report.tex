@@ -5,7 +5,7 @@
 
 
 \begin{document}
-	%Cover
+	%------------------------Cover-------------------------------------------------------------
 	\begin{titlepage} 
 		\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 		
@@ -44,7 +44,7 @@
 	
 	
 	
-	%Title page
+	%-------------------Title page-----------------------------------------------------------
 	\begin{titlepage} 
 		\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
 		
@@ -85,7 +85,7 @@
 		
 	\end{titlepage}
 	
-
+	%-----------------------------------------------------------------------------
 	\chapter*{Preface}
 	\pagenumbering{gobble}
 
@@ -100,30 +100,38 @@
 	\chapter*{Abbreviations and symbols}
 	\addcontentsline{toc}{chapter}{List of abbreviations and symbols}
 	
-	
+	%-----------------------------------------------------------------------------
 	\chapter{Introduction}
 	\pagenumbering{arabic}
 
 	
 	\chapter{Methods}
 		\section{Decomposing the graph}
-		Seperate the disconnected graphs in the original graph\\
-		Use breadth-first search
+		Divide the graph into disconnected parts\\
+		Use breadth-first search\\
+		Usage: Allow other methods to work on smaller graphs
 		
 		\section{Greedy algorithm}
 		Sort the vertices based on their constraints\\
-		Try to reuse available colors.
+		Try to reuse available colors\\
+		Usage: Find the upper-bound
+		
+		\section{Lower-bound}
 		
 		\section{Special cases}
 			\subsection{Bipartite}
-			Use breadth-first search
+			Use breadth-first search\\
+			Chromatic number = 2
 			\subsection{Odd cycle}
+			Chromatic number = 3
 			\subsection{Complete graph}
-			Check if every vertex is connected to all other vertices
-		
+			Check if every vertex is connected to all other vertices\\
+			Chromatic number = number of vertices
+			\subsection{Wheel graph}
+			
 		\section{Genetic algorithm}
 			\subsection{Fitness function}
-			Based on the number of invalid coloring of each graph
+			Based on the number of invalid colorings of each graph
 			\subsection{Selection method}
 			\subsection{Crossover}
 			\subsection{Mutation}
