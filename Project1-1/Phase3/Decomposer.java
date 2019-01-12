@@ -59,10 +59,11 @@ public class Decomposer {
             Graph smallGraph = new Graph(smallGraphVertices, smallGraphEdges.toArray(new ColEdge[0]));
             //The Graph constructor will change the format of the graph to the standard format,
             //where the index of vertices are successive (vertex 1, vertex 2 and so on..)
+
             graphs.add(smallGraph);
         }
-        System.out.println("Number of disconnected graphs: " + graphs.size());
-        System.out.println(graphs);
+//        System.out.println("Number of disconnected graphs: " + graphs.size());
+//        System.out.println(graphs);
         return graphs;
     }
 }

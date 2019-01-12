@@ -5,6 +5,7 @@ public class Graph {
     private ArrayList<Integer> standardVertices;
     private ColEdge[] standardEdges;
     private ArrayList<LinkedList<Integer>> adjList;
+    private int chromaticNumber;
 
     //The constructor will change the format of the input graph to the standard format,
     //where the index of vertices are successive (vertex 1, vertex 2 and so on..)
@@ -22,6 +23,9 @@ public class Graph {
             newStandardEdge.v = standardVertices.get(inputVertices.indexOf(inputEdges[i].v));
             standardEdges[i] = newStandardEdge;
         }
+
+        //The value -1 means that no chromatic number has been found for this graph
+        chromaticNumber = -1;
     }
 
     public int getNumberOfVertices() {
@@ -50,6 +54,14 @@ public class Graph {
             adjList.get(standardEdges[i].v).add(standardEdges[i].u);
         }
         return adjList;
+    }
+
+    public int getChromaticNumber() {
+        return chromaticNumber;
+    }
+
+    public void setChromaticNumber(int chromaticNumber) {
+        this.chromaticNumber = chromaticNumber;
     }
 
     //Use this method to test
