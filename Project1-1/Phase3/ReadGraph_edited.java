@@ -9,7 +9,7 @@ class ColEdge {
 public class ReadGraph_edited {
 
 
-    public final static boolean DEBUG = true;
+    public final static boolean DEBUG = false;
 
     public final static String COMMENT = "//";
 
@@ -127,9 +127,11 @@ public class ReadGraph_edited {
         ArrayList<Graph> disconnectedSubGraphs = Decomposer.decompose(adjList, n, e);
 
         boolean hasAllChromatic = true;
-        int maxLowerbound = -1;
 
         for (Graph disconnectedSubGraph : disconnectedSubGraphs) { //Try to calculate the chromatic number for every subgraph
+            int subUpperbound = getUpperboundGreedy(disconnectedSubGraph.getAdjList(), disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getEdges());
+            disconnectedSubGraph.setUpperbound(subUpperbound);
+
             //Check special cases
             if (hasNoVertex(disconnectedSubGraph.getNumberOfVertices())) {
                 disconnectedSubGraph.setChromaticNumber(0);
@@ -147,9 +149,7 @@ public class ReadGraph_edited {
             //At this point, the lowerbound of the subgraph is 3, since we have covered all cases for
             //chromatic number = 0, 1, 2
             int subLowerbound = 3;
-            if (subLowerbound > maxLowerbound){
-                maxLowerbound = subLowerbound;
-            }
+            disconnectedSubGraph.setLowerbound(subLowerbound);
 
             if (n % 2 == 1 && isCycle(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getNumberOfEdges(), disconnectedSubGraph.getEdges())) {
                 disconnectedSubGraph.setChromaticNumber(3);
@@ -160,7 +160,7 @@ public class ReadGraph_edited {
                 disconnectedSubGraph.setChromaticNumber(disconnectedSubGraph.getNumberOfVertices());
                 continue;
             }
-            if (getUpperboundGreedy(disconnectedSubGraph.getAdjList(), disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getEdges()) == 3) {
+            if (subUpperbound == subLowerbound) {
                 //At this point, the lower-bound of the graph is 3.
                 //If lower-bound = upper-bound --> chromatic number
                 disconnectedSubGraph.setChromaticNumber(3);
@@ -177,7 +177,7 @@ public class ReadGraph_edited {
 
             //Use Brute-force if the number of vertices is smaller than the threshold
             if (disconnectedSubGraph.getNumberOfVertices() < THRESHOLD_FOR_BRUTEFORCE) {
-                disconnectedSubGraph.setChromaticNumber(BruteForce(disconnectedSubGraph.getNumberOfVertices(), 3, disconnectedSubGraph.getAdjList()));
+                disconnectedSubGraph.setChromaticNumber(BruteForce(disconnectedSubGraph.getNumberOfVertices(), subLowerbound, disconnectedSubGraph.getAdjList()));
                 continue;
             }
 
@@ -186,12 +186,32 @@ public class ReadGraph_edited {
             hasAllChromatic = false;
         }
 
-        //Store the biggest sub-chromatic number
+        //Store the biggest sub-chromatic number, the biggest sub-upperbound and the biggest sub-lowerbound
         int maxSubChromatic = -1;
+        int maxSubUpperbound = -1;
+        int maxLowerbound = -1;
         for (Graph disconnectedSubGraph : disconnectedSubGraphs){
             if (disconnectedSubGraph.getChromaticNumber() > maxSubChromatic) {
                 maxSubChromatic = disconnectedSubGraph.getChromaticNumber();
             }
+
+            if (disconnectedSubGraph.getUpperbound() > maxSubUpperbound){
+                maxSubUpperbound = disconnectedSubGraph.getUpperbound();
+            }
+
+            if (disconnectedSubGraph.getLowerbound() > maxLowerbound){
+                maxLowerbound = disconnectedSubGraph.getLowerbound();
+            }
+        }
+
+        if (maxSubUpperbound < upperbound){
+            //Greedy algorithm always gives the upperbound for every graph,
+            // so we can conclude the original graph's upperbound is maxSubUpperbound
+
+            //if the new upperbound is better, the update it
+            upperbound = maxSubUpperbound;
+            System.out.println("NEW BEST UPPER BOUND = " + upperbound);
+
         }
 
         if (hasAllChromatic) {
@@ -211,6 +231,8 @@ public class ReadGraph_edited {
             }
         }
 
+
+        //TODO: Lowerbound method
         //TODO: Do genetic algorithm
 
     }

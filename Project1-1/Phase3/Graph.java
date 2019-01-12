@@ -6,6 +6,8 @@ public class Graph {
     private ColEdge[] standardEdges;
     private ArrayList<LinkedList<Integer>> adjList;
     private int chromaticNumber;
+    private int upperbound;
+    private int lowerbound;
 
     //The constructor will change the format of the input graph to the standard format,
     //where the index of vertices are successive (vertex 1, vertex 2 and so on..)
@@ -24,8 +26,10 @@ public class Graph {
             standardEdges[i] = newStandardEdge;
         }
 
-        //The value -1 means that no chromatic number has been found for this graph
+        //The value -1 means that no corresponding value has been found for this graph
         chromaticNumber = -1;
+        upperbound = -1;
+        lowerbound = -1;
     }
 
     public int getNumberOfVertices() {
@@ -58,6 +62,22 @@ public class Graph {
 
     public int getChromaticNumber() {
         return chromaticNumber;
+    }
+
+    public int getUpperbound() {
+        return upperbound;
+    }
+
+    public void setUpperbound(int upperbound) {
+        this.upperbound = upperbound;
+    }
+
+    public int getLowerbound() {
+        return lowerbound;
+    }
+
+    public void setLowerbound(int lowerbound) {
+        this.lowerbound = lowerbound;
     }
 
     public void setChromaticNumber(int chromaticNumber) {
