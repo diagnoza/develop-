@@ -107,7 +107,8 @@
 	
 	\chapter{Methods}
 		\section{Decomposing the graph}
-		Divide the graph into disconnected parts\\
+		One graph can contain multiple disconnected parts, which can be considered as independent graphs. This section describes the method for decomposing the graph into these subgraph.\\
+		The algorithm used is based on breadth-first search. We use a list to store the vertices whose neighbors are not yet added to the same subgraph. First, add the first vertex to a subgraph and the unchecked list. Then add all neighbors of the vertex to the subgraph and the unchecked list, and remove the first vertex from the unchecked list. We do the same for all element
 		Use breadth-first search\\
 		Usage: Allow other methods to work on smaller graphs
 		

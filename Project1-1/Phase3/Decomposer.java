@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Decomposer {
     /**
@@ -10,10 +11,10 @@ public class Decomposer {
      * @param e
      * @return list of disconnected graphs
      */
-    public static ArrayList<Graph> decompose(ArrayList<LinkedList<Integer>> adjList, int numberOfVertices, ColEdge[] e) {
-        ArrayList<Graph> graphs = new ArrayList<>(); //List of all disconnected graphs from the original graph
+    public static List<Graph> decompose(ArrayList<LinkedList<Integer>> adjList, int numberOfVertices, ColEdge[] e) {
+        List<Graph> graphs = new ArrayList<>(); //List of all disconnected graphs from the original graph
 
-        ArrayList<Integer> originalVertices = new ArrayList<>(); //List of all vertices from the original graph
+        List<Integer> originalVertices = new ArrayList<>(); //List of all vertices from the original graph
         for (int i = 1; i <= numberOfVertices; i++) {
             originalVertices.add(i);
         }
@@ -21,10 +22,10 @@ public class Decomposer {
         while (originalVertices.size() != 0) { //This loop stops when all vertices are classified
 
             //List of all vertices from the small graph
-            ArrayList<Integer> smallGraphVertices = new ArrayList<>();
+            List<Integer> smallGraphVertices = new ArrayList<>();
 
             //List of all vertices whose neighbors are not yet added to the small graph
-            ArrayList<Integer> uncheckedVertices = new ArrayList<>();
+            List<Integer> uncheckedVertices = new ArrayList<>();
 
             //Add the current original vertex to the small graph and the unchecked list,
             //then remove it from the original graph
@@ -50,10 +51,13 @@ public class Decomposer {
             }
 
             //Construct the small graph
-            ArrayList<ColEdge> smallGraphEdges = new ArrayList<>();
+            List<ColEdge> smallGraphEdges = new ArrayList<>();
             for (int i = 0; i < e.length; i++){
                 if (smallGraphVertices.contains(e[i].u) && smallGraphVertices.contains(e[i].v)){
                     smallGraphEdges.add(e[i]);
+                } else if ((smallGraphVertices.contains(e[i].u) && !smallGraphVertices.contains(e[i].v))
+                        || (!smallGraphVertices.contains(e[i].u) && smallGraphVertices.contains(e[i].v))){
+                    throw new RuntimeException("Something is wrong with decomposing the graph");
                 }
             }
             Graph smallGraph = new Graph(smallGraphVertices, smallGraphEdges.toArray(new ColEdge[0]));

@@ -124,7 +124,7 @@ public class ReadGraph_edited {
         int upperbound = getUpperboundGreedy(adjList, n, e);
         System.out.println("NEW BEST UPPER BOUND = " + upperbound);
 
-        ArrayList<Graph> disconnectedSubGraphs = Decomposer.decompose(adjList, n, e);
+        List<Graph> disconnectedSubGraphs = Decomposer.decompose(adjList, n, e);
 
         boolean hasAllChromatic = true;
 

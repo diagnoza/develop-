@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Graph {
-    private ArrayList<Integer> standardVertices;
+    private List<Integer> standardVertices;
     private ColEdge[] standardEdges;
     private ArrayList<LinkedList<Integer>> adjList;
     private int chromaticNumber;
@@ -11,7 +12,7 @@ public class Graph {
 
     //The constructor will change the format of the input graph to the standard format,
     //where the index of vertices are successive (vertex 1, vertex 2 and so on..)
-    public Graph(ArrayList<Integer> inputVertices, ColEdge[] inputEdges) {
+    public Graph(List<Integer> inputVertices, ColEdge[] inputEdges) {
         standardVertices = new ArrayList<>();
         for (int i = 1; i <= inputVertices.size(); i++){
             standardVertices.add(i);
@@ -40,7 +41,7 @@ public class Graph {
         return standardEdges.length;
     }
 
-    public ArrayList<Integer> getVertices() {
+    public List<Integer> getVertices() {
         return standardVertices;
     }
 
