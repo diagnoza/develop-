@@ -141,7 +141,7 @@ public class ReadGraph_edited {
                 disconnectedSubGraph.setChromaticNumber(1);
                 continue;
             }
-            if (isBipartite(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getEdges())) {
+            if (isBipartite(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getAdjList())) {
                 disconnectedSubGraph.setChromaticNumber(2);
                 continue;
             }
@@ -151,11 +151,11 @@ public class ReadGraph_edited {
             int subLowerbound = 3;
             disconnectedSubGraph.setLowerbound(subLowerbound);
 
-            if (n % 2 == 1 && isCycle(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getNumberOfEdges(), disconnectedSubGraph.getEdges())) {
+            if (n % 2 == 1 && isCycle(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getNumberOfEdges(), disconnectedSubGraph.getAdjList())) {
                 disconnectedSubGraph.setChromaticNumber(3);
                 continue;
             }
-            if (isCompleteGraph(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getEdges())) {
+            if (isCompleteGraph(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getAdjList())) {
                 //The chromatic number of a complete graph = the number of vertices
                 disconnectedSubGraph.setChromaticNumber(disconnectedSubGraph.getNumberOfVertices());
                 continue;
@@ -166,7 +166,7 @@ public class ReadGraph_edited {
                 disconnectedSubGraph.setChromaticNumber(3);
                 continue;
             }
-            if (isWheelGraph(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getEdges())) {
+            if (isWheelGraph(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getEdges(), disconnectedSubGraph.getAdjList())) {
                 if (disconnectedSubGraph.getNumberOfVertices() % 2 == 1) {
                     disconnectedSubGraph.setChromaticNumber(3);
                 } else {
@@ -190,21 +190,21 @@ public class ReadGraph_edited {
         int maxSubChromatic = -1;
         int maxSubUpperbound = -1;
         int maxLowerbound = -1;
-        for (Graph disconnectedSubGraph : disconnectedSubGraphs){
+        for (Graph disconnectedSubGraph : disconnectedSubGraphs) {
             if (disconnectedSubGraph.getChromaticNumber() > maxSubChromatic) {
                 maxSubChromatic = disconnectedSubGraph.getChromaticNumber();
             }
 
-            if (disconnectedSubGraph.getUpperbound() > maxSubUpperbound){
+            if (disconnectedSubGraph.getUpperbound() > maxSubUpperbound) {
                 maxSubUpperbound = disconnectedSubGraph.getUpperbound();
             }
 
-            if (disconnectedSubGraph.getLowerbound() > maxLowerbound){
+            if (disconnectedSubGraph.getLowerbound() > maxLowerbound) {
                 maxLowerbound = disconnectedSubGraph.getLowerbound();
             }
         }
 
-        if (maxSubUpperbound < upperbound){
+        if (maxSubUpperbound < upperbound) {
             //Greedy algorithm always gives the upperbound for every graph,
             // so we can conclude the original graph's upperbound is maxSubUpperbound
 
@@ -220,7 +220,7 @@ public class ReadGraph_edited {
             System.out.println("CHROMATIC NUMBER = " + maxSubChromatic);
 
             //Stop the program
-            System.exit(0);
+            return;
         } else {
             //if not, the lowerbound of the original graph is the bigger number between
             // maxLowerbound and maxSubChromatic
@@ -318,25 +318,16 @@ public class ReadGraph_edited {
     }
 
 
-    public static boolean isCycle(int n, int m, ColEdge e[]) {
+    public static boolean isCycle(int n, int m, ArrayList<LinkedList<Integer>> adjList) {
         //n == no.of vertices ,, m == number of edges
         boolean cyclic = true;
 
-//        //if number of vertices is even return false;
-//        if(n%2==0) return false;
-
+        //The number of vertices and edges in a cycle must be equal
         if (m != n) return false;
 
+        //Each vertex must have 2 edges
         for (int i = 1; i <= n; i++) {
-            int count = 0;
-            for (int j = 0; j < e.length; j++) {
-
-                if (e[j].u == i || e[j].v == i) {
-                    count++;
-                }
-            }
-
-            if (count != 2) {
+            if (adjList.get(i).size() != 2) {
                 cyclic = false;
             }
         }
@@ -344,22 +335,14 @@ public class ReadGraph_edited {
     }
 
 
-    public static boolean isCompleteGraph(int numberOfVertice, ColEdge e[]) {
+    public static boolean isCompleteGraph(int numberOfVertice, ArrayList<LinkedList<Integer>> adjList) {
         boolean isCompleteGraph = true;
 
         //Check every vertex to see if it is linked to all other vertices
         for (int i = 1; i <= numberOfVertice; i++) {
-            for (int j = i + 1; j <= numberOfVertice; j++) {
-                boolean hasLinked = false;
-                for (int k = 0; k < e.length; k++) {
-                    if ((e[k].u == i && e[k].v == j) || (e[k].v == i && e[k].u == j)) {
-                        hasLinked = true;
-                    }
-                }
-                if (!hasLinked) {
-                    isCompleteGraph = false;
-                    break;
-                }
+            if (adjList.get(i).size() != numberOfVertice - 1){
+                isCompleteGraph = false;
+                break;
             }
         }
 
@@ -369,7 +352,7 @@ public class ReadGraph_edited {
 
     //A bipartite is a graph whose vertices can be divided into two disjoint and independent sets 
     //U and V such that every edge connects a vertex in U to one in V
-    public static boolean isBipartite(int numberOfVertice, ColEdge e[]) {
+    public static boolean isBipartite(int numberOfVertice, ArrayList<LinkedList<Integer>> adjList) {
         //Create an array that stores the colors of each vertex.
         //There are two colors 1 and -1
         //Value 0 of this array means the vextex has not been assigned any color
@@ -379,7 +362,7 @@ public class ReadGraph_edited {
         color[1] = 1;
 
         //Create an array list that stores the vetices that need to be checked
-        ArrayList<Integer> checkingVertices = new ArrayList<Integer>();
+        ArrayList<Integer> checkingVertices = new ArrayList<>();
 
         //Add the first vertex to the checking list
         checkingVertices.add(1);
@@ -393,22 +376,20 @@ public class ReadGraph_edited {
                 checkingVertices.remove(0);
 
                 //Find other vertices that are linked to the checking vertex
-                for (int i = 2; i <= numberOfVertice; i++) {
-                    for (int j = 0; j < e.length; j++) {
-                        if ((e[j].u == checkingVertex && e[j].v == i) || (e[j].v == checkingVertex && e[j].u == i)) {
-                            if (color[i] == 0) {
-                                //If the vertex has not been assigned a color, then assign a color to it
-                                //The color assigned must be different from the checking vertex's color
-                                color[i] = -color[checkingVertex];
-                                checkingVertices.add(i);
-                            } else if (color[i] == color[checkingVertex]) {
-                                //If the vertex has the same color as the checking vertex, then it is not valid
-                                //So the graph cannot be assigned with 2 colors
-                                //So the graph is not a bipartite
-                                return false;
-                            }
-                        }
+                for (Integer neighbor: adjList.get(checkingVertex)) {
+                    if (color[neighbor] == 0) {
+                        //If the vertex has not been assigned a color, then assign a color to it
+                        //The color assigned must be different from the checking vertex's color
+                        color[neighbor] = -color[checkingVertex];
+                        checkingVertices.add(neighbor);
+                    } else if (color[neighbor] == color[checkingVertex]) {
+                        //If the vertex has the same color as the checking vertex, then it is not valid
+                        //So the graph cannot be assigned with 2 colors
+                        //So the graph is not a bipartite
+                        return false;
                     }
+
+
                 }
             }
 
@@ -514,26 +495,21 @@ public class ReadGraph_edited {
 
     }
 
-    public static boolean isWheelGraph(int numberOfVertices, ColEdge e[]) {
+    public static boolean isWheelGraph(int numberOfVertices, ColEdge[] e, ArrayList<LinkedList<Integer>> adjList) {
         //Find the center of the wheel
         int center = 0;
         for (int i = 1; i <= numberOfVertices; i++) {
             boolean isCenter = true;
+            //The center must connect to every other vertices
             for (int j = 1; j <= numberOfVertices; j++) {
-                //The center should be connected to every other vertices
-                boolean isConnected = false;
-                for (int edge = 0; edge < e.length; edge++) {
-                    if ((e[edge].u == j && e[edge].v == i) || (e[edge].v == j && e[edge].u == i)) {
-                        isConnected = true;
-                    }
-                }
-                if (j != i && !isConnected) {
+                if (i != j && !adjList.get(i).contains(j)) {
                     isCenter = false;
-                    break;
                 }
             }
-            if (isCenter)
+            if (isCenter) {
                 center = i;
+                break;
+            }
         }
 
         if (center == 0) {
@@ -541,26 +517,25 @@ public class ReadGraph_edited {
         }
 
         //Remove the center from the graph
-        ArrayList<ColEdge> surrounding = new ArrayList<>();
+        ArrayList<Integer> surroundingVertices = new ArrayList<>();
+        for (int i = 1; i <= numberOfVertices; i++) {
+            if (i != center) {
+                surroundingVertices.add(i);
+            }
+        }
+        ArrayList<ColEdge> surroundingEdges = new ArrayList<>();
         for (int i = 0; i < e.length; i++) {
             if (e[i].u != center && e[i].v != center) {
                 ColEdge newEdge = new ColEdge();
-                if (e[i].u > center) {
-                    newEdge.u = e[i].u - 1;
-                } else {
-                    newEdge.u = e[i].u;
-                }
-                if (e[i].v > center) {
-                    newEdge.v = e[i].v - 1;
-                } else {
-                    newEdge.v = e[i].v;
-                }
-                surrounding.add(newEdge);
+                newEdge.u = e[i].u;
+                newEdge.v = e[i].v;
+                surroundingEdges.add(newEdge);
             }
         }
+        Graph surrouding = new Graph(surroundingVertices, surroundingEdges.toArray(new ColEdge[0]));
 
         //Check if the surrounding is a cycle
-        if (isCycle(numberOfVertices - 1, surrounding.size(), surrounding.toArray(new ColEdge[0]))) {
+        if (isCycle(surrouding.getNumberOfVertices(), surrouding.getNumberOfEdges(), surrouding.getAdjList())) {
             return true;
         }
 
