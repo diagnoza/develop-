@@ -13,7 +13,7 @@ public class Main {
 
     public final static String COMMENT = "//";
 
-    public final static int POPULATION = 10;
+    public final static int POPULATION = 1000;
 
     public static int upB;
 
@@ -130,7 +130,9 @@ public class Main {
         System.out.println("Upperbound is: "+upB);
         //System.out.println("Chromatic number is: "+BruteForce(n, 2, adjList));
 
-        new GeneticAlgorithm(n, m, e);
+        while(upB>0){
+        	new GeneticAlgorithm(n, m, e);
+        }
     }
 
 

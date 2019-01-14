@@ -2,20 +2,24 @@ public class GeneticAlgorithm {
 
     private final static int POPULATION_SIZE = Main.POPULATION;
     private static Individual[] PopulationContainer = new Individual[POPULATION_SIZE];
-    private final static int UPPERBOUND = Main.upB;
+    private static int UPPERBOUND = Main.upB;
     private static int numberOfNodes, numberOfEdges;
     private static ColEdge[] e;
     private static boolean[][] adjList;
     private static Individual[] parent1, parent2, children;
-    private static double SELECTION_RATE, CROSSOVER_RATE;
+    private static double SELECTION_RATE, CROSSOVER_RATE, MUTATION_RATE;
+    private static boolean done;
 
     static {
         parent1 = new Individual[POPULATION_SIZE];
         parent2 = new Individual[POPULATION_SIZE];
         children = new Individual[POPULATION_SIZE];
 
-        SELECTION_RATE = .5;
+        SELECTION_RATE = 0.05;
         CROSSOVER_RATE = 1;
+        MUTATION_RATE = .1;
+        
+        done = false;
     }
 
 
@@ -37,18 +41,32 @@ public class GeneticAlgorithm {
         GeneticAlgorithm.numberOfNodes = numberOfNodes;
         GeneticAlgorithm.numberOfEdges = numberOfEdges;
         GeneticAlgorithm.e = e;
-        for(Individual individual : children)
-            individual = new Individual();
+        for(int i=0;i<children.length;i++){
+            children[i] = new Individual();
+        }
 
         CreateAdjList();
         Initialize();
         CalculateFitness();
-        HeapSort.sort(PopulationContainer);
-        Selection();
-        Crossover();
-        System.out.println(parent1[0].NodesColors);
-        System.out.println(parent2[0].NodesColors);
-        System.out.println(children[0].NodesColors);
+        
+        while (!done) {
+        	HeapSort.sort(PopulationContainer);
+        	Selection();
+        	Crossover();
+        	Mutation();
+        	CalculateFitness();
+        }
+        System.out.println(done);
+        System.out.println("SUCCESS");
+        for(int j = 0; j < POPULATION_SIZE; j++)
+        if(children[j].getFitness() == 1) {
+        		for(int i = 0; i < numberOfNodes; i++)
+        			System.out.println(children[j].NodesColors[i]);
+        		break;
+        }
+        System.out.println("New upperbound is: " + UPPERBOUND--);
+        Main.upB = UPPERBOUND;
+        
     }
 
 
@@ -56,12 +74,10 @@ public class GeneticAlgorithm {
     private void Initialize() {
         /*
         DO NOT use foreach loop when you wish to alter something in the process of iterating - DOESN'T WORK
-
         for (Individual individual : PopulationContainer) {
             individual = new Individual();
             for (int node : individual.NodesColors)
                 node = (int) (Math.random() * UPPERBOUND);
-
         }
         */
 
@@ -101,6 +117,18 @@ public class GeneticAlgorithm {
         }
 
     }
+    
+    private void Mutation() {
+    
+    	for (int i=0;i<children.length;i++){
+    		for (int j=0;j<numberOfNodes;j++){
+    			if (Math.random() < MUTATION_RATE){
+    				children[i].NodesColors[j] = (int) (Math.random() * UPPERBOUND);
+    			}
+    		}
+    	}
+    	System.arraycopy(children, 0, PopulationContainer, 0, POPULATION_SIZE);
+    }
 
     private static void CalculateFitness() {
         double redLines;
@@ -110,10 +138,20 @@ public class GeneticAlgorithm {
             for (int i = 0; i < individual.NodesColors.length; i++)
                 for (int j = 0; j < individual.NodesColors.length; j++)
                     if (adjList[i][j] && individual.NodesColors[i] == individual.NodesColors[j]) redLines++;
-
-            if (redLines == 0) individual.fitness = 1;
-            else if (redLines == 1) individual.fitness = .99;
-            else individual.fitness = 1 / redLines;
+            //System.out.println(redLines);
+            if (redLines == 0) {
+            	individual.fitness = 1;
+            	done = true;
+            	break;
+            }
+            else if (redLines == 1) {
+            	individual.fitness = .99;
+            	done = false;
+            }
+            else {
+            	individual.fitness = 1 / redLines;
+            	done = false;
+            }
         }
 
     }
