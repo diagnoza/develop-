@@ -15,7 +15,7 @@
 		
 		\HRule\\[0.4cm]
 		
-		{\huge\bfseries Compute the chromatic number}\\[0.4cm] 
+		{\huge\bfseries Compute chromatic numbers}\\[0.4cm] 
 		
 		\HRule\\[1.5cm]
 		
@@ -35,7 +35,7 @@
 		
 		\vspace{2cm}
 		
-		Summited: Wednesday January 23, 2019
+		Submited: Wednesday January 23, 2019
 		
 		
 	\end{titlepage}
@@ -58,7 +58,7 @@
 		
 		\HRule\\[0.4cm]
 		
-		{\huge\bfseries Compute the chromatic number}\\[0.4cm] 
+		{\huge\bfseries Compute chromatic numbers}\\[0.4cm] 
 		
 		\HRule\\[1.5cm]
 		
@@ -77,7 +77,7 @@
 		\end{minipage}
 	
 		 \vspace{1cm}
-		Summited: Wednesday January 23, 2019
+		Submited: Wednesday January 23, 2019
 		\vspace{3cm}
 		\begin{flushleft}
 			Project coordinator: Prof. Jan Paredis
@@ -106,33 +106,37 @@
 
 	
 	\chapter{Methods}
-	This chapter describes the combined methods used for finding the lower bound, upper bound and if possible, the chromatic number. Given the limitation on execution time (2 minutes for each graph), the methods that give out the results fast are executed first. \\
-	First, greedy algorithm is used to calculate the upper bound. Then, the graph is decomposed to disconnected subgraphs. For all subgraphs, run greedy algorithm to find the upper bound. Then check for all special cases to see if the chromatic number of the subgraph can be concluded immediately. The special cases are listed below: 
+	This chapter describes the methods used for finding the lower bound, upper bound and if possible, the chromatic number of a graph. 
+	\section{Overview}
+	Given the limitation on execution time (2 minutes for each graph), methods that give out results fast are executed first. \\
+	First, a greedy algorithm is run on the given graph to calculate the upper bound. Then, the given graph is decomposed to disconnected subgraphs. For each subgraph, the greedy algorithm is run again to find the upper bound. Then all special cases are checked to see if the chromatic number of the subgraph can be concluded immediately. The special cases are listed below: 
 	\begin{itemize}
-		\item Graph has no vertices: chromatic number is 0
-		\item Graph has no edges: chromatic number is 1
+		\item No-vertex graph: chromatic number is 0
+		\item No-edge graph: chromatic number is 1
 		\item Bipartite graph: chromatic number is 2
 		\item Odd cycle: chromatic number is 3
 		\item Complete graph: chromatic number is the number of vertices
 		\item Wheel graph: if the number of vertices is odd, then the chromatic number is 3, otherwise the chromatic number is 4
 	\end{itemize}
-	If the subgraph is non of the above cases, we can conclude that the lower bound of the subgraph is 3, since the first three tests have covered all cases where the chromatic number is below 3. If the upperbound is also 3, then the chromatic number of the subgraph is 3. \\
-	If the chromatic number still cannot be conclude then Brute-force algorithm is used to find the chromatic number of the subgraph. However, only the subgraphs with number of vertices below 20 are proccessed with Brute-force, since Brute-force normally takes longer than 2 minutes to execute on bigger graphs. \\
+	If a subgraph is none of the above cases, the lower bound of the subgraph is 3, since the first three cases have covered all graphs where the chromatic number is below 3. If the upper bound is also 3, then the chromatic number of the subgraph is 3. \\
+	If the chromatic number still cannot be concluded then a brute-force algorithm is used to find the chromatic number of the subgraph. However, only the subgraphs with number of vertices below 20 are proccessed with the brute-force algorithm, since the Brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. \\
 	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph. This new upper bound is then compared to the old upper bound to output the better one. Similarily, the biggest lower bound among the subgraphs is the lower bound of the original graph. \\
-	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs. If it is not the case, then the biggest chromatic number found on the subgraphs can only be a lower bound for the original graph.\\
-	In the end, genetic algorithm is used to bring the upper-bound closer to the chromatic number. This method is run last because there are no guarantee on its execution time.\\
-	The algorithm for each method is described below: 
+	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs. If it is not the case, then the biggest chromatic number found on the subgraphs is a lower bound for the original graph.\\
+	Finally, genetic algorithm is used to bring the upper-bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
+	The algorithm for each method is described as follows.
 	
 
-		\section{Decomposing the graph}
-		One graph can contain multiple disconnected parts, which can be considered as independent graphs. Decomposing the graph will allow other methods to work on smaller subgraphs. This section describes the method for decomposing the graph into these subgraphs.\\
+		\section{Graph decomposition}
+		One graph can contain multiple disconnected parts, which can be considered as independent subgraphs. Decomposing the graph will allow other methods to work on smaller graphs. This section describes the method for decomposing a graph into subgraphs, where each subgraph is a fully connected graph.\\
 		The algorithm is based on breadth-first search. A list is used to store the vertices whose neighbors are not yet added to the same subgraph. First, add the first vertex to a subgraph and the unchecked list. Then add all neighbors of the vertex to the subgraph and the unchecked list, and remove the first vertex from the unchecked list. To avoid loops, only the vertices which are not in the subgraph are added. Do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are classified to subgraphs.\\
-		After classifying the vertices to subgraphs, each subgraph is then convert to the standard form, where the index of vertices are successive.
+		After classifying the vertices to subgraphs, each subgraph is then converted to the standard form, where the index of vertices are successive.
+		(Note that...)
 		
 		\section{Greedy algorithm}
-		Greedy algorithm provides a way of coloring the graph. First, sort the vertices based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. The vertex with higher constraint will be colored first.\\
+		Greedy algorithm provides an efficient way of coloring the graph. However,  it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upperbound. \\
+		The algorithm works as follows:
+		First, sort the vertices based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. The vertex with higher constraint will be colored first.\\
 		Keep a list of used colors. When coloring a vertex, try to reuse the available colors. If non of the available colors is valid to color that vertex, then  a new color is generated, and add the new color to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
-		The disadvantage of greedy algorithm is that it does not guarantee that the coloring is optimal. However, it provides the upperbound of the graph. Another advantage is that it runs fast.
 		
 		\section{Lower-bound}
 		
@@ -163,7 +167,7 @@
 			\subsection{Crossover}
 			\subsection{Mutation}
 		
-		\section{Brute force search}
+		\section{Brute force algorithm}
 		
 		
 	\chapter{Experiments}
