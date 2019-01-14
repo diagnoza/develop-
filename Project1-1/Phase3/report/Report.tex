@@ -106,23 +106,39 @@
 
 	
 	\chapter{Methods}
+	This chapter describes the combined methods used for finding the lower bound, upper bound and if possible, the chromatic number. Given the limitation on execution time (2 minutes for each graph), the methods that give out the results fast are executed first. \\
+	First, greedy algorithm is used to calculate the upper bound. Then, the graph is decomposed to disconnected subgraphs. For all subgraphs, run greedy algorithm to find the upper bound. Then check for all special cases to see if the chromatic number of the subgraph can be concluded immediately. The special cases are listed below: 
+	\begin{itemize}
+		\item Graph has no vertices: chromatic number is 0
+		\item Graph has no edges: chromatic number is 1
+		\item Bipartite graph: chromatic number is 2
+		\item Odd cycle: chromatic number is 3
+		\item Complete graph: chromatic number is the number of vertices
+		\item Wheel graph: if the number of vertices is odd, then the chromatic number is 3, otherwise the chromatic number is 4
+	\end{itemize}
+	If the subgraph is non of the above cases, we can conclude that the lower bound of the subgraph is 3, since the first three tests have covered all cases where the chromatic number is below 3. If the upperbound is also 3, then the chromatic number of the subgraph is 3. \\
+	If the chromatic number still cannot be conclude then Brute-force algorithm is used to find the chromatic number of the subgraph. However, only the subgraphs with number of vertices below 20 are proccessed with Brute-force, since Brute-force normally takes longer than 2 minutes to execute on bigger graphs. \\
+	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph. This new upper bound is then compared to the old upper bound to output the better one. Similarily, the biggest lower bound among the subgraphs is the lower bound of the original graph. \\
+	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs. If it is not the case, then the biggest chromatic number found on the subgraphs can only be a lower bound for the original graph.\\
+	In the end, genetic algorithm is used to bring the upper-bound closer to the chromatic number. This method is run last because there are no guarantee on its execution time.\\
+	The algorithm for each method is described below: 
 	
+
 		\section{Decomposing the graph}
 		One graph can contain multiple disconnected parts, which can be considered as independent graphs. Decomposing the graph will allow other methods to work on smaller subgraphs. This section describes the method for decomposing the graph into these subgraphs.\\
 		The algorithm is based on breadth-first search. A list is used to store the vertices whose neighbors are not yet added to the same subgraph. First, add the first vertex to a subgraph and the unchecked list. Then add all neighbors of the vertex to the subgraph and the unchecked list, and remove the first vertex from the unchecked list. To avoid loops, only the vertices which are not in the subgraph are added. Do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are classified to subgraphs.\\
-		After classifying the vertices to subgraphs, each subgraph is then convert to the standard form, where the index of the vertices are successive.
-		
+		After classifying the vertices to subgraphs, each subgraph is then convert to the standard form, where the index of vertices are successive.
 		
 		\section{Greedy algorithm}
-		Greedy algorithm provides a way of coloring the graph. First, we sort the vertices based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. The vertex with higher constraint will be colored first.\\
-		We keep a list of used colors. When coloring a vertex, we try to reuse the available colors. If non of the available colors is valid to color that vertex, then we use a new color, and add the new color to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
+		Greedy algorithm provides a way of coloring the graph. First, sort the vertices based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. The vertex with higher constraint will be colored first.\\
+		Keep a list of used colors. When coloring a vertex, try to reuse the available colors. If non of the available colors is valid to color that vertex, then  a new color is generated, and add the new color to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
 		The disadvantage of greedy algorithm is that it does not guarantee that the coloring is optimal. However, it provides the upperbound of the graph. Another advantage is that it runs fast.
 		
 		\section{Lower-bound}
 		
 		\section{Special cases}
 			\subsection{Bipartite}
-			A bipartite graph is a graph that has chromatic number 2. To test weather a graph is bipartite, we use breadth-first search. Two colors, represented by 1 and -1, are used to color the graph. We use a list to store the vertices whose neighbors are not yet considered. First, assign the color 1 to the first vertex and add it to the unchecked list. Then, consider all its neighbors, and remove it from the unchecked list. For each neighbors, if the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite. If the neighbor has not been colored, we assign the oposite color to it. We do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are colored. If the graph is successfully colored, then it is bipartite.
+			A bipartite graph is a graph that has chromatic number 2. Breadth-first search is used to test weather a graph is bipartite. Two colors, represented by 1 and -1, are used to color the graph. Keep a list to store the vertices whose neighbors are not yet considered. First, assign the color 1 to the first vertex and add it to the unchecked list. Then, consider all its neighbors, and remove it from the unchecked list. For each neighbors, if the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite. If the neighbor has not been colored then assign the oposite color to it. Do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are colored. If the graph is successfully colored, then it is bipartite.
 			\subsection{Odd cycle}
 			An odd cycle is a cycle with an odd number of edges and vertices. The chromatic number of this kind of graph is 3. \\
 			For the graph to be Cyclic, Two conditions must be satisfied:
@@ -134,6 +150,11 @@
 			A complete graph is a graph where every vertex is connected to all other vertices. The chromatic number is the number of vertices. The method checks weather a graph has the above conditions to determine if it is a complete graph.
 			Chromatic number = number of vertices
 			\subsection{Wheel graph}
+			A wheel graph is a graph formed by connecting a single vertex to all vertices of a cycle.
+			To check whether a graph is wheel or not: First, find the center vertex of the graph and that vertex must be connected to all remaining vertices of the graph. Now, remove the  center from the graph. Check if all vertices except center vertex form a cycle.
+			If the Graph is a wheel graph with odd number of vertices, then chromatic number is 3.
+			Else if the graph is a wheel graph with even number of vertices, then chromatic number is 4.
+			
 			
 		\section{Genetic algorithm}
 			\subsection{Fitness function}
