@@ -15,7 +15,7 @@
 		
 		\HRule\\[0.4cm]
 		
-		{\huge\bfseries Find the smallest range for the chromatic number of a graph}\\[0.4cm] 
+		{\huge\bfseries Compute the chromatic number}\\[0.4cm] 
 		
 		\HRule\\[1.5cm]
 		
@@ -58,7 +58,7 @@
 		
 		\HRule\\[0.4cm]
 		
-		{\huge\bfseries Find the smallest range for the chromatic number of a graph}\\[0.4cm] 
+		{\huge\bfseries Compute the chromatic number}\\[0.4cm] 
 		
 		\HRule\\[1.5cm]
 		
@@ -106,27 +106,32 @@
 
 	
 	\chapter{Methods}
+	
 		\section{Decomposing the graph}
-		One graph can contain multiple disconnected parts, which can be considered as independent graphs. This section describes the method for decomposing the graph into these subgraph.\\
-		The algorithm used is based on breadth-first search. We use a list to store the vertices whose neighbors are not yet added to the same subgraph. First, add the first vertex to a subgraph and the unchecked list. Then add all neighbors of the vertex to the subgraph and the unchecked list, and remove the first vertex from the unchecked list. We do the same for all element
-		Use breadth-first search\\
-		Usage: Allow other methods to work on smaller graphs
+		One graph can contain multiple disconnected parts, which can be considered as independent graphs. Decomposing the graph will allow other methods to work on smaller subgraphs. This section describes the method for decomposing the graph into these subgraphs.\\
+		The algorithm is based on breadth-first search. A list is used to store the vertices whose neighbors are not yet added to the same subgraph. First, add the first vertex to a subgraph and the unchecked list. Then add all neighbors of the vertex to the subgraph and the unchecked list, and remove the first vertex from the unchecked list. To avoid loops, only the vertices which are not in the subgraph are added. Do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are classified to subgraphs.\\
+		After classifying the vertices to subgraphs, each subgraph is then convert to the standard form, where the index of the vertices are successive.
+		
 		
 		\section{Greedy algorithm}
-		Sort the vertices based on their constraints\\
-		Try to reuse available colors\\
-		Usage: Find the upper-bound
+		Greedy algorithm provides a way of coloring the graph. First, we sort the vertices based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. The vertex with higher constraint will be colored first.\\
+		We keep a list of used colors. When coloring a vertex, we try to reuse the available colors. If non of the available colors is valid to color that vertex, then we use a new color, and add the new color to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
+		The disadvantage of greedy algorithm is that it does not guarantee that the coloring is optimal. However, it provides the upperbound of the graph. Another advantage is that it runs fast.
 		
 		\section{Lower-bound}
 		
 		\section{Special cases}
 			\subsection{Bipartite}
-			Use breadth-first search\\
-			Chromatic number = 2
+			A bipartite graph is a graph that has chromatic number 2. To test weather a graph is bipartite, we use breadth-first search. Two colors, represented by 1 and -1, are used to color the graph. We use a list to store the vertices whose neighbors are not yet considered. First, assign the color 1 to the first vertex and add it to the unchecked list. Then, consider all its neighbors, and remove it from the unchecked list. For each neighbors, if the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite. If the neighbor has not been colored, we assign the oposite color to it. We do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are colored. If the graph is successfully colored, then it is bipartite.
 			\subsection{Odd cycle}
-			Chromatic number = 3
+			An odd cycle is a cycle with an odd number of edges and vertices. The chromatic number of this kind of graph is 3. \\
+			For the graph to be Cyclic, Two conditions must be satisfied:
+			1.Number of Vertices should be equal to Number of Edges.
+			2.Every Vertices must have two Edges.
+			If above two conditions satisfied, then  the graph is Cyclic.
+			
 			\subsection{Complete graph}
-			Check if every vertex is connected to all other vertices\\
+			A complete graph is a graph where every vertex is connected to all other vertices. The chromatic number is the number of vertices. The method checks weather a graph has the above conditions to determine if it is a complete graph.
 			Chromatic number = number of vertices
 			\subsection{Wheel graph}
 			
