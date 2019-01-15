@@ -198,17 +198,45 @@
 		\item Complete graph: chromatic number is the number of vertices
 		\item Wheel graph: if the number of vertices is odd, then the chromatic number is 3, otherwise the chromatic number is 4
 	\end{itemize}
-	If a subgraph is none of the above cases, the lower bound of the subgraph is 3, since the first three cases have covered all graphs where the chromatic number is below 3. If the upper bound is also 3, then the chromatic number of the subgraph is 3. \\
+	In line 35, if a subgraph is none of the special cases, the lower bound of the subgraph is 3, since the first three cases have covered all graphs where the chromatic number is below 3. If the upper bound is also 3, then the chromatic number of the subgraph is 3. \\
 	If the chromatic number still cannot be concluded then a brute-force algorithm is used to find the chromatic number of the subgraph. However, only the subgraphs with number of vertices below 20 are proccessed with the brute-force algorithm, since the Brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. \\
-	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph. This new upper bound is then compared to the old upper bound to output the better one. Similarily, the biggest lower bound among the subgraphs is the lower bound of the original graph. \\
+	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph. This new upper bound is then compared to the old upper bound (computed in line 1) to output the better one. Similarily, the biggest lower bound among the subgraphs is the lower bound of the original graph. \\
 	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs. If it is not the case, then the biggest chromatic number found on the subgraphs is a lower bound for the original graph.\\
 	Finally, genetic algorithm is used to bring the upper-bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
 	The algorithm for each method is described as follows.
 	
 
 		\section{Graph decomposition}
-		One graph can contain multiple disconnected parts, which can be considered as independent subgraphs. Decomposing the graph will allow other methods to work on smaller graphs. This section describes the method for decomposing a graph into subgraphs, where each subgraph is a fully connected graph.\\
-		The algorithm is based on breadth-first search. A list is used to store the vertices whose neighbors are not yet added to the same subgraph. First, add the first vertex to a subgraph and the unchecked list. Then add all neighbors of the vertex to the subgraph and the unchecked list, and remove the first vertex from the unchecked list. To avoid loops, only the vertices which are not in the subgraph are added. Do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are classified to subgraphs.\\
+		One graph can contain multiple disconnected parts, which can be considered as independent subgraphs. Decomposing the graph will allow other methods to work on smaller graphs. Algorithm \ref{alg:decompose} describes the method for decomposing a graph into subgraphs, where each subgraph is a fully connected graph.\\
+		\begin{algorithm}
+			\caption{Decomposing a graph}
+			\label{alg:decompose}
+			\begin{algorithmic}[1]
+				\REQUIRE graph
+				Create listOfVertices in graph
+				\WHILE{listOfVertices is not empty}
+				\STATE Create a new subgraph
+				\STATE Create a new uncheckedList
+				\STATE subgraph.add(firstVertex in listOfVertices )
+				\STATE uncheckedList.add(firstVertex in listOfVertices)
+				\WHILE{uncheckedList is not empty} 
+				\STATE checkingVertex = first vertex in the uncheckedList
+				\FORALL{neighbors of checkingVertex} 
+				\IF{neighbor is not in subgraph} 
+				\STATE uncheckedList.add(neighbor)
+				\STATE subgraph.add(neighbor)
+				\ENDIF
+				\ENDFOR
+				\STATE Remove checkingVertex from uncheckedList
+				\ENDWHILE
+				\STATE Convert subgraph to standard form
+				\STATE subgraphs.add(subgraph)
+				\ENDWHILE
+				\STATE \textbf{return} subgraphs
+				
+			\end{algorithmic}
+		\end{algorithm}
+		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the same subgraph. Line 4 and 5 add the first vertex to a subgraph and the unchecked list. Then all neighbors of the vertex are added to the subgraph and the unchecked list, and remove the first vertex from the unchecked list. To avoid loops, only the vertices which are not in the subgraph are added. Do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are classified to subgraphs.\\
 		After classifying the vertices to subgraphs, each subgraph is then converted to the standard form, where the index of vertices are successive.
 		(Note that...)
 		

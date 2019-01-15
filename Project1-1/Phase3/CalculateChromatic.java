@@ -297,17 +297,23 @@ public class CalculateChromatic {
         int[] vertexDegrees = calculateDegreeArray(numberOfVertices, e.length, e);
 
         //Arrange vertices in non-increasing order of degree
-        for (int i = 0; i < numberOfVertices - 1; i++) {
-            if (vertexDegrees[i] < vertexDegrees[i + 1]) {
-                int tmp = vertexDegrees[i];
-                vertexDegrees[i] = vertexDegrees[i + 1];
-                vertexDegrees[i + 1] = tmp;
+        boolean swapped;
+        do {
+            swapped = false;
+            for (int i = 0; i < numberOfVertices - 1; i++) {
+                if (vertexDegrees[i] < vertexDegrees[i + 1]) {
+                    swapped = true;
 
-                int tmp2 = vertices[i];
-                vertices[i] = vertices[i + 1];
-                vertices[i + 1] = tmp2;
+                    int tmp = vertexDegrees[i];
+                    vertexDegrees[i] = vertexDegrees[i + 1];
+                    vertexDegrees[i + 1] = tmp;
+
+                    int tmp2 = vertices[i];
+                    vertices[i] = vertices[i + 1];
+                    vertices[i + 1] = tmp2;
+                }
             }
-        }
+        } while (swapped);
 
         for (int i = 0; i < numberOfVertices; i++) {
             //Go through every vertex in the vertices array
