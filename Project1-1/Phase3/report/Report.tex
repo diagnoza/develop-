@@ -1,6 +1,8 @@
 \documentclass[a4paper]{report}
 \usepackage{apacite}
 \usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algcompatible}
 \graphicspath{{Images/}}
 
 
@@ -108,7 +110,85 @@
 	\chapter{Methods}
 	This chapter describes the methods used for finding the lower bound, upper bound and if possible, the chromatic number of a graph. 
 	\section{Overview}
-	Given the limitation on execution time (2 minutes for each graph), methods that give out results fast are executed first. \\
+	Given the limitation on execution time (2 minutes for each graph), methods that give out results fast are executed first. Algorithm \ref{alg:overview} describes the general execution flow.\\
+	\begin{algorithm}
+		\caption{General work flow}
+		\label{alg:overview}
+		\begin{algorithmic}[1]
+			\REQUIRE graph
+			\STATE upperbound = greedyUpperbound(graph)
+			\STATE subgraphs = decompose(graph)
+			\FORALL{subgraphs} 
+				\STATE subUpperbound =  greedyUpperbound(subgraph)
+				
+				\STATE//Check all special cases
+				\IF{subgraph has no vertex} 
+					\STATE chromaticNumber of subgraph = 0
+					\STATE Go to the next subgraph
+				\ENDIF
+				\IF{subgraph has no edge} 
+				\STATE chromaticNumber of subgraph = 1
+				\STATE Go to the next subgraph
+				\ENDIF
+				\IF{subgraph is bipartite} 
+				\STATE chromaticNumber of subgraph = 2
+				\STATE Go to the next subgraph
+				\ENDIF
+				\IF{subgraph is odd cycle} 
+				\STATE chromaticNumber of subgraph = 3
+				\STATE Go to the next subgraph
+				\ENDIF
+				\IF{subgraph is complete graph} 
+				\STATE chromaticNumber of subgraph = number of vertices
+				\STATE Go to the next subgraph
+				\ENDIF
+				\IF{subgraph is wheel graph} 
+					\IF{number of vertices is odd} 
+					\STATE chromaticNumber of subgraph = 3
+					\STATE Go to the next subgraph
+					\ELSE
+					\STATE chromaticNumber of subgraph = 4
+					\STATE Go to the next subgraph
+					\ENDIF
+				\ENDIF
+				\STATE subLowerbound = 3
+				\IF{subUpperbound = subLowerbound} 
+				\STATE chromaticNumber of subgraph = 3
+				\STATE Go to the next subgraph
+				\ENDIF
+				
+				\STATE//Run brute-force
+				\IF{number of vertices $<=$ 20} 
+				\STATE chromaticNumber of subgraph = BruteForce(subgraph)
+				\ENDIF 
+			\ENDFOR
+
+			\algstore{myalg}
+			\end{algorithmic}
+		\end{algorithm}
+
+		\begin{algorithm}                     
+			\begin{algorithmic} [1]     
+			\algrestore{myalg}
+
+			\STATE newUpperbound = max(subUpperbounds)
+			
+			\IF{newUpperbound $<$ upperbound} 
+			\STATE //Update upper bound
+			\STATE upperbound = newUpperbound 
+			\ENDIF
+			
+			\STATE lowerbound = max(subLowerbounds)
+			
+			\IF{has found all chromatic numbers of subgraphs} 
+			\STATE chromatic number = max(chromatic numbers of subgraphs)
+			\ELSE
+			\STATE lowerbound = max(chromatic numbers of subgraphs)
+			\ENDIF
+			
+			\STATE geneticAlgorithm(graph)
+		\end{algorithmic}
+	\end{algorithm}
 	First, a greedy algorithm is run on the given graph to calculate the upper bound. Then, the given graph is decomposed to disconnected subgraphs. For each subgraph, the greedy algorithm is run again to find the upper bound. Then all special cases are checked to see if the chromatic number of the subgraph can be concluded immediately. The special cases are listed below: 
 	\begin{itemize}
 		\item No-vertex graph: chromatic number is 0
