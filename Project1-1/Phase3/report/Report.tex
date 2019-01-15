@@ -213,12 +213,14 @@
 			\label{alg:decompose}
 			\begin{algorithmic}[1]
 				\REQUIRE graph
-				Create listOfVertices in graph
+				\STATE Create listOfVertices 
+				\STATE listOfVertices.add(all vertices in the graph)
 				\WHILE{listOfVertices is not empty}
 				\STATE Create a new subgraph
 				\STATE Create a new uncheckedList
 				\STATE subgraph.add(firstVertex in listOfVertices )
 				\STATE uncheckedList.add(firstVertex in listOfVertices)
+				\STATE listOfVertices.remove(first element)
 				\WHILE{uncheckedList is not empty} 
 				\STATE checkingVertex = first vertex in the uncheckedList
 				\FORALL{neighbors of checkingVertex} 
@@ -226,6 +228,7 @@
 				\STATE uncheckedList.add(neighbor)
 				\STATE subgraph.add(neighbor)
 				\ENDIF
+				\STATE listOfVertices.remove(neighbor)
 				\ENDFOR
 				\STATE Remove checkingVertex from uncheckedList
 				\ENDWHILE
@@ -236,15 +239,36 @@
 				
 			\end{algorithmic}
 		\end{algorithm}
-		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the same subgraph. Line 4 and 5 add the first vertex to a subgraph and the unchecked list. Then all neighbors of the vertex are added to the subgraph and the unchecked list, and remove the first vertex from the unchecked list. To avoid loops, only the vertices which are not in the subgraph are added. Do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are classified to subgraphs.\\
-		After classifying the vertices to subgraphs, each subgraph is then converted to the standard form, where the index of vertices are successive.
-		(Note that...)
+		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the same subgraph. Line 6 and 7 add the first vertex to a subgraph and the unchecked list. Then all neighbors of the vertex are added to the subgraph and the unchecked list, and first vertex of the unchecked list is removed. To avoid loops, only the vertices which are not in the subgraph are added. The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the original graph are classified to subgraphs.\\
+		Note that the vertices of the input graphs for this project are represented by successive numbers. All other methods are based on this data type. Therefore, after classifying the vertices to subgraphs, each subgraph is then converted to the standard form, where the index of vertices are successive.
 		
 		\section{Greedy algorithm}
-		Greedy algorithm provides an efficient way of coloring the graph. However,  it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upperbound. \\
-		The algorithm works as follows:
-		First, sort the vertices based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. The vertex with higher constraint will be colored first.\\
-		Keep a list of used colors. When coloring a vertex, try to reuse the available colors. If non of the available colors is valid to color that vertex, then  a new color is generated, and add the new color to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
+		Greedy algorithm provides an efficient way of coloring the graph. However,  it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upperbound. Algorithm \ref{alg:greedy} describes this method.\\
+		\begin{algorithm}
+			\caption{Greedy algorithm for upper bound}
+			\label{alg:greedy}
+			\begin{algorithmic}[1]
+				\REQUIRE graph
+				\STATE Sort vertices in non-increasing order of constraints
+				\STATE Create availableColors list
+				\FORALL{vertices}
+					\FORALL{colors in availableColors}
+					\IF{color is valid for vertex}
+					\STATE Assign the color for the vertex
+					\STATE break
+					\ENDIF
+					\ENDFOR
+					\IF{The vertex is still not colored}
+					\STATE Create a new color
+					\STATE Assign the new color for the vertex
+					\STATE Add the new color to availableColors list
+					\ENDIF
+				\ENDFOR
+				\STATE \textbf{return} size of availableColors list
+			\end{algorithmic}
+		\end{algorithm}
+		First, the vertices are sorted based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. Optimized buble sort \cite{bubblesort2019} is used in this step. The vertex with higher constraint will be colored first.\\
+		A list is used to store available colors. When coloring a vertex, the available colors is reused as much as possible. If non of the available colors is valid to color that vertex, then a new color is generated, then it is added to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
 		
 		\section{Lower-bound}
 		
