@@ -1,0 +1,6 @@
+The brute force algorithm simply generates every possible coloring and checks if it's a valid one. In case the coloring is valid, the algorithm terminates with a possibilty of returning an array of colors assigned to each node and the chromatic number. In order to check the validity of coloring, it utilizes isValid algorithm, that iterates through the array representing nodes' colors and searches for a conflict (two adjacent/connected nodes having assigned the same color). If found, false is being returned instantly, meaning certain coloring is not a valid one.
+
+Brute Force is based on raw computetional power, thus making it heavily dependent on the hardware that runs it. Finding the chromatic number is GUARANTEED sooner or later. However in reality, its use is limited to graphs not bigger than 20 nodes, and even then, depending yet on how the vertices are being connected.
+
+Algorithms calculating lowerbound or applying pruning, might futher optimize it, reducing the time needed to find the chromatic number. 
+Implementing a greedy-type brute force could also bring significant improvements on effectivness and execution time, but on the other hand, causing a risk of omitting the right coloring and eventually not finding the chromatic number, but only its approximation.
