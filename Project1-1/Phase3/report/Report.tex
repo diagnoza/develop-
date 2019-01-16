@@ -101,35 +101,41 @@
 	
 	\tableofcontents
 	
-	\chapter*{Abbreviations and symbols}
-	\addcontentsline{toc}{chapter}{List of abbreviations and symbols}
-	In Kn,m\\
-	n = Number of vertices\\
-	m = Number of edges\\
-	
+%	\chapter*{Abbreviations and symbols}
+%	\addcontentsline{toc}{chapter}{List of abbreviations and symbols}
+%	In Kn,m
+%\\
+%	n = Number of vertices
+%\\
+%	m = Number of edges
+%\\
+%	
 	
 	%-----------------------------------------------------------------------------
 	\chapter{Introduction}
 	\pagenumbering{arabic}
 	
-	Graph is a representation of a set of objects in which some pairs of the objects are related in a set. The objects are called Vertices and each of the related pairs of vertices is called an Edge. Generally, graphs are represented in a form of diagrams by joining a line between two related pairs of vertices. There are different types of graphs such as complete graph, cyclic graph, tree graph, wheel graph, planar graph etc. \\
-	Proper Coloring of the graph is assigning a color to the vertices or edges such that no two vertices or edges share same color. This is called Graph-Coloring. There are different types of graph-coloring like Vertices-Coloring, Edges-Coloring, Face-Coloring, Total-Coloring etc. In this report we focus on Vertices-Coloring. Vertices-Coloring is coloring vertices of the graph such that no two adjacent vertices share same color. Graph Coloring is one of the important topic of graph theory and is used in real time applications of computer science. Graph Coloring used in various research areas of computer science such data mining, networking etc.\\
+	Graph is a representation of a set of objects in which some pairs of the objects are related in a set. The objects are called Vertices and each of the related pairs of vertices is called an Edge. Generally, graphs are represented in a form of diagrams by joining a line between two related pairs of vertices. There are different types of graphs such as complete graph, cyclic graph, tree graph, wheel graph, planar graph etc. 
+\\
+	Proper Coloring of the graph is assigning a color to the vertices or edges such that no two vertices or edges share same color. This is called Graph-Coloring. There are different types of graph-coloring like Vertices-Coloring, Edges-Coloring, Face-Coloring, Total-Coloring etc. In this report we focus on Vertices-Coloring. Vertices-Coloring is coloring vertices of the graph such that no two adjacent vertices share same color. Graph Coloring is one of the important topic of graph theory and is used in real time applications of computer science. Graph Coloring used in various research areas of computer science such data mining, networking etc.
+\\
 	
-	The coloring used at most k colors is called k-coloring. The smallest number of colors used in graph-coloring is called Chromatic Number. It is denoted by x(G).For k-coloring chromatic Number is exactly k. The Maximum degree of all vertices of graph is the Upper bound for the chromatic number of the graph. The Minimum degree of all vertices is the Lower bound for the chromatic number of the graph. For any graph chromatic number must be less than or equals to maximum degree of all vertices of graph. This is called Brook's Theorem. \\
-	
-	
-	There are few properties for Chromatic Number:\\
-	•	If a Graph has n vertices then x(G)<=n\\
-	•	If the graph has any self loop then it is not possible to color the corresponding vertex.\\
-	•	In any graph, the sum of the degree of vertices is equal to twice the number of edges.\\
+	The coloring used at most k colors is called k-coloring. The smallest number of colors used in graph-coloring is called Chromatic Number. It is denoted by x(G).For k-coloring chromatic Number is exactly k. The Maximum degree of all vertices of graph is the Upper bound for the chromatic number of the graph. The Minimum degree of all vertices is the Lower bound for the chromatic number of the graph. For any graph chromatic number must be less than or equals to maximum degree of all vertices of graph. This is called Brook's Theorem. 
+\\
 	
 	
-	The rest of the report is divided as follows: Chapter 2 is about the methods that we used to compute  Upper Bound, Lower Bound and Chromatic Number of the given graph. We have used different Algorithms like Genetic Algorithm, Greedy Algorithm, Brute  Force Search. Genetic Algorithm and Brute Force  to compute Chromatic Number, Greedy Algorithm to compute Upper bound for the Chromatic Number of graph.  Chapters 3,4 and 5 are about Experiments and their results. In the last Chapter, the whole project will be concluded.\\
+	There are few properties for Chromatic Number:
+\\
+	•	If a Graph has n vertices then x(G)<=n
+\\
+	•	If the graph has any self loop then it is not possible to color the corresponding vertex.
+\\
+	•	In any graph, the sum of the degree of vertices is equal to twice the number of edges.
+\\
 	
 	
-	
-	HISTORY: \\
-	The basic idea of graph were introduced in 18th century by Leonhard Euler(Swiss Mathematician). The origin of graph coloring concept was started in 1852.
+	The rest of the report is divided as follows: Chapter 2 is about the methods that we used to compute  Upper Bound, Lower Bound and Chromatic Number of the given graph. We have used different Algorithms like Genetic Algorithm, Greedy Algorithm, Brute  Force Search. Genetic Algorithm and Brute Force  to compute Chromatic Number, Greedy Algorithm to compute Upper bound for the Chromatic Number of graph.  Chapters 3,4 and 5 are about Experiments and their results. In the last Chapter, the whole project will be concluded.
+\\
 	
 
 	
@@ -225,10 +231,10 @@
 		\item Wheel graph: if the number of vertices is odd, then the chromatic number is 3, otherwise the chromatic number is 4
 	\end{itemize}
 	In line 35, if a subgraph is none of the special cases, the lower bound of the subgraph is 3, since the first three cases have covered all graphs where the chromatic number is below 3. If the upper bound is also 3, then the chromatic number of the subgraph is 3. \\
-	If the chromatic number still cannot be concluded then a brute-force algorithm is used to find the chromatic number of the subgraph. However, only the subgraphs with number of vertices below 20 are proccessed with the brute-force algorithm, since the Brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. \\
+	If the chromatic number still cannot be concluded then a brute-force algorithm is used to find the chromatic number of the subgraph. However, only the subgraphs with number of vertices below 20 are proccessed with the brute-force algorithm, since the brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. \\
 	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph. This new upper bound is then compared to the old upper bound (computed in line 1) to output the better one. Similarily, the biggest lower bound among the subgraphs is the lower bound of the original graph. \\
 	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs. If it is not the case, then the biggest chromatic number found on the subgraphs is a lower bound for the original graph.\\
-	Finally, genetic algorithm is used to bring the upper-bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
+	Finally, genetic algorithm is used to bring the upper bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
 	The algorithm for each method is described as follows.
 	
 
@@ -265,11 +271,11 @@
 				
 			\end{algorithmic}
 		\end{algorithm}
-		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the same subgraph. Line 6 and 7 add the first vertex to a subgraph and the unchecked list. Then all neighbors of the vertex are added to the subgraph and the unchecked list, and first vertex of the unchecked list is removed. To avoid loops, only the vertices which are not in the subgraph are added. The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the original graph are classified to subgraphs.\\
-		Note that the vertices of the input graphs for this project are represented by successive numbers. All other methods are based on this data type. Therefore, after classifying the vertices to subgraphs, each subgraph is then converted to the standard form, where the index of vertices are successive.
+		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the same subgraph. Line 6 and 7 add the first vertex to a subgraph and the unchecked list. Then all neighbors of the vertex are added to the subgraph and the unchecked list, and first vertex of the unchecked list is removed. To avoid loops, only the vertices which are not in the subgraph are added. The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the original graph are classified into subgraphs.\\
+		Note that the vertices of the input graphs for this project are represented by successive numbers. All other methods are based on this data type. Therefore, after classifying the vertices into subgraphs, each subgraph is then converted to the standard form, where the index of vertices are successive.
 		
 		\section{Greedy algorithm}
-		Greedy algorithm provides an efficient way of coloring the graph. However,  it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upperbound. Algorithm \ref{alg:greedy} describes this method.\\
+		Greedy algorithm \cite{greedy} provides an efficient way of coloring the graph. However,  it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upper bound. Algorithm \ref{alg:greedy} describes this method.\\
 		\begin{algorithm}
 			\caption{Greedy algorithm for upper bound}
 			\label{alg:greedy}
@@ -296,11 +302,11 @@
 		First, the vertices are sorted based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. Optimized buble sort \cite{bubblesort2019} is used in this step. The vertex with higher constraint will be colored first.\\
 		A list is used to store available colors. When coloring a vertex, the available colors is reused as much as possible. If none of the available colors is valid to color that vertex, then a new color is generated, then it is added to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
 		
-		\section{Lower-bound}
+		\section{Lower bound}
 		
 		\section{Special cases}
 			\subsection{Bipartite}
-			A bipartite graph is a graph that has chromatic number 2 (Figure \ref{fig:bipartite}). Algorithm \ref{alg:bipartite} describes the steps to test weather a graph is bipartite, using breadth-first search. \\
+			A bipartite graph is a graph that has chromatic number 2 (Figure \ref{fig:bipartite}). Algorithm \ref{alg:bipartite} \cite{bipartite} describes the steps to test weather a graph is bipartite, using breadth-first search. \\
 			
 			\begin{figure}[h]
 				\centering
@@ -383,87 +389,79 @@
 %			\subsection{Selection method}
 %			\subsection{Crossover}
 %			\subsection{Mutation}
-		The genetic algorithm is an algorithm for calculating the upper-bound together with working its way down to finding lower and better upper bounds for a particular graph. It starts with creating a population of individuals each containing a randomly colored version of the selected graph. The size of this population can be set to any number preferred. Once the population is created it assigns a fitness (which is a real number between 0 and 1) to each individual based on the number of incorrect edges. Following up the individuals are sorted by fitness from high to low (1$>$0), at which it becomes clear what part of the population has the highest correctness of coloring.\\
+		The genetic algorithm is an algorithm for calculating the upper bound together with working its way down to finding lower and better upper bounds for a particular graph. It starts with creating a population of individuals each containing a randomly colored version of the selected graph. The size of this population can be set to any number preferred. Once the population is created it assigns a fitness (which is a real number between 0 and 1) to each individual based on the number of incorrect edges. Following up the individuals are sorted by fitness from high to low (1$>$0), at which it becomes clear what part of the population has the highest correctness of coloring.\\
 		
-		After the individuals are sorted the selection method picks out the “parents” for the next generation through an elitist approach. These parents are utilized for the crossover method creating combinations of two of the parents until there are enough new individuals for the next generation with equal size to the previous one. Afterward, the mutation method, depending on the extent of the mutation rate, will mutate some individuals’ coloring of the graph to achieve possibly better results. By results is meant, individuals with higher fitness.\\
+		After the individuals are sorted the selection method picks out the “parents” for the next generation through an elitist approach. These parents are utilized for the crossover method creating combinations of two of the parents until there are enough new individuals for the next generation with equal size to the previous one. Afterward, the mutation method, depending on the extent of the mutation rate, will mutate some individuals’ coloring of the graph to achieve possibly better results. By results is meant, individuals with higher fitness.
+\\
 		
 		Lastly, this process runs over several generations/populations through a loop till the algorithm finds an individual with fitness “1” (no incorrect edges). When this is the case, the new upper bound will be printed in the command prompt based on how many colors were used to achieve this solution. Following up the entire process starts over with one less color, so that the upper bound will be lower after each successful finding.
 		
 		
-		\section{Brute force algorithm}
-		The brute force algorithm simply generates every possible coloring and checks if it's a valid one. In case the coloring is valid, the algorithm terminates with a possibilty of returning an array of colors assigned to each node and the chromatic number. In order to check the validity of coloring, it utilizes isValid algorithm, that iterates through the array representing nodes' colors and searches for a conflict (two adjacent/connected nodes having assigned the same color). If found, false is being returned instantly, meaning certain coloring is not a valid one.\\
+		\section{Brute-force algorithm}
+		The brute-force algorithm simply generates every possible coloring and checks if it's a valid one. In case the coloring is valid, the algorithm terminates with a possibilty of returning an array of colors assigned to each node and the chromatic number. In order to check the validity of coloring, it utilizes isValid algorithm, that iterates through the array representing nodes' colors and searches for a conflict (two adjacent/connected nodes having assigned the same color). If found, false is being returned instantly, meaning certain coloring is not a valid one.\\
 		
-		Brute Force is based on raw computetional power, thus making it heavily dependent on the hardware that runs it. Finding the chromatic number is GUARANTEED sooner or later. However in reality, its use is limited to graphs not bigger than 20 nodes, and even then, depending yet on how the vertices are being connected.\\
+		Brute-force is based on raw computetional power, thus making it heavily dependent on the hardware that runs it. Finding the chromatic number is GUARANTEED sooner or later. However in reality, its use is limited to graphs not bigger than 20 nodes, and even then, depending yet on how the vertices are being connected.\\
 		
-		Algorithms calculating lowerbound or applying pruning, might futher optimize it, reducing the time needed to find the chromatic number. \\
+		Algorithms calculating lower bound or applying pruning, might futher optimize it, reducing the time needed to find the chromatic number. \\
 		
-		Implementing a greedy-type brute force could also bring significant improvements on effectivness and execution time, but on the other hand, causing a risk of omitting the right coloring and eventually not finding the chromatic number, but only its approximation.
+		Implementing a greedy-type brute-force could also bring significant improvements on effectivness and execution time, but on the other hand, causing a risk of omitting the right coloring and eventually not finding the chromatic number, but only its approximation.
 		
 		
 	\chapter{Experiments}
 	The experiment is set up to run on the given 20 graphs.
 	\chapter{Results}
-	Results on the given 20 graphs:
-	Graph no. 1\\
-	NEW BEST UPPER BOUND = 3\\
-	CHROMATIC NUMBER = 3\\
-	Graph no. 2\\
-	NEW BEST UPPER BOUND = 5\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 3\\
-	NEW BEST UPPER BOUND = 8\\
-	NEW BEST LOWER BOUND = 6\\
-	Graph no. 4\\
-	NEW BEST UPPER BOUND = 7\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 5\\
-	NEW BEST UPPER BOUND = 4\\
-	CHROMATIC NUMBER = 2\\
-	Graph no. 6\\
-	NEW BEST UPPER BOUND = 3\\
-	CHROMATIC NUMBER = 3\\
-	Graph no. 7\\
-	NEW BEST UPPER BOUND = 12\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 8\\
-	NEW BEST UPPER BOUND = 98\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 9\\
-	NEW BEST UPPER BOUND = 6\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 10\\
-	NEW BEST UPPER BOUND = 3\\
-	CHROMATIC NUMBER = 3\\
-	Graph no. 11\\
-	NEW BEST UPPER BOUND = 15\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 12\\
-	NEW BEST UPPER BOUND = 3\\
-	CHROMATIC NUMBER = 2\\
-	Graph no. 13\\
-	NEW BEST UPPER BOUND = 14\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 14\\
-	NEW BEST UPPER BOUND = 5\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 15\\
-	NEW BEST UPPER BOUND = 10\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 16\\
-	NEW BEST UPPER BOUND = 4\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 17\\
-	NEW BEST UPPER BOUND = 8\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 18\\
-	NEW BEST UPPER BOUND = 11\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 19\\
-	NEW BEST UPPER BOUND = 11\\
-	NEW BEST LOWER BOUND = 3\\
-	Graph no. 20\\
-	NEW BEST UPPER BOUND = 9\\
-	NEW BEST LOWER BOUND = 3\\
+		\begin{table} [h!]
+		\begin{center}
+			\begin{tabular}{| c | c | c | c |}
+				\hline
+				Graph no. & Upper bound & Lower bound & Chromatic number  \\
+				\hline
+				1 & 3 & x & 3 \\
+				\hline
+				2 & 5 & 3 & x \\
+				\hline
+				3 & 8 & 6 & x \\
+				\hline
+				4 & 7 & 3 & x \\
+				\hline
+				5 & 4 & x & 2 \\
+				\hline
+				6 & 3 & x & 3 \\
+				\hline
+				7 & 12 & 3 & x \\
+				\hline
+				8 & 98 & 3 & x \\
+				\hline
+				9 & 6 & 3 & x \\
+				\hline
+				10 & 3 & x & 3 \\
+				\hline
+				11 & 15 & 3 & x \\
+				\hline
+				12 & 3 & x & 2 \\
+				\hline
+				13 & 14 & 3 & x \\
+				\hline
+				14 & 5 & 3 & x \\
+				\hline
+				15 & 10 & 3 & x \\
+				\hline
+				16 & 4 & 3 & x \\
+				\hline
+				17 & 8 & 3 & x \\
+				\hline
+				18 & 11 & 3 & x \\
+				\hline
+				19 & 11 & 3 & x \\
+				\hline
+				20 & 9 & 3 & x \\
+				\hline
+			\end{tabular}
+		\end{center}
+		\caption{Results on the given 20 graphs}
+		\label{Mu table}
+	\end{table}
+
 	\chapter{Discussion}
 	
 	\chapter{Conclusion}
@@ -472,7 +470,7 @@
 	\bibliographystyle{apacite}
 	\bibliography{references}
 	
-	\appendix
-	\chapter*{Appendix}
-	\addcontentsline{toc}{chapter}{Appendix}
+%	\appendix
+%	\chapter*{Appendix}
+%	\addcontentsline{toc}{chapter}{Appendix}
 \end{document}
