@@ -142,12 +142,12 @@
 	\chapter{Methods}
 	This chapter describes the methods used for finding the lower bound, upper bound and if possible, the chromatic number of a graph. 
 	\section{Overview}
-	Given the limitation on execution time (2 minutes for each graph), methods that give out results fast are executed first. Algorithm \ref{alg:overview} describes the general execution flow.\\
+	Given the limitation on execution time (2 minutes for each graph), methods that give out results fast are executed first. Algorithm \ref{alg:overview} describes the general work flow.\\
 	\begin{algorithm}
 		\caption{General work flow}
 		\label{alg:overview}
 		\begin{algorithmic}[1]
-			\REQUIRE graph
+			\REQUIRE a graph
 			\STATE upperbound = greedyUpperbound(graph)
 			\STATE subgraphs = decompose(graph)
 			\FORALL{subgraphs} 
@@ -221,7 +221,7 @@
 			\STATE geneticAlgorithm(graph)
 		\end{algorithmic}
 	\end{algorithm}
-	First, a greedy algorithm is run on the given graph to calculate the upper bound. Then, the given graph is decomposed to disconnected subgraphs. For each subgraph, the greedy algorithm is run again to find the upper bound. Then all special cases are checked to see if the chromatic number of the subgraph can be concluded immediately. The special cases are listed below: 
+	First, a greedy algorithm is run on the given graph to calculate the upper bound (line 1). Then, the given graph is decomposed to disconnected subgraphs. For each subgraph, the greedy algorithm is run again to find the upper bound (line 2). Then all special cases are checked to see if the chromatic number of the subgraph can be concluded immediately(line 3 - 34). The special cases are listed below: 
 	\begin{itemize}
 		\item No-vertex graph: chromatic number is 0
 		\item No-edge graph: chromatic number is 1
@@ -231,20 +231,28 @@
 		\item Wheel graph: if the number of vertices is odd, then the chromatic number is 3, otherwise the chromatic number is 4
 	\end{itemize}
 	In line 35, if a subgraph is none of the special cases, the lower bound of the subgraph is 3, since the first three cases have covered all graphs where the chromatic number is below 3. If the upper bound is also 3, then the chromatic number of the subgraph is 3. \\
-	If the chromatic number still cannot be concluded then a brute-force algorithm is used to find the chromatic number of the subgraph. However, only the subgraphs with number of vertices below 20 are proccessed with the brute-force algorithm, since the brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. \\
-	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph. This new upper bound is then compared to the old upper bound (computed in line 1) to output the better one. Similarily, the biggest lower bound among the subgraphs is the lower bound of the original graph. \\
-	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs. If it is not the case, then the biggest chromatic number found on the subgraphs is a lower bound for the original graph.\\
-	Finally, genetic algorithm is used to bring the upper bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
-	The algorithm for each method is described as follows.
+	If the chromatic number of a subgraph still cannot be concluded then a brute-force algorithm is used (line 41 - 43). However, only subgraphs with number of vertices below 20 are proccessed with the brute-force algorithm, since the brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. \\
+	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph (line 45). This new upper bound is then compared to the previously computed upper bound in line 1 to output the better one. Similarily, the biggest lower bound among the subgraphs is a lower bound of the original graph (line 50). \\
+	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs (line 52). If it is not the case, then the biggest chromatic number found on the subgraphs is another lower bound for the original graph (line 54).\\
+	Finally, in line 56, genetic algorithm is used to bring the upper bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
+	The algorithm for each method is described in the next sections of this chapter.
 	
 
 		\section{Graph decomposition}
-		One graph can contain multiple disconnected parts, which can be considered as independent subgraphs. Decomposing the graph will allow other methods to work on smaller graphs. Algorithm \ref{alg:decompose} describes the method for decomposing a graph into subgraphs, where each subgraph is a fully connected graph.\\
+		One graph can contain multiple disconnected parts, which can be considered as independent subgraphs (Figure \ref{fig:decompose}). Decomposing the graph will allow other methods to work on smaller graphs. Algorithm \ref{alg:decompose} describes the method for decomposing a graph into subgraphs, where each subgraph is a fully connected graph.\\
+		
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=50mm,scale=0.5]{figures/DecomposedGraph.png}
+			\caption{A graph before decomposed (a) and after decomposed (b)}
+			\label{fig:decompose}
+		\end{figure}
+	
 		\begin{algorithm}
 			\caption{Decomposing a graph}
 			\label{alg:decompose}
 			\begin{algorithmic}[1]
-				\REQUIRE graph
+				\REQUIRE a graph
 				\STATE Create listOfVertices 
 				\STATE listOfVertices.add(all vertices in the graph)
 				\WHILE{listOfVertices is not empty}
@@ -271,16 +279,16 @@
 				
 			\end{algorithmic}
 		\end{algorithm}
-		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the same subgraph. Line 6 and 7 add the first vertex to a subgraph and the unchecked list. Then all neighbors of the vertex are added to the subgraph and the unchecked list, and first vertex of the unchecked list is removed. To avoid loops, only the vertices which are not in the subgraph are added. The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the original graph are classified into subgraphs.\\
-		Note that the vertices of the input graphs for this project are represented by successive numbers. All other methods are based on this data type. Therefore, after classifying the vertices into subgraphs, each subgraph is then converted to the standard form, where the index of vertices are successive.
+		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the current expanding subgraph. In line 6 and 7 the first vertex is added to a subgraph and the unchecked list. Then all the neighbors of the vertex are added to the subgraph and the unchecked list, and the first vertex of the unchecked list is removed (line 9 - 19). To avoid loops, only vertices not in the subgraph are added. The same is done for all vertices in the unchecked list, until the list is empty. The process is repeated until all vertices in the original graph are classified into subgraphs.\\
+		Note that the vertices of the input graphs for this project are represented by successive numbers. All algorithms are implemented based on this data structure. Therefore, after classifying the vertices into subgraphs, each subgraph is then converted to the standard form, where the indexes of vertices are successive numbers (line 20).
 		
 		\section{Greedy algorithm}
-		Greedy algorithm \cite{greedy} provides an efficient way of coloring the graph. However,  it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upper bound. Algorithm \ref{alg:greedy} describes this method.\\
+		Greedy algorithm \cite{greedy} provides an efficient way of coloring a graph. However, it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upper bound. Algorithm \ref{alg:greedy} describes this method.\\
 		\begin{algorithm}
 			\caption{Greedy algorithm for upper bound}
 			\label{alg:greedy}
 			\begin{algorithmic}[1]
-				\REQUIRE graph
+				\REQUIRE a graph
 				\STATE Sort vertices in non-increasing order of constraints
 				\STATE Create availableColors list
 				\FORALL{vertices}
@@ -299,19 +307,21 @@
 				\STATE \textbf{return} size of availableColors list
 			\end{algorithmic}
 		\end{algorithm}
-		First, the vertices are sorted based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. Optimized buble sort \cite{bubblesort2019} is used in this step. The vertex with higher constraint will be colored first.\\
-		A list is used to store available colors. When coloring a vertex, the available colors is reused as much as possible. If none of the available colors is valid to color that vertex, then a new color is generated, then it is added to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
+		First, the vertices are sorted based on their constraints (line 1). The constraint of a vertex is the number of other vertices connected to that vertex. Optimized bubble sort \cite{bubblesort2019} is used in this step. The vertex with more neighbors will be colored first.\\
+		A list is used to store available colors. When coloring a vertex, the available colors is reused as much as possible (line 4-9). If none of the available colors is valid to color that vertex, then a new color is generated and added to the available list (line 10-14). When the graph is fully colored, the number of colors in the available list is returned.\\
 		
 		\section{Lower bound}
 		
 		\section{Special cases}
 			\subsection{Bipartite}
-			A bipartite graph is a graph that has chromatic number 2 (Figure \ref{fig:bipartite}). Algorithm \ref{alg:bipartite} \cite{bipartite} describes the steps to test weather a graph is bipartite, using breadth-first search. \\
+			The formal definition of a bipartite graph is: \\
+			"A bipartite graph, also called a bigraph, is a set of graph vertices decomposed into two disjoint sets such that no two graph vertices within the same set are adjacent." \cite{bipartiteDef} \\
+			The chromatic number of a bipartite graph is 2. Algorithm \ref{alg:bipartite} \cite{bipartite} describes the steps to test weather a graph is bipartite, using breadth-first search. \\
 			
 			\begin{figure}[h]
 				\centering
 				\includegraphics[width=50mm,scale=0.5]{figures/bipartite.png}
-				\caption{An example of a bipartite graph. This figure is from \protect\cite{bipartiteFig}}
+				\caption{An example of bipartite graphs. This figure is from \protect\cite{bipartiteFig}}
 				\label{fig:bipartite}
 			\end{figure}
 			
@@ -319,8 +329,8 @@
 				\caption{Bipartite testing}
 				\label{alg:bipartite}
 			
-				\begin{algorithmic}
-					\REQUIRE graph
+				\begin{algorithmic}[1]
+					\REQUIRE a graph
 					\STATE Create unchecked list
 					\STATE unchecked.add(first vertex)
 					\STATE Assign color 1 to the first vertex
@@ -341,31 +351,31 @@
 					\STATE \textbf{return} true
 				\end{algorithmic}
 			\end{algorithm}
-			 Two colors, represented by 1 and -1, are used to color the graph. A unchecked list stores the vertices whose neighbors are not yet considered. First, assign the color 1 to the first vertex and add it to the unchecked list. Then, all its neighbors are considered, and the vertex itself is removed from the unchecked list. For each neighbor, if the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite. If the neighbor has not been colored then it is assigned with the oposite color. The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the graph are colored. If the graph is successfully colored, then it is bipartite.
+			 Two colors, represented by 1 and -1, are used to color the graph. A unchecked list stores the vertices whose neighbors are not yet considered. First, the color 1 is assigned to the first vertex and the first vertex is added to the unchecked list (line 2-3). Then, all its neighbors are considered and the vertex itself is removed from the unchecked list. For each neighbor, if the neighbor has not been colored then it is assigned with the oposite color (line 10). If the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite (line 12-13). The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the graph are colored. If the graph is successfully colored, then it is bipartite.
 			\subsection{Odd cycle}
-			An odd cycle is a cycle with an odd number of edges and vertices (Figure \ref{fig:oddcycle}). The chromatic number of this kind of graph is 3. \\
+			An odd cycle is a cycle with an odd number of edges and vertices (Figure \ref{fig:oddcycle}). The chromatic number of an odd cycle graph is 3. \\
 			
 			\begin{figure}[h]
 				\centering
 				\includegraphics[width=50mm,scale=0.5]{figures/cycle.png}
-				\caption{An example of an odd cycle. This figure is from \protect\cite{cycleFig}}
+				\caption{An example of odd cycle graphs. This figure is from \protect\cite{cycleFig}}
 				\label{fig:oddcycle}
 			\end{figure}
 		
 			The method for testing if a graph is an odd cycle checks for three condition:
 			\begin{itemize}
-				\item Number of vertices is equal to number of edges
+				\item The number of vertices is equal to the number of edges
 				\item Every vertex has two edges
 				\item The number of vertices is odd
 			\end{itemize}
-			If all three conditions are satisfied then return true, else return false.
+			A graph is an odd cycle graph if and only if all three conditions are satisfied.
 			
 			\subsection{Complete graph}
-			A complete graph (Figure \ref{fig:complete}) is a graph where every vertex is connected to all other vertices. The chromatic number is the number of vertices. The method checks weather a graph has the above conditions to determine if it is a complete graph.
+			A complete graph (Figure \ref{fig:complete}) is a graph where every vertex is connected to all other vertices. The chromatic number of a complete graph is the number of vertices. The method checks weather a graph has the above conditions to determine if it is a complete graph.
 			\begin{figure}[h]
 				\centering
 				\includegraphics[width=50mm,scale=0.5]{figures/complete.png}
-				\caption{An example of a complete graph. This figure is from \protect\cite{completeFig}}
+				\caption{An example of complete graphs. This figure is from \protect\cite{completeFig}}
 				\label{fig:complete}
 			\end{figure}
 			
@@ -379,9 +389,8 @@
 				\label{fig:wheel}
 			\end{figure}
 			
-			The method used to check whether a graph is a wheel graph is described as follow. First, every vertex is checked to see if it is connected to all remaining vertices of the graph. If that condition is satisfied, then the vertex is the center. Next, the center is removed from the graph. If the remaining graph is a cycle, then return true.
-			If the Graph is a wheel graph with odd number of vertices, then chromatic number is 3.
-			Else if the graph is a wheel graph with even number of vertices, then chromatic number is 4.
+			The method used to check whether a graph is a wheel graph is as follows. First, every vertex is checked to see if it is connected to all the  remaining vertices of the graph. If that condition is satisfied, then the vertex is the center. Next, the center is removed from the graph. If the remaining graph is a cycle, then the original graph is a wheel graph.
+			If the graph is a wheel graph with odd number of vertices, then chromatic number is 3. Otherwise, if the graph is a wheel graph with even number of vertices, then chromatic number is 4.
 			
 			
 		\section{Genetic algorithm}
