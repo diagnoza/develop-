@@ -93,6 +93,8 @@
 
 	\addcontentsline{toc}{chapter}{Preface}
 	
+	This report is about graph-coloring(Vertices Coloring ). Graph-Coloring is one of the important topic of graph theory. Task of the project is to compute chromatic number, upper and lower bounds of the given 20 graphs and make different experiments and note down the results of the experiments. This report consist of 6 Chapters. First Chapter is all about brief introduction to Graph- Coloring with few properties, examples and uses .Second Chapter is all about different algorithms like Greedy Algorithm to find upper bound of the graph, Genetic Algorithm to find Chromatic Number of the graph and few other algorithms like Brute force search, Breadth-first search etc. Chapters 3,4 and 5 are about Experiments and their results. Last Chapter would be about the conclusion of the report. 
+	
 
 	\chapter*{Summary}
 	\addcontentsline{toc}{chapter}{Summary}
@@ -101,10 +103,34 @@
 	
 	\chapter*{Abbreviations and symbols}
 	\addcontentsline{toc}{chapter}{List of abbreviations and symbols}
+	In Kn,m\\
+	n = Number of vertices\\
+	m = Number of edges\\
+	
 	
 	%-----------------------------------------------------------------------------
 	\chapter{Introduction}
 	\pagenumbering{arabic}
+	
+	Graph is a representation of a set of objects in which some pairs of the objects are related in a set. The objects are called Vertices and each of the related pairs of vertices is called an Edge. Generally, graphs are represented in a form of diagrams by joining a line between two related pairs of vertices. There are different types of graphs such as complete graph, cyclic graph, tree graph, wheel graph, planar graph etc. \\
+	Proper Coloring of the graph is assigning a color to the vertices or edges such that no two vertices or edges share same color. This is called Graph-Coloring. There are different types of graph-coloring like Vertices-Coloring, Edges-Coloring, Face-Coloring, Total-Coloring etc. In this report we focus on Vertices-Coloring. Vertices-Coloring is coloring vertices of the graph such that no two adjacent vertices share same color. Graph Coloring is one of the important topic of graph theory and is used in real time applications of computer science. Graph Coloring used in various research areas of computer science such data mining, networking etc.\\
+	
+	The coloring used at most k colors is called k-coloring. The smallest number of colors used in graph-coloring is called Chromatic Number. It is denoted by x(G).For k-coloring chromatic Number is exactly k. The Maximum degree of all vertices of graph is the Upper bound for the chromatic number of the graph. The Minimum degree of all vertices is the Lower bound for the chromatic number of the graph. For any graph chromatic number must be less than or equals to maximum degree of all vertices of graph. This is called Brook's Theorem. \\
+	
+	
+	There are few properties for Chromatic Number:\\
+	•	If a Graph has n vertices then x(G)<=n\\
+	•	If the graph has any self loop then it is not possible to color the corresponding vertex.\\
+	•	In any graph, the sum of the degree of vertices is equal to twice the number of edges.\\
+	
+	
+	The rest of the report is divided as follows: Chapter 2 is about the methods that we used to compute  Upper Bound, Lower Bound and Chromatic Number of the given graph. We have used different Algorithms like Genetic Algorithm, Greedy Algorithm, Brute  Force Search. Genetic Algorithm and Brute Force  to compute Chromatic Number, Greedy Algorithm to compute Upper bound for the Chromatic Number of graph.  Chapters 3,4 and 5 are about Experiments and their results. In the last Chapter, the whole project will be concluded.\\
+	
+	
+	
+	HISTORY: \\
+	The basic idea of graph were introduced in 18th century by Leonhard Euler(Swiss Mathematician). The origin of graph coloring concept was started in 1852.
+	
 
 	
 	\chapter{Methods}
@@ -268,44 +294,176 @@
 			\end{algorithmic}
 		\end{algorithm}
 		First, the vertices are sorted based on their constraints. The constraint of a vertex is  the number of other vertices which are connected to that vertex. Optimized buble sort \cite{bubblesort2019} is used in this step. The vertex with higher constraint will be colored first.\\
-		A list is used to store available colors. When coloring a vertex, the available colors is reused as much as possible. If non of the available colors is valid to color that vertex, then a new color is generated, then it is added to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
+		A list is used to store available colors. When coloring a vertex, the available colors is reused as much as possible. If none of the available colors is valid to color that vertex, then a new color is generated, then it is added to the available list. When the graph is fully colored, the number of colors in the available list is returned.\\
 		
 		\section{Lower-bound}
 		
 		\section{Special cases}
 			\subsection{Bipartite}
-			A bipartite graph is a graph that has chromatic number 2. Breadth-first search is used to test weather a graph is bipartite. Two colors, represented by 1 and -1, are used to color the graph. Keep a list to store the vertices whose neighbors are not yet considered. First, assign the color 1 to the first vertex and add it to the unchecked list. Then, consider all its neighbors, and remove it from the unchecked list. For each neighbors, if the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite. If the neighbor has not been colored then assign the oposite color to it. Do the same for all elements in the unchecked list, until the list is empty. Repeat the process until all vertices in the original graph are colored. If the graph is successfully colored, then it is bipartite.
+			A bipartite graph is a graph that has chromatic number 2 (Figure \ref{fig:bipartite}). Algorithm \ref{alg:bipartite} describes the steps to test weather a graph is bipartite, using breadth-first search. \\
+			
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=50mm,scale=0.5]{figures/bipartite.png}
+				\caption{An example of a bipartite graph. This figure is from \protect\cite{bipartiteFig}}
+				\label{fig:bipartite}
+			\end{figure}
+			
+			\begin{algorithm}
+				\caption{Bipartite testing}
+				\label{alg:bipartite}
+			
+				\begin{algorithmic}
+					\REQUIRE graph
+					\STATE Create unchecked list
+					\STATE unchecked.add(first vertex)
+					\STATE Assign color 1 to the first vertex
+					\WHILE{The graph is not fully colored}
+					\WHILE{unchecked list is not empty}
+					\STATE checkingVertex = unchecked.getFirstElement()
+					\STATE unchecked.removeFistElement
+					\FORALL{neighbors of checkingVertex}
+					\IF{neibor not yet colored}
+					\STATE Assign the opposite color of checkingVertex's color to neighbor
+					\STATE unchecked.add(neighbor)
+					\ELSIF{neighbor has invalid color}
+					\STATE \textbf{return} false
+					\ENDIF
+					\ENDFOR
+					\ENDWHILE
+					\ENDWHILE
+					\STATE \textbf{return} true
+				\end{algorithmic}
+			\end{algorithm}
+			 Two colors, represented by 1 and -1, are used to color the graph. A unchecked list stores the vertices whose neighbors are not yet considered. First, assign the color 1 to the first vertex and add it to the unchecked list. Then, all its neighbors are considered, and the vertex itself is removed from the unchecked list. For each neighbor, if the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite. If the neighbor has not been colored then it is assigned with the oposite color. The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the graph are colored. If the graph is successfully colored, then it is bipartite.
 			\subsection{Odd cycle}
-			An odd cycle is a cycle with an odd number of edges and vertices. The chromatic number of this kind of graph is 3. \\
-			For the graph to be Cyclic, Two conditions must be satisfied:
-			1.Number of Vertices should be equal to Number of Edges.
-			2.Every Vertices must have two Edges.
-			If above two conditions satisfied, then  the graph is Cyclic.
+			An odd cycle is a cycle with an odd number of edges and vertices (Figure \ref{fig:oddcycle}). The chromatic number of this kind of graph is 3. \\
+			
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=50mm,scale=0.5]{figures/cycle.png}
+				\caption{An example of an odd cycle. This figure is from \protect\cite{cycleFig}}
+				\label{fig:oddcycle}
+			\end{figure}
+		
+			The method for testing if a graph is an odd cycle checks for three condition:
+			\begin{itemize}
+				\item Number of vertices is equal to number of edges
+				\item Every vertex has two edges
+				\item The number of vertices is odd
+			\end{itemize}
+			If all three conditions are satisfied then return true, else return false.
 			
 			\subsection{Complete graph}
-			A complete graph is a graph where every vertex is connected to all other vertices. The chromatic number is the number of vertices. The method checks weather a graph has the above conditions to determine if it is a complete graph.
-			Chromatic number = number of vertices
+			A complete graph (Figure \ref{fig:complete}) is a graph where every vertex is connected to all other vertices. The chromatic number is the number of vertices. The method checks weather a graph has the above conditions to determine if it is a complete graph.
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=50mm,scale=0.5]{figures/complete.png}
+				\caption{An example of a complete graph. This figure is from \protect\cite{completeFig}}
+				\label{fig:complete}
+			\end{figure}
+			
 			\subsection{Wheel graph}
-			A wheel graph is a graph formed by connecting a single vertex to all vertices of a cycle.
-			To check whether a graph is wheel or not: First, find the center vertex of the graph and that vertex must be connected to all remaining vertices of the graph. Now, remove the  center from the graph. Check if all vertices except center vertex form a cycle.
+			A wheel graph (Figure \ref{fig:wheel}) is formed by connecting a single vertex to all vertices of a cycle.
+		
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=50mm,scale=0.5]{figures/wheel.png}
+				\caption{Examples of wheel graphs. This figure is from \protect\cite{wheelFig}}
+				\label{fig:wheel}
+			\end{figure}
+			
+			The method used to check whether a graph is a wheel graph is described as follow. First, every vertex is checked to see if it is connected to all remaining vertices of the graph. If that condition is satisfied, then the vertex is the center. Next, the center is removed from the graph. If the remaining graph is a cycle, then return true.
 			If the Graph is a wheel graph with odd number of vertices, then chromatic number is 3.
 			Else if the graph is a wheel graph with even number of vertices, then chromatic number is 4.
 			
 			
 		\section{Genetic algorithm}
-			\subsection{Fitness function}
-			Based on the number of invalid colorings of each graph
-			\subsection{Selection method}
-			\subsection{Crossover}
-			\subsection{Mutation}
+%			\subsection{Fitness function}
+%			\subsection{Selection method}
+%			\subsection{Crossover}
+%			\subsection{Mutation}
+		The genetic algorithm is an algorithm for calculating the upper-bound together with working its way down to finding lower and better upper bounds for a particular graph. It starts with creating a population of individuals each containing a randomly colored version of the selected graph. The size of this population can be set to any number preferred. Once the population is created it assigns a fitness (which is a real number between 0 and 1) to each individual based on the number of incorrect edges. Following up the individuals are sorted by fitness from high to low (1$>$0), at which it becomes clear what part of the population has the highest correctness of coloring.\\
+		
+		After the individuals are sorted the selection method picks out the “parents” for the next generation through an elitist approach. These parents are utilized for the crossover method creating combinations of two of the parents until there are enough new individuals for the next generation with equal size to the previous one. Afterward, the mutation method, depending on the extent of the mutation rate, will mutate some individuals’ coloring of the graph to achieve possibly better results. By results is meant, individuals with higher fitness.\\
+		
+		Lastly, this process runs over several generations/populations through a loop till the algorithm finds an individual with fitness “1” (no incorrect edges). When this is the case, the new upper bound will be printed in the command prompt based on how many colors were used to achieve this solution. Following up the entire process starts over with one less color, so that the upper bound will be lower after each successful finding.
+		
 		
 		\section{Brute force algorithm}
+		The brute force algorithm simply generates every possible coloring and checks if it's a valid one. In case the coloring is valid, the algorithm terminates with a possibilty of returning an array of colors assigned to each node and the chromatic number. In order to check the validity of coloring, it utilizes isValid algorithm, that iterates through the array representing nodes' colors and searches for a conflict (two adjacent/connected nodes having assigned the same color). If found, false is being returned instantly, meaning certain coloring is not a valid one.\\
+		
+		Brute Force is based on raw computetional power, thus making it heavily dependent on the hardware that runs it. Finding the chromatic number is GUARANTEED sooner or later. However in reality, its use is limited to graphs not bigger than 20 nodes, and even then, depending yet on how the vertices are being connected.\\
+		
+		Algorithms calculating lowerbound or applying pruning, might futher optimize it, reducing the time needed to find the chromatic number. \\
+		
+		Implementing a greedy-type brute force could also bring significant improvements on effectivness and execution time, but on the other hand, causing a risk of omitting the right coloring and eventually not finding the chromatic number, but only its approximation.
 		
 		
 	\chapter{Experiments}
-		
+	The experiment is set up to run on the given 20 graphs.
 	\chapter{Results}
-	
+	Results on the given 20 graphs:
+	Graph no. 1\\
+	NEW BEST UPPER BOUND = 3\\
+	CHROMATIC NUMBER = 3\\
+	Graph no. 2\\
+	NEW BEST UPPER BOUND = 5\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 3\\
+	NEW BEST UPPER BOUND = 8\\
+	NEW BEST LOWER BOUND = 6\\
+	Graph no. 4\\
+	NEW BEST UPPER BOUND = 7\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 5\\
+	NEW BEST UPPER BOUND = 4\\
+	CHROMATIC NUMBER = 2\\
+	Graph no. 6\\
+	NEW BEST UPPER BOUND = 3\\
+	CHROMATIC NUMBER = 3\\
+	Graph no. 7\\
+	NEW BEST UPPER BOUND = 12\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 8\\
+	NEW BEST UPPER BOUND = 98\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 9\\
+	NEW BEST UPPER BOUND = 6\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 10\\
+	NEW BEST UPPER BOUND = 3\\
+	CHROMATIC NUMBER = 3\\
+	Graph no. 11\\
+	NEW BEST UPPER BOUND = 15\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 12\\
+	NEW BEST UPPER BOUND = 3\\
+	CHROMATIC NUMBER = 2\\
+	Graph no. 13\\
+	NEW BEST UPPER BOUND = 14\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 14\\
+	NEW BEST UPPER BOUND = 5\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 15\\
+	NEW BEST UPPER BOUND = 10\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 16\\
+	NEW BEST UPPER BOUND = 4\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 17\\
+	NEW BEST UPPER BOUND = 8\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 18\\
+	NEW BEST UPPER BOUND = 11\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 19\\
+	NEW BEST UPPER BOUND = 11\\
+	NEW BEST LOWER BOUND = 3\\
+	Graph no. 20\\
+	NEW BEST UPPER BOUND = 9\\
+	NEW BEST LOWER BOUND = 3\\
 	\chapter{Discussion}
 	
 	\chapter{Conclusion}
