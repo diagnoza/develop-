@@ -3,8 +3,17 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{algcompatible}
+\usepackage[section]{placeins}
 \graphicspath{{Images/}}
+\setlength\parindent{0pt}
 
+\makeatletter
+\AtBeginDocument{%
+	\expandafter\renewcommand\expandafter\subsection\expandafter{%
+		\expandafter\@fb@secFB\subsection
+	}%
+}
+\makeatother
 
 \begin{document}
 	%------------------------Cover-------------------------------------------------------------
@@ -92,52 +101,33 @@
 	\pagenumbering{gobble}
 
 	\addcontentsline{toc}{chapter}{Preface}
+	This report is a part of the outcomes of our work for project 1.3: Graph Coloring. It can be used as a guideline to partially solve the non-deterministic polynomial-time hard problem of finding the chromatic number of a graph.
 	
-	This report is about graph-coloring(Vertices Coloring ). Graph-Coloring is one of the important topic of graph theory. Task of the project is to compute chromatic number, upper and lower bounds of the given 20 graphs and make different experiments and note down the results of the experiments. This report consist of 6 Chapters. First Chapter is all about brief introduction to Graph- Coloring with few properties, examples and uses .Second Chapter is all about different algorithms like Greedy Algorithm to find upper bound of the graph, Genetic Algorithm to find Chromatic Number of the graph and few other algorithms like Brute force search, Breadth-first search etc. Chapters 3,4 and 5 are about Experiments and their results. Last Chapter would be about the conclusion of the report. 
+%	This report is about graph-coloring(Vertices Coloring ). Graph-Coloring is one of the important topic of graph theory. Task of the project is to compute chromatic number, upper and lower bounds of the given 20 graphs and make different experiments and note down the results of the experiments. This report consist of 6 Chapters. First Chapter is all about brief introduction to Graph- Coloring with few properties, examples and uses .Second Chapter is all about different algorithms like Greedy Algorithm to find upper bound of the graph, Genetic Algorithm to find Chromatic Number of the graph and few other algorithms like Brute force search, Breadth-first search etc. Chapters 3,4 and 5 are about Experiments and their results. Last Chapter would be about the conclusion of the report. 
 	
-
+	%-----------------------------------------------------------------------------
 	\chapter*{Summary}
 	\addcontentsline{toc}{chapter}{Summary}
+	This project gives an answer for the question of finding the smallest range of the chromatic number of a graph. The methods used are graph decomposition, greedy algorithm, identifying special cases of graphs, brute-force algorithm and genetic algorithm. This approach gives decent results on small graphs and graphs with special structures. However, the results are unpredictable for large arbitrary graphs.
 	
+	%-----------------------------------------------------------------------------
 	\tableofcontents
 	
 %	\chapter*{Abbreviations and symbols}
 %	\addcontentsline{toc}{chapter}{List of abbreviations and symbols}
-%	In Kn,m
-%\\
-%	n = Number of vertices
-%\\
-%	m = Number of edges
-%\\
-%	
+
 	
 	%-----------------------------------------------------------------------------
 	\chapter{Introduction}
 	\pagenumbering{arabic}
 	
-	Graph is a representation of a set of objects in which some pairs of the objects are related in a set. The objects are called Vertices and each of the related pairs of vertices is called an Edge. Generally, graphs are represented in a form of diagrams by joining a line between two related pairs of vertices. There are different types of graphs such as complete graph, cyclic graph, tree graph, wheel graph, planar graph etc. 
-\\
-	Proper Coloring of the graph is assigning a color to the vertices or edges such that no two vertices or edges share same color. This is called Graph-Coloring. There are different types of graph-coloring like Vertices-Coloring, Edges-Coloring, Face-Coloring, Total-Coloring etc. In this report we focus on Vertices-Coloring. Vertices-Coloring is coloring vertices of the graph such that no two adjacent vertices share same color. Graph Coloring is one of the important topic of graph theory and is used in real time applications of computer science. Graph Coloring used in various research areas of computer science such data mining, networking etc.
-\\
+	A graph is a set of vertices connected by edges. In this project, the input graphs are undirected graph, where the edges have no orientation. In addition, a vertex must not connected to itself and the number of edges between two vertices must not exceed 1. \\
 	
-	The coloring used at most k colors is called k-coloring. The smallest number of colors used in graph-coloring is called Chromatic Number. It is denoted by x(G).For k-coloring chromatic Number is exactly k. The Maximum degree of all vertices of graph is the Upper bound for the chromatic number of the graph. The Minimum degree of all vertices is the Lower bound for the chromatic number of the graph. For any graph chromatic number must be less than or equals to maximum degree of all vertices of graph. This is called Brook's Theorem. 
-\\
+	Graph coloring is coloring the vertices of a graph such that no two adjacent vertices share the same color. Graph coloring is one of the important topic of graph theory and is used in real time applications of computer science and it is used in various research areas of computer science such as data mining, networking etc.\\
 	
+	The smallest number of colors used in graph coloring is called the chromatic number. A lower bound of a graph is a number that is less than or equal to the chromtic number, while an upper bound is a number that is greater than or equal to the chromtic number. The purpose of this project is to find the closest upper bound, lower bound and, if possible, the chromatic number of a graph.\\
 	
-	There are few properties for Chromatic Number:
-\\
-	•	If a Graph has n vertices then x(G)<=n
-\\
-	•	If the graph has any self loop then it is not possible to color the corresponding vertex.
-\\
-	•	In any graph, the sum of the degree of vertices is equal to twice the number of edges.
-\\
-	
-	
-	The rest of the report is divided as follows: Chapter 2 is about the methods that we used to compute  Upper Bound, Lower Bound and Chromatic Number of the given graph. We have used different Algorithms like Genetic Algorithm, Greedy Algorithm, Brute  Force Search. Genetic Algorithm and Brute Force  to compute Chromatic Number, Greedy Algorithm to compute Upper bound for the Chromatic Number of graph.  Chapters 3,4 and 5 are about Experiments and their results. In the last Chapter, the whole project will be concluded.
-\\
-	
-
+	The rest of the report is divided as follows. Chapter 2 is about the methods used to compute the upper bound, lower bound and the chromatic number of a graph. Different algorithms are used: graph decomposition, greedy algorithm, identifying special cases of graphs, brute-force algorithm and genetic algorithm. Chapters 3,4 and 5 are about experiments and their results. In the last chapter, the whole project will be concluded.
 	
 	\chapter{Methods}
 	This chapter describes the methods used for finding the lower bound, upper bound and if possible, the chromatic number of a graph. 
@@ -232,9 +222,11 @@
 	\end{itemize}
 	In line 35, if a subgraph is none of the special cases, the lower bound of the subgraph is 3, since the first three cases have covered all graphs where the chromatic number is below 3. If the upper bound is also 3, then the chromatic number of the subgraph is 3. \\
 	If the chromatic number of a subgraph still cannot be concluded then a brute-force algorithm is used (line 41 - 43). However, only subgraphs with number of vertices below 20 are proccessed with the brute-force algorithm, since the brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. \\
+	
 	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph (line 45). This new upper bound is then compared to the previously computed upper bound in line 1 to output the better one. Similarily, the biggest lower bound among the subgraphs is a lower bound of the original graph (line 50). \\
 	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs (line 52). If it is not the case, then the biggest chromatic number found on the subgraphs is another lower bound for the original graph (line 54).\\
 	Finally, in line 56, genetic algorithm is used to bring the upper bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
+	
 	The algorithm for each method is described in the next sections of this chapter.
 	
 
@@ -244,7 +236,7 @@
 		\begin{figure}[h]
 			\centering
 			\includegraphics[width=50mm,scale=0.5]{figures/DecomposedGraph.png}
-			\caption{A graph before decomposed (a) and after decomposed (b)}
+			\caption{A graph (a) before decomposed and (b) after decomposed}
 			\label{fig:decompose}
 		\end{figure}
 	
@@ -393,6 +385,15 @@
 			If the graph is a wheel graph with odd number of vertices, then chromatic number is 3. Otherwise, if the graph is a wheel graph with even number of vertices, then chromatic number is 4.
 			
 			
+		\section{Brute-force algorithm}
+		The brute-force algorithm simply generates every possible coloring and checks if it's a valid one. In case the coloring is valid, the algorithm terminates with a possibilty of returning an array of colors assigned to each node and the chromatic number. In order to check the validity of coloring, it utilizes isValid algorithm, that iterates through the array representing nodes' colors and searches for a conflict (two adjacent/connected nodes having assigned the same color). If found, false is being returned instantly, meaning certain coloring is not a valid one.\\
+		
+		Brute-force is based on raw computetional power, thus making it heavily dependent on the hardware that runs it. Finding the chromatic number is GUARANTEED sooner or later. However in reality, its use is limited to graphs not bigger than 20 nodes, and even then, depending yet on how the vertices are being connected.\\
+		
+		Algorithms calculating lower bound or applying pruning, might futher optimize it, reducing the time needed to find the chromatic number. \\
+		
+		Implementing a greedy-type brute-force could also bring significant improvements on effectivness and execution time, but on the other hand, causing a risk of omitting the right coloring and eventually not finding the chromatic number, but only its approximation.	
+			
 		\section{Genetic algorithm}
 %			\subsection{Fitness function}
 %			\subsection{Selection method}
@@ -405,15 +406,6 @@
 		
 		Lastly, this process runs over several generations/populations through a loop till the algorithm finds an individual with fitness “1” (no incorrect edges). When this is the case, the new upper bound will be printed in the command prompt based on how many colors were used to achieve this solution. Following up the entire process starts over with one less color, so that the upper bound will be lower after each successful finding.
 		
-		
-		\section{Brute-force algorithm}
-		The brute-force algorithm simply generates every possible coloring and checks if it's a valid one. In case the coloring is valid, the algorithm terminates with a possibilty of returning an array of colors assigned to each node and the chromatic number. In order to check the validity of coloring, it utilizes isValid algorithm, that iterates through the array representing nodes' colors and searches for a conflict (two adjacent/connected nodes having assigned the same color). If found, false is being returned instantly, meaning certain coloring is not a valid one.\\
-		
-		Brute-force is based on raw computetional power, thus making it heavily dependent on the hardware that runs it. Finding the chromatic number is GUARANTEED sooner or later. However in reality, its use is limited to graphs not bigger than 20 nodes, and even then, depending yet on how the vertices are being connected.\\
-		
-		Algorithms calculating lower bound or applying pruning, might futher optimize it, reducing the time needed to find the chromatic number. \\
-		
-		Implementing a greedy-type brute-force could also bring significant improvements on effectivness and execution time, but on the other hand, causing a risk of omitting the right coloring and eventually not finding the chromatic number, but only its approximation.
 		
 		
 	\chapter{Experiments}
