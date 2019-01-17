@@ -117,7 +117,7 @@ public class MultigraphsExperiment {
         //**********************************************************************************************************************************************************
 
         final int THRESHOLD_FOR_BRUTEFORCE = 20;
-        final int ATTEMPS_FOR_LOWERBOUND = 10;
+        final int ATTEMPS_FOR_LOWERBOUND = n;
 
         //ArrayList of linked lists, for each and every node contains its adjacent nodes
         ArrayList<LinkedList<Integer>> adjList = new ArrayList<LinkedList<Integer>>();
