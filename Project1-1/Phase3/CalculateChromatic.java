@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CalculateChromatic {
     public static int[] calculateDegreeArray(int n, int m, ColEdge e[]) {
@@ -344,5 +345,35 @@ public class CalculateChromatic {
         }
 
         return usedColors.size();
+    }
+
+    public static int getLowerboundGreedy(ArrayList<LinkedList<Integer>> adjList, int numberOfVertices, int attempts){
+        List<Integer> startingVertices = new ArrayList<>();
+        while (startingVertices.size() < attempts){
+            int randomVertex = (int) (Math.random() * numberOfVertices) + 1;
+            if (!startingVertices.contains(randomVertex)){
+                startingVertices.add(randomVertex);
+            }
+        }
+        int maxClique = -1;
+        for (Integer startingVertex: startingVertices){
+            List<Integer> clique = new ArrayList<>();
+            clique.add(startingVertex);
+            for (int i = 1; i <= numberOfVertices; i++){
+                if (i != startingVertex){
+                    boolean isInClique = true;
+                    for (Integer cliqueElement: clique){
+                        if (!adjList.get(i).contains(cliqueElement)){
+                            isInClique = false;
+                        }
+                    }
+                    if (isInClique) clique.add(i);
+                }
+            }
+            if (clique.size() > maxClique){
+                maxClique = clique.size();
+            }
+        }
+        return maxClique;
     }
 }

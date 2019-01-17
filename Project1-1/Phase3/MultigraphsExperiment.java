@@ -117,6 +117,7 @@ public class MultigraphsExperiment {
         //**********************************************************************************************************************************************************
 
         final int THRESHOLD_FOR_BRUTEFORCE = 20;
+        final int ATTEMPS_FOR_LOWERBOUND = 10;
 
         //ArrayList of linked lists, for each and every node contains its adjacent nodes
         ArrayList<LinkedList<Integer>> adjList = new ArrayList<LinkedList<Integer>>();
@@ -239,7 +240,7 @@ public class MultigraphsExperiment {
             }
         }
 
-
+        System.out.println("NEW BEST LOWER BOUND = " + CalculateChromatic.getLowerboundGreedy(adjList, n, ATTEMPS_FOR_LOWERBOUND));
         //TODO: Lowerbound method
         //TODO: Do genetic algorithm
 
