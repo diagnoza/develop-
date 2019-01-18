@@ -171,14 +171,6 @@ public class ReadGraph_edited {
                 subGraph.setChromaticNumber(subUpperbound);
                 continue;
             }
-            if (CalculateChromatic.isWheelGraph(subGraph.getNumberOfVertices(), subGraph.getEdges(), subGraph.getAdjList())) {
-                if (subGraph.getNumberOfVertices() % 2 == 1) {
-                    subGraph.setChromaticNumber(3);
-                } else {
-                    subGraph.setChromaticNumber(4);
-                }
-                continue;
-            }
 
             //Use Brute-force if the number of vertices is smaller than the threshold
             if (subGraph.getNumberOfVertices() < THRESHOLD_FOR_BRUTEFORCE) {

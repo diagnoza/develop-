@@ -231,53 +231,6 @@ public class CalculateChromatic {
 
     }
 
-    public static boolean isWheelGraph(int numberOfVertices, ColEdge[] e, ArrayList<LinkedList<Integer>> adjList) {
-        //Find the center of the wheel
-        int center = 0;
-        for (int i = 1; i <= numberOfVertices; i++) {
-            boolean isCenter = true;
-            //The center must connect to every other vertices
-            for (int j = 1; j <= numberOfVertices; j++) {
-                if (i != j && !adjList.get(i).contains(j)) {
-                    isCenter = false;
-                }
-            }
-            if (isCenter) {
-                center = i;
-                break;
-            }
-        }
-
-        if (center == 0) {
-            return false;
-        }
-
-        //Remove the center from the graph
-        ArrayList<Integer> surroundingVertices = new ArrayList<>();
-        for (int i = 1; i <= numberOfVertices; i++) {
-            if (i != center) {
-                surroundingVertices.add(i);
-            }
-        }
-        ArrayList<ColEdge> surroundingEdges = new ArrayList<>();
-        for (int i = 0; i < e.length; i++) {
-            if (e[i].u != center && e[i].v != center) {
-                ColEdge newEdge = new ColEdge();
-                newEdge.u = e[i].u;
-                newEdge.v = e[i].v;
-                surroundingEdges.add(newEdge);
-            }
-        }
-        Graph surrouding = new Graph(surroundingVertices, surroundingEdges.toArray(new ColEdge[0]));
-
-        //Check if the surrounding is a cycle
-        if (isCycle(surrouding.getNumberOfVertices(), surrouding.getNumberOfEdges(), surrouding.getAdjList())) {
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * This method use greedy algorithm to find the upperbound
      *
