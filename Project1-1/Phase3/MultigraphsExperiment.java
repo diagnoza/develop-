@@ -117,12 +117,11 @@ public class MultigraphsExperiment {
         //**********************************************************************************************************************************************************
 
         final int THRESHOLD_FOR_BRUTEFORCE = 20;
-        final int ATTEMPS_FOR_LOWERBOUND = n;
 
         //ArrayList of linked lists, for each and every node contains its adjacent nodes
-        ArrayList<LinkedList<Integer>> adjList = new ArrayList<LinkedList<Integer>>();
+        ArrayList<LinkedList<Integer>> adjList = new ArrayList<>();
 
-        for (int i = 0; i < n + 1; i++) adjList.add(new LinkedList<Integer>());
+        for (int i = 0; i < n + 1; i++) adjList.add(new LinkedList<>());
 
         for (int i = 0; i < m; i++) {
             adjList.get(e[i].u).add(e[i].v);
@@ -137,56 +136,61 @@ public class MultigraphsExperiment {
 
         boolean hasAllChromatic = true;
 
-        for (Graph disconnectedSubGraph : disconnectedSubGraphs) { //Try to calculate the chromatic number for every subgraph
-            int subUpperbound = CalculateChromatic.getUpperboundGreedy(disconnectedSubGraph.getAdjList(), disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getEdges());
-            disconnectedSubGraph.setUpperbound(subUpperbound);
+        for (Graph subGraph : disconnectedSubGraphs) { //Try to calculate the chromatic number for every subgraph
+            int subUpperbound = CalculateChromatic.getUpperboundGreedy(subGraph.getAdjList(), subGraph.getNumberOfVertices(), subGraph.getEdges());
+            subGraph.setUpperbound(subUpperbound);
+
+            int subLowerbound = CalculateChromatic.getLowerboundGreedy(subGraph.getAdjList(), subGraph.getNumberOfVertices());
+            subGraph.setLowerbound(subLowerbound);
 
             //Check special cases
-            if (CalculateChromatic.hasNoVertex(disconnectedSubGraph.getNumberOfVertices())) {
-                disconnectedSubGraph.setChromaticNumber(0);
+            if (CalculateChromatic.hasNoVertex(subGraph.getNumberOfVertices())) {
+                subGraph.setChromaticNumber(0);
                 continue;
             }
-            if (CalculateChromatic.hasNoEdge(disconnectedSubGraph.getNumberOfEdges())) {
-                disconnectedSubGraph.setChromaticNumber(1);
+            if (CalculateChromatic.hasNoEdge(subGraph.getNumberOfEdges())) {
+                subGraph.setChromaticNumber(1);
                 continue;
             }
-            if (CalculateChromatic.isBipartite(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getAdjList())) {
-                disconnectedSubGraph.setChromaticNumber(2);
+            if (CalculateChromatic.isBipartite(subGraph.getNumberOfVertices(), subGraph.getAdjList())) {
+                subGraph.setChromaticNumber(2);
                 continue;
             }
 
             //At this point, the lowerbound of the subgraph is 3, since we have covered all cases for
             //chromatic number = 0, 1, 2
-            int subLowerbound = 3;
-            disconnectedSubGraph.setLowerbound(subLowerbound);
+            int newSubLowerbound = 3;
+            if (newSubLowerbound > subLowerbound){
+                subGraph.setLowerbound(newSubLowerbound);
+                subLowerbound = newSubLowerbound;
+            }
 
-            if (n % 2 == 1 && CalculateChromatic.isCycle(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getNumberOfEdges(), disconnectedSubGraph.getAdjList())) {
-                disconnectedSubGraph.setChromaticNumber(3);
+            if (n % 2 == 1 && CalculateChromatic.isCycle(subGraph.getNumberOfVertices(), subGraph.getNumberOfEdges(), subGraph.getAdjList())) {
+                subGraph.setChromaticNumber(3);
                 continue;
             }
-            if (CalculateChromatic.isCompleteGraph(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getAdjList())) {
+            if (CalculateChromatic.isCompleteGraph(subGraph.getNumberOfVertices(), subGraph.getAdjList())) {
                 //The chromatic number of a complete graph = the number of vertices
-                disconnectedSubGraph.setChromaticNumber(disconnectedSubGraph.getNumberOfVertices());
+                subGraph.setChromaticNumber(subGraph.getNumberOfVertices());
                 continue;
             }
             if (subUpperbound == subLowerbound) {
-                //At this point, the lower-bound of the graph is 3.
                 //If lower-bound = upper-bound --> chromatic number
-                disconnectedSubGraph.setChromaticNumber(3);
+                subGraph.setChromaticNumber(subUpperbound);
                 continue;
             }
-            if (CalculateChromatic.isWheelGraph(disconnectedSubGraph.getNumberOfVertices(), disconnectedSubGraph.getEdges(), disconnectedSubGraph.getAdjList())) {
-                if (disconnectedSubGraph.getNumberOfVertices() % 2 == 1) {
-                    disconnectedSubGraph.setChromaticNumber(3);
+            if (CalculateChromatic.isWheelGraph(subGraph.getNumberOfVertices(), subGraph.getEdges(), subGraph.getAdjList())) {
+                if (subGraph.getNumberOfVertices() % 2 == 1) {
+                    subGraph.setChromaticNumber(3);
                 } else {
-                    disconnectedSubGraph.setChromaticNumber(4);
+                    subGraph.setChromaticNumber(4);
                 }
                 continue;
             }
 
             //Use Brute-force if the number of vertices is smaller than the threshold
-            if (disconnectedSubGraph.getNumberOfVertices() < THRESHOLD_FOR_BRUTEFORCE) {
-                disconnectedSubGraph.setChromaticNumber(CalculateChromatic.BruteForce(disconnectedSubGraph.getNumberOfVertices(), subLowerbound, disconnectedSubGraph.getAdjList()));
+            if (subGraph.getNumberOfVertices() < THRESHOLD_FOR_BRUTEFORCE) {
+                subGraph.setChromaticNumber(CalculateChromatic.BruteForce(subGraph.getNumberOfVertices(), subLowerbound, subGraph.getAdjList()));
                 continue;
             }
 
@@ -212,6 +216,8 @@ public class MultigraphsExperiment {
                 maxLowerbound = disconnectedSubGraph.getLowerbound();
             }
         }
+
+
 
         if (maxSubUpperbound < upperbound) {
             //Greedy algorithm always gives the upperbound for every graph,
@@ -240,8 +246,6 @@ public class MultigraphsExperiment {
             }
         }
 
-        System.out.println("NEW BEST LOWER BOUND = " + CalculateChromatic.getLowerboundGreedy(adjList, n, ATTEMPS_FOR_LOWERBOUND));
-        //TODO: Lowerbound method
         //TODO: Do genetic algorithm
 
     }

@@ -347,21 +347,36 @@ public class CalculateChromatic {
         return usedColors.size();
     }
 
-    public static int getLowerboundGreedy(ArrayList<LinkedList<Integer>> adjList, int numberOfVertices, int attempts){
+    public static int getLowerboundGreedy(ArrayList<LinkedList<Integer>> adjList, int numberOfVertices){
+        final int THRESHOLD = 1500;
         List<Integer> startingVertices = new ArrayList<>();
-        while (startingVertices.size() < attempts){
-            int randomVertex = (int) (Math.random() * numberOfVertices) + 1;
-            if (!startingVertices.contains(randomVertex)){
-                startingVertices.add(randomVertex);
+
+        if (numberOfVertices > THRESHOLD){
+            //Ramdomly choose THRESHOLD-number of vertices to find their cliques if the graph is too large
+            while (startingVertices.size() < THRESHOLD){
+                int rand = (int) (Math.random() * numberOfVertices) + 1;
+                if (!startingVertices.contains(rand)){
+                    startingVertices.add(rand);
+                }
+            }
+        } else {
+            for (int i = 1; i <= numberOfVertices; i++){
+                startingVertices.add(i);
             }
         }
+
         int maxClique = -1;
         for (Integer startingVertex: startingVertices){
+            //For each vertex in the graph, find a clique that contains the vertex
+
             List<Integer> clique = new ArrayList<>();
             clique.add(startingVertex);
+
             for (int i = 1; i <= numberOfVertices; i++){
                 if (i != startingVertex){
                     boolean isInClique = true;
+
+                    //Check if vertex i is connected to every vertex in the current clique
                     for (Integer cliqueElement: clique){
                         if (!adjList.get(i).contains(cliqueElement)){
                             isInClique = false;
@@ -374,6 +389,7 @@ public class CalculateChromatic {
                 maxClique = clique.size();
             }
         }
-        return maxClique;
+
+        return maxClique; //Return the size of the biggest clique found
     }
 }
