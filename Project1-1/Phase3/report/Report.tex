@@ -396,112 +396,113 @@
 		\item The number of vertices (or the size of the graph)
 		\item The number of connected components
 		\item The size of each component
+		\item The number of components that are special cases
+		\item The biggest clique found
 	\end{itemize}
 
 	\chapter{Results}
-		Tabble \ref{tab:result} shows the results of the program on the given 20 graphs from phase 3.
+
 		\begin{table} [h!]
 		\begin{center}
 			\begin{tabular}{| c | c | c | c |c|}
 				\hline
 				Graph no. & Upper bound & Lower bound & Chromatic number & Gap \\
 				\hline
-				1 & 3 & x & 3 & 0\\
+				1 & 3 & $-$ & 3 & 0\\
 				\hline
-				2 & 5 & 3 & x & 2\\
+				2 & 5 & 3 & $-$ & 2\\
 				\hline
-				3 & 8 & 6 & x & 2\\
+				3 & 8 & 6 & $-$ & 2\\
 				\hline
-				4 & 7 & 4 & x & 3\\
+				4 & 7 & 4 & $-$ & 3\\
 				\hline
-				5 & 2 & x & 2 & 0\\
+				5 & 2 & $-$ & 2 & 0\\
 				\hline
-				6 & 3 & x & 3 & 0\\
+				6 & 3 & $-$ & 3 & 0\\
 				\hline
-				7 & 12 & 8 & x & 4\\
+				7 & 12 & 8 & $-$ & 4\\
 				\hline
-				8 & 98 & x & 98 & 0\\
+				8 & 98 & $-$ & 98 & 0\\
 				\hline
-				9 & 6 & 3 & x & 3\\
+				9 & 6 & 3 & $-$ & 3\\
 				\hline
-				10 & 3 & x & 3 & 0\\
+				10 & 3 & $-$ & 3 & 0\\
 				\hline
 				11 & 15 & 15 & 15 & 0\\
 				\hline
-				12 & 2 & x & 2 & 0\\
+				12 & 2 & $-$ & 2 & 0\\
 				\hline
-				13 & 14 & 9 & x & 5\\
+				13 & 14 & 9 & $-$ & 5\\
 				\hline
-				14 & 5 & 3 & x & 2\\
+				14 & 5 & 3 & $-$ & 2\\
 				\hline
-				15 & 10 & 5 & x & 5\\
+				15 & 10 & 5 & $-$ & 5\\
 				\hline
-				16 & 4 & 3 & x & 1\\
+				16 & 4 & 3 & $-$ & 1\\
 				\hline
-				17 & 8 & x & 8 & 0\\
+				17 & 8 & $-$ & 8 & 0\\
 				\hline
-				18 & 11 & 10 & x & 1\\
+				18 & 11 & 10 & $-$ & 1\\
 				\hline
 				19 & 11 & 11 & 11 & 0\\
 				\hline
-				20 & 9 & 8 & x & 1\\
+				20 & 9 & 8 & $-$ & 1\\
 				\hline
 			\end{tabular}
 		\end{center}
-		\caption{Results on the given 20 graphs from phase 3. The column "Gap" represent the difference between upper bounds and lower bounds}
+		\caption{Results on the given 20 graphs from phase 3. The column "Gap" represents the differences between upper bounds and lower bounds}
 		\label{tab:result}
 	\end{table}
 	
-	Tabble \ref{tab:prop} shows the properties of the given 20 graphs from phase 3, along with the difference between upper bounds and lower bounds found.
 	\begin{table} [h!]
 		\begin{center}
-			\begin{tabular}{| c | c | c | c |c|}
+			\begin{tabular}{| c | c | c | c |c|c|c|}
 				\hline
-				Graph no. & Size & Number of components & Components' sizes & Gap \\
+				Graph no. & Size & \shortstack{Number of \\ components}& Components' sizes & Special cases&\shortstack{Biggest clique\\ found}& Gap \\
 				\hline
-				1 &  & 1 & 212 & 0\\
+				1 & 212 & 1 & 212 &0&3& 0\\
 				\hline
-				2 & 5 & 8 & 448, 1, 1, 2, 1, 1, 1, 1 & 2\\
+				2 & 456 & 8 & 448, 2, 1 (6 times) &7&3& 2\\
 				\hline
-				3 & 8 & 2 & 212, 6 & 2\\
+				3 & 218 & 2 & 212, 6 &1&3& 2\\
 				\hline
-				4 & 7 & 1 & 107 & 3\\
+				4 & 107 & 1 & 107 &0&4& 3\\
 				\hline
-				5 & 2 & 1 & 4007 & 0\\
+				5 & 4007 & 1 & 4007 &1&$-$& 0\\
 				\hline
-				6 & 3 & 260 & \shortstack{1 component size 8, 1 component size 5, 258 components size 2} & 0\\
+				6 & 529 & 260 & 8, 5, 2 (258 times) &260&$-$& 0\\
 				\hline
-				7 & 12 & 1 & x & 4\\
+				7 & 43 & 1 & 43 &0&8& 4\\
 				\hline
-				8 & 98 & 1 & 98 & 0\\
+				8 & 107 & 1 & 107 &0&98& 0\\
 				\hline
-				9 & 6 & 1 & x & 3\\
+				9 & 206 & 1 & 206 &0&3& 3\\
 				\hline
-				10 & 3 & 1 & 3 & 0\\
+				10 & 166 & 1 & 166 &0&2& 0\\
 				\hline
-				11 & 15 & 1 & 15 & 0\\
+				11 & 164 & 1 & 164 &0&15& 0\\
 				\hline
-				12 & 2 & 1 & 2 & 0\\
+				12 & 744 & 1 & 744 &1&$-$& 0\\
 				\hline
-				13 & 14 & 1 & x & 5\\
+				13 & 85 & 1 & 85 &0&9& 5\\
 				\hline
-				14 & 5 & 1 & x & 2\\
+				14 & 907 & 1 & 907 &0&3& 2\\
 				\hline
-				15 & 10 & 1 & x & 5\\
+				15 & 215 & 1 & 215 &0&5& 5\\
 				\hline
-				16 & 4 & 1 & x & 1\\
+				16 & 164 & 1 & 164 &0&2& 1\\
 				\hline
-				17 & 8 & 12 & 8 & 0\\
+				17 & 106 & 12 & 92, 2, 3, 1 (9 times) &11&8& 0\\
 				\hline
-				18 & 11 & 5 & x & 1\\
+				18 & 131 & 5 & 26, 25, 29, 26, 25 &0&10& 1\\
 				\hline
-				19 & 11 & 1 & 11 & 0\\
+				19 & 143 & 1 & 143 &0&11& 0\\
 				\hline
-				20 & 9 & 1 & x & 1\\
+				20 & 387 & 1 & 387 &0&8& 1\\
 				\hline
 			\end{tabular}
 		\end{center}
-		\caption{Results on the given 20 graphs from phase 3. The column "Gap" represent the difference between upper bounds and lower bounds}
+		\caption{Properties of the given 20 graphs from phase 3, along with the gaps between upper bounds and lower bounds found}
 		\label{tab:prop}
 	\end{table}
 	\chapter{Discussion}
