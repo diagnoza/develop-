@@ -1,0 +1,28 @@
+phase 1 upperbounds:
+
+Graph 01 --> 5 C
+Graph 02 --> 10 C
+Graph 03 --> 2 C
+Graph 04 --> 11 C
+Graph 05 --> 4 C
+Graph 06 --> 54 C
+Graph 07 --> 8 C
+Graph 08 --> 3
+Graph 09 --> 16 C
+Graph 10 --> 5 C
+Graph 11 --> 20
+Graph 12 --> 6
+Graph 13 --> 31 C
+Graph 14 --> 5
+Graph 15 --> 4 C
+Graph 16 --> 9
+Graph 17 --> 3 C
+Graph 18 --> 8 C
+Graph 19 --> 31 C
+Graph 20 --> 4 C
+
+phase 3 upperbounds:
+
+Graph 03 --> 6 C
+Graph 04 --> 5
+Graph 13 --> 11
