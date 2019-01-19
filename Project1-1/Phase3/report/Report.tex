@@ -131,49 +131,51 @@
 	\chapter{Methods}
 	This chapter describes the methods used for finding the lower bound, upper bound and if possible, the chromatic number of a graph. 
 	\section{Overview}
-	Given the limitation on execution time (2 minutes for each graph), methods that give out results fast are executed first. Algorithm \ref{alg:overview} describes the general work flow.\\
+	Given the limitation on execution time (2 minutes for each graph in the tournament), methods that give out results fast are executed first. Algorithm \ref{alg:overview} describes the general work flow.\\
 	\begin{algorithm}
 		\caption{General work flow}
 		\label{alg:overview}
 		\begin{algorithmic}[1]
 			\REQUIRE a graph
 			\STATE upperbound = greedyUpperbound(graph)
-			\STATE subgraphs = decompose(graph)
-			\FORALL{subgraphs} 
-				\STATE subUpperbound =  greedyUpperbound(subgraph)
-				\STATE subLowerbound =  greedyLowerbound(subgraph)
+			\STATE components = decompose(graph)
+			\FORALL{components} 
 				
 				\STATE//Check all special cases
-				\IF{subgraph has no vertex} 
-					\STATE chromaticNumber of subgraph = 0
-					\STATE Go to the next subgraph
+				\IF{component has no vertex} 
+					\STATE chromaticNumber of component = 0
+					\STATE Go to the next component
 				\ENDIF
-				\IF{subgraph has no edge} 
-				\STATE chromaticNumber of subgraph = 1
-				\STATE Go to the next subgraph
+				\IF{component has no edge} 
+				\STATE chromaticNumber of component = 1
+				\STATE Go to the next component
 				\ENDIF
-				\IF{subgraph is bipartite} 
-				\STATE chromaticNumber of subgraph = 2
-				\STATE Go to the next subgraph
+				\IF{component is bipartite} 
+				\STATE chromaticNumber of component = 2
+				\STATE Go to the next component
 				\ENDIF
-				\IF{subgraph is odd cycle} 
-				\STATE chromaticNumber of subgraph = 3
-				\STATE Go to the next subgraph
+				\IF{component is odd cycle} 
+				\STATE chromaticNumber of component = 3
+				\STATE Go to the next component
 				\ENDIF
-				\IF{subgraph is complete graph} 
-				\STATE chromaticNumber of subgraph = number of vertices
-				\STATE Go to the next subgraph
+				\IF{component is complete graph} 
+				\STATE chromaticNumber of component = number of vertices
+				\STATE Go to the next component
 				\ENDIF
+				
+				\STATE subUpperbound =  greedyUpperbound(component)
+				\STATE subLowerbound =  greedyLowerbound(component)
+				
 				\STATE newSubLowerbound = 3
 				\STATE Update subLowerBound if needed
 				\IF{subUpperbound = subLowerbound} 
-				\STATE chromaticNumber of subgraph = subUpperbound
-				\STATE Go to the next subgraph
+				\STATE chromaticNumber of component = subUpperbound
+				\STATE Go to the next component
 				\ENDIF
 				
 				\STATE//Run brute-force
 				\IF{number of vertices $<=$ 20} 
-				\STATE chromaticNumber of subgraph = BruteForce(subgraph)
+				\STATE chromaticNumber of component = BruteForce(component)
 				\ENDIF 
 			\ENDFOR
 
@@ -194,16 +196,16 @@
 			
 			\STATE lowerbound = max(subLowerbounds)
 			
-			\IF{has found all chromatic numbers of subgraphs} 
-			\STATE chromatic number = max(chromatic numbers of subgraphs)
+			\IF{has found all chromatic numbers of components} 
+			\STATE chromatic number = max(chromatic numbers of components)
 			\ELSE
-			\STATE lowerbound = max(chromatic numbers of subgraphs)
+			\STATE lowerbound = max(chromatic numbers of components)
 			\ENDIF
 			
 			\STATE geneticAlgorithm(graph)
 		\end{algorithmic}
 	\end{algorithm}
-	First, a greedy algorithm is run on the given graph to calculate the upper bound (line 1). Then, the given graph is decomposed to disconnected subgraphs. For each subgraph, a lower bound and an upper bound are computed by greedy algorithms (line 4 and 5). The reason for running greedy algorithm for upper bound on both the original graph and its subgraphs is that the result upper bounds are sometimes different, so we run both cases to get the better upper bound.  However, the greedy algorithm for lower bound normally gives the same results for both cases, so it is run only on the subgraphs. Next, all special cases are checked to see if the chromatic number of the subgraph can be concluded immediately (line 7 - 31). The special cases are listed below: 
+	First, a greedy algorithm is run on the given graph to calculate the upper bound (line 1). Then, the given graph is decomposed to connected components. Each component is checked to see if it is one of the special cases where the chromatic number can be concluded immediately (line 5 - 24). The special cases are listed below: 
 	\begin{itemize}
 		\item No-vertex graph: chromatic number is 0
 		\item No-edge graph: chromatic number is 1
@@ -211,18 +213,19 @@
 		\item Odd cycle: chromatic number is 3
 		\item Complete graph: chromatic number is the number of vertices
 	\end{itemize}
-	In line 35, if a subgraph is none of the special cases, the lower bound of the subgraph is 3, since the first three cases have covered all graphs where the chromatic number is below 3. It is then compared to the previous lower bound computed in line 5 to update the lower bound if needed. Next, if the lower bound and upper bound are equal, then the chromatic number can be concluded(line 28 - 31). \\
-	If the chromatic number of a subgraph still cannot be calculated then a brute-force algorithm is used (line 33 - 35). However, only subgraphs with number of vertices below 20 are proccessed with the brute-force algorithm, since the brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. \\
+	Next, a lower bound and an upper bound are computed by greedy algorithms (line 25 and 26). The reason for running greedy algorithm for upper bound on both the original graph and its components is that the result upper bounds are sometimes different, so we run both cases to get the better upper bound.  However, the greedy algorithm for lower bound normally gives the same results for both cases, so it is run only on the components
+	In line 27, if a component is none of the special cases then a lower bound of the component is 3, since the first three cases have covered all graphs where the chromatic number is below 3. It is then compared to the previous lower bound computed in line 26 to update the lower bound if needed. Next, if the lower bound and upper bound are equal, then the chromatic number can be concluded(line 29 - 32). \\
+	If the chromatic number of a component still cannot be calculated then a brute-force algorithm is used (line 34 - 36). However, only components with number of vertices below 20 are proccessed with the brute-force algorithm, since the brute-force algorithm normally takes longer than 2 minutes to execute on bigger graphs. Without the time-restriction of 2 minutes, the more time we have, the higher the threshold for brute-force can be (about 30 to 40).\\
 	
-	After proccessing on the subgraphs, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the subgraphs is the upper bound of the original graph (line 37). This new upper bound is then compared to the previously computed upper bound in line 1 to output the better one. Similarily, the biggest lower bound among the subgraphs is a lower bound of the original graph (line 42). \\
-	If the chromatic numbers of all subgraphs have been found, then the chromatic number of the original graph is the biggest chromatic number among the subgraphs (line 43-44). If it is not the case, then the biggest chromatic number found on the subgraphs is another lower bound for the original graph (line 46).\\
-	Finally, in line 48, genetic algorithm is used to bring the upper bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
+	After proccessing on the components, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the components is the upper bound of the original graph (line 38). This new upper bound is then compared to the previously computed upper bound in line 1 to output the better one. Similarily, the biggest lower bound among the components is a lower bound of the original graph (line 43). \\
+	If the chromatic numbers of all components have been found, then the chromatic number of the original graph is the biggest chromatic number among the components (line 44-45). If it is not the case, then the biggest chromatic number found on the components is another lower bound for the original graph (line 47).\\
+	Finally, in line 49, genetic algorithm is used to bring the upper bound closer to the chromatic number. Genetic algorithm is run last because there is no guarantee on its execution time.\\
 	
 	The algorithm for each method is described in the next sections of this chapter.
 	
 
 		\section{Graph decomposition}
-		One graph can contain multiple disconnected parts, which can be considered as independent subgraphs (Figure \ref{fig:decompose}). Decomposing the graph will allow other methods to work on smaller graphs. Algorithm \ref{alg:decompose} describes the method for decomposing a graph into subgraphs, where each subgraph is a fully connected graph.\\
+		One graph can contain multiple disconnected parts, which can be considered as independent subgraphs (Figure \ref{fig:decompose}). Decomposition means seperating the graph into fully connected components. Decomposing the graph will allow other methods to work on smaller graphs. Algorithm \ref{alg:decompose} describes the method for decomposing a graph into components.\\
 		
 		\begin{figure}[h]
 			\centering
@@ -239,31 +242,31 @@
 				\STATE Create listOfVertices 
 				\STATE listOfVertices.add(all vertices in the graph)
 				\WHILE{listOfVertices is not empty}
-				\STATE Create a new subgraph
+				\STATE Create a new component
 				\STATE Create a new uncheckedList
-				\STATE subgraph.add(firstVertex in listOfVertices )
+				\STATE component.add(firstVertex in listOfVertices )
 				\STATE uncheckedList.add(firstVertex in listOfVertices)
 				\STATE listOfVertices.remove(first element)
 				\WHILE{uncheckedList is not empty} 
 				\STATE checkingVertex = first vertex in the uncheckedList
 				\FORALL{neighbors of checkingVertex} 
-				\IF{neighbor is not in subgraph} 
+				\IF{neighbor is not in component} 
 				\STATE uncheckedList.add(neighbor)
-				\STATE subgraph.add(neighbor)
+				\STATE component.add(neighbor)
 				\ENDIF
 				\STATE listOfVertices.remove(neighbor)
 				\ENDFOR
 				\STATE Remove checkingVertex from uncheckedList
 				\ENDWHILE
-				\STATE Convert subgraph to standard form
-				\STATE subgraphs.add(subgraph)
+				\STATE Convert component to standard form
+				\STATE components.add(component)
 				\ENDWHILE
-				\STATE \textbf{return} subgraphs
+				\STATE \textbf{return} components
 				
 			\end{algorithmic}
 		\end{algorithm}
-		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the current expanding subgraph. In line 6 and 7 the first vertex is added to a subgraph and the unchecked list. Then all the neighbors of the vertex are added to the subgraph and the unchecked list, and the first vertex of the unchecked list is removed (line 9 - 19). To avoid loops, only vertices not in the subgraph are added. The same is done for all vertices in the unchecked list, until the list is empty. The process is repeated until all vertices in the original graph are classified into subgraphs.\\
-		Note that the vertices of the input graphs for this project are represented by successive numbers. All algorithms are implemented based on this data structure. Therefore, after classifying the vertices into subgraphs, each subgraph is then converted to the standard form, where the indexes of vertices are successive numbers (line 20).
+		The algorithm is based on breadth-first search. A unchecked-list stores the vertices whose neighbors are not yet added to the current expanding component. In line 6 and 7 the first vertex is added to a component and the unchecked list. Then all the neighbors of the vertex are added to the component and the unchecked list, and the first vertex of the unchecked list is removed (line 9 - 19). To avoid loops, only vertices not in the component are added. The same is done for all vertices in the unchecked list, until the list is empty. The process is repeated until all vertices in the original graph are classified into components.\\
+		Note that the vertices of the input graphs for this project are represented by successive numbers. All algorithms are implemented based on this data structure. Therefore, after classifying the vertices into components, each component is then converted to the standard form, where the indexes of vertices are successive numbers (line 20).
 		
 		\section{Greedy algorithm for upper bound}
 		Greedy algorithm for upper bound \cite{greedy} provides an efficient way of coloring a graph. However, it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upper bound. Algorithm \ref{alg:greedy} describes this method.\\
@@ -272,7 +275,7 @@
 			\label{alg:greedy}
 			\begin{algorithmic}[1]
 				\REQUIRE a graph
-				\STATE Sort vertices in non-increasing order of constraints
+				\STATE Sort vertices in non-increasing order of constraints (the number of neighbors)
 				\STATE Create availableColors list
 				\FORALL{vertices}
 					\FORALL{colors in availableColors}
@@ -290,7 +293,7 @@
 				\STATE \textbf{return} size of availableColors list
 			\end{algorithmic}
 		\end{algorithm}
-		First, the vertices are sorted based on their constraints (line 1). The constraint of a vertex is the number of other vertices connected to that vertex. Optimized bubble sort \cite{bubblesort2019} is used in this step. The vertex with more neighbors will be colored first.\\
+		First, the vertices are sorted based on their constraints (line 1). The constraint of a vertex is the number of other vertices connected to that vertex. Bubble sort \cite{bubblesort2019} is used in this step. The vertex with more neighbors will be colored first.\\
 		A list is used to store available colors. When coloring a vertex, the available colors is reused as much as possible (line 4-9). If none of the available colors is valid to color that vertex, then a new color is generated and added to the available list (line 10-14). When the graph is fully colored, the number of colors in the available list is returned.\\
 		
 		\section{Greedy algorithm for lower bound}
@@ -318,7 +321,7 @@
 					\REQUIRE a graph
 					\STATE Create unchecked list
 					\STATE unchecked.add(first vertex)
-					\STATE Assign color 1 to the first vertex
+					\STATE Assign one color to the first vertex
 					\WHILE{The graph is not fully colored}
 					\WHILE{unchecked list is not empty}
 					\STATE checkingVertex = unchecked.getFirstElement()
@@ -336,7 +339,7 @@
 					\STATE \textbf{return} true
 				\end{algorithmic}
 			\end{algorithm}
-			 Two colors, represented by 1 and -1, are used to color the graph. A unchecked list stores the vertices whose neighbors are not yet considered. First, the color 1 is assigned to the first vertex and the first vertex is added to the unchecked list (line 2-3). Then, all its neighbors are considered and the vertex itself is removed from the unchecked list. For each neighbor, if the neighbor has not been colored then it is assigned with the oposite color (line 10). If the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite (line 12-13). The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the graph are colored. If the graph is successfully colored, then it is bipartite.
+			 Two colors are used to color the graph. A unchecked list stores the vertices whose neighbors are not yet considered. First, one color is assigned to the first vertex and the first vertex is added to the unchecked list (line 2-3). Then, all its neighbors are considered and the vertex itself is removed from the unchecked list. For each neighbor, if the neighbor has not been colored then it is assigned with the oposite color (line 10). If the neighbor has been colored, then we check if it is a valid coloring. If the coloring is invalid, the graph is not bipartite (line 12-13). The same is done for all elements in the unchecked list, until the list is empty. The process is repeated until all vertices in the graph are colored. If the graph is successfully colored, then it is bipartite.
 			\subsection{Odd cycle}
 			An odd cycle is a cycle with an odd number of edges and vertices (Figure \ref{fig:oddcycle}). The chromatic number of an odd cycle graph is 3. \\
 			
@@ -388,61 +391,121 @@
 		
 		
 	\chapter{Experiments}
-	The experiment is set up to run on the given 20 graphs.
+	The experiment is set up to run on the given 20 graphs from phase 3 of the project. Each graph is exploited to see its properties:
+	\begin{itemize}
+		\item The number of vertices (or the size of the graph)
+		\item The number of connected components
+		\item The size of each component
+	\end{itemize}
+
 	\chapter{Results}
+		Tabble \ref{tab:result} shows the results of the program on the given 20 graphs from phase 3.
 		\begin{table} [h!]
 		\begin{center}
-			\begin{tabular}{| c | c | c | c |}
+			\begin{tabular}{| c | c | c | c |c|}
 				\hline
-				Graph no. & Upper bound & Lower bound & Chromatic number  \\
+				Graph no. & Upper bound & Lower bound & Chromatic number & Gap \\
 				\hline
-				1 & 3 & x & 3 \\
+				1 & 3 & x & 3 & 0\\
 				\hline
-				2 & 5 & 3 & x \\
+				2 & 5 & 3 & x & 2\\
 				\hline
-				3 & 8 & 6 & x \\
+				3 & 8 & 6 & x & 2\\
 				\hline
-				4 & 7 & 3 & x \\
+				4 & 7 & 4 & x & 3\\
 				\hline
-				5 & 4 & x & 2 \\
+				5 & 2 & x & 2 & 0\\
 				\hline
-				6 & 3 & x & 3 \\
+				6 & 3 & x & 3 & 0\\
 				\hline
-				7 & 12 & 3 & x \\
+				7 & 12 & 8 & x & 4\\
 				\hline
-				8 & 98 & 3 & x \\
+				8 & 98 & x & 98 & 0\\
 				\hline
-				9 & 6 & 3 & x \\
+				9 & 6 & 3 & x & 3\\
 				\hline
-				10 & 3 & x & 3 \\
+				10 & 3 & x & 3 & 0\\
 				\hline
-				11 & 15 & 3 & x \\
+				11 & 15 & 15 & 15 & 0\\
 				\hline
-				12 & 3 & x & 2 \\
+				12 & 2 & x & 2 & 0\\
 				\hline
-				13 & 14 & 3 & x \\
+				13 & 14 & 9 & x & 5\\
 				\hline
-				14 & 5 & 3 & x \\
+				14 & 5 & 3 & x & 2\\
 				\hline
-				15 & 10 & 3 & x \\
+				15 & 10 & 5 & x & 5\\
 				\hline
-				16 & 4 & 3 & x \\
+				16 & 4 & 3 & x & 1\\
 				\hline
-				17 & 8 & 3 & x \\
+				17 & 8 & x & 8 & 0\\
 				\hline
-				18 & 11 & 3 & x \\
+				18 & 11 & 10 & x & 1\\
 				\hline
-				19 & 11 & 3 & x \\
+				19 & 11 & 11 & 11 & 0\\
 				\hline
-				20 & 9 & 3 & x \\
+				20 & 9 & 8 & x & 1\\
 				\hline
 			\end{tabular}
 		\end{center}
-		\caption{Results on the given 20 graphs}
-		\label{Mu table}
+		\caption{Results on the given 20 graphs from phase 3. The column "Gap" represent the difference between upper bounds and lower bounds}
+		\label{tab:result}
 	\end{table}
-
+	
+	Tabble \ref{tab:prop} shows the properties of the given 20 graphs from phase 3, along with the difference between upper bounds and lower bounds found.
+	\begin{table} [h!]
+		\begin{center}
+			\begin{tabular}{| c | c | c | c |c|}
+				\hline
+				Graph no. & Size & Number of components & Components' sizes & Gap \\
+				\hline
+				1 &  & 1 & 212 & 0\\
+				\hline
+				2 & 5 & 8 & 448, 1, 1, 2, 1, 1, 1, 1 & 2\\
+				\hline
+				3 & 8 & 2 & 212, 6 & 2\\
+				\hline
+				4 & 7 & 1 & 107 & 3\\
+				\hline
+				5 & 2 & 1 & 4007 & 0\\
+				\hline
+				6 & 3 & 260 & \shortstack{1 component size 8, 1 component size 5, 258 components size 2} & 0\\
+				\hline
+				7 & 12 & 1 & x & 4\\
+				\hline
+				8 & 98 & 1 & 98 & 0\\
+				\hline
+				9 & 6 & 1 & x & 3\\
+				\hline
+				10 & 3 & 1 & 3 & 0\\
+				\hline
+				11 & 15 & 1 & 15 & 0\\
+				\hline
+				12 & 2 & 1 & 2 & 0\\
+				\hline
+				13 & 14 & 1 & x & 5\\
+				\hline
+				14 & 5 & 1 & x & 2\\
+				\hline
+				15 & 10 & 1 & x & 5\\
+				\hline
+				16 & 4 & 1 & x & 1\\
+				\hline
+				17 & 8 & 12 & 8 & 0\\
+				\hline
+				18 & 11 & 5 & x & 1\\
+				\hline
+				19 & 11 & 1 & 11 & 0\\
+				\hline
+				20 & 9 & 1 & x & 1\\
+				\hline
+			\end{tabular}
+		\end{center}
+		\caption{Results on the given 20 graphs from phase 3. The column "Gap" represent the difference between upper bounds and lower bounds}
+		\label{tab:prop}
+	\end{table}
 	\chapter{Discussion}
+	
 	
 	\chapter{Conclusion}
 	
