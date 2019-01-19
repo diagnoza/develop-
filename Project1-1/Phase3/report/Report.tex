@@ -229,7 +229,7 @@
 		
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=50mm,scale=0.5]{figures/DecomposedGraph.png}
+			\includegraphics[width=50mm,scale=0.5]{figures/DecomposedGraph.pdf}
 			\caption{A graph (a) before decomposed and (b) after decomposed}
 			\label{fig:decompose}
 		\end{figure}
@@ -269,7 +269,7 @@
 		Note that the vertices of the input graphs for this project are represented by successive numbers. All algorithms are implemented based on this data structure. Therefore, after classifying the vertices into components, each component is then converted to the standard form, where the indexes of vertices are successive numbers (line 20).
 		
 		\section{Greedy algorithm for upper bound}
-		Greedy algorithm for upper bound \cite{greedy} provides an efficient way of coloring a graph. However, it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upper bound. Algorithm \ref{alg:greedy} describes this method.\\
+		Greedy algorithm for upper bound provides an efficient way of coloring a graph. However, it does not guarantee that the coloring is optimal. Therefore, it can be used to calculate a upper bound. Algorithm \ref{alg:greedy} \cite{jensen2011graph} describes this method.\\
 		\begin{algorithm}
 			\caption{Greedy algorithm for upper bound}
 			\label{alg:greedy}
@@ -293,23 +293,22 @@
 				\STATE \textbf{return} size of availableColors list
 			\end{algorithmic}
 		\end{algorithm}
-		First, the vertices are sorted based on their constraints (line 1). The constraint of a vertex is the number of other vertices connected to that vertex. Bubble sort \cite{bubblesort2019} is used in this step. The vertex with more neighbors will be colored first.\\
+		First, the vertices are sorted based on their constraints (line 1). The constraint of a vertex is the number of other vertices connected to that vertex. The vertex with more neighbors will be colored first.\\
 		A list is used to store available colors. When coloring a vertex, the available colors is reused as much as possible (line 4-9). If none of the available colors is valid to color that vertex, then a new color is generated and added to the available list (line 10-14). When the graph is fully colored, the number of colors in the available list is returned.\\
 		
 		\section{Greedy algorithm for lower bound}
-		Greedy algorithm for lower bound finds several cliques in a graph and returns the size of the biggest clique found. However, it does not guarantee to find the maximum clique. \\
-		To form a clique, an initial vertex is added to the clique. Then, for every other vertex, we add it to the clique if it is connected to all vertices currently in the clique. The same proccess is repeated to find multiple cliques, where every vertex in the original graph is used as the initial vertex for a clique. 
+		A greedy algorithm is used to find several cliques in a graph and returns the size of the biggest clique found \cite{steven2008algorithm}. The biggest size is then return as a lower bound. However, it does not guarantee to find the maximum clique. \\
+		The algorithm works as follows. To form a clique, an initial vertex is added to the clique. Then, for every other vertex, we add it to the clique if it is connected to all vertices currently in the clique. The same proccess is repeated to find multiple cliques, where every vertex in the original graph is used as the initial vertex for a clique. 
 		
 		\section{Special cases}
 			\subsection{Bipartite}
-			The formal definition of a bipartite graph is: \\
-			"A bipartite graph, also called a bigraph, is a set of graph vertices decomposed into two disjoint sets such that no two graph vertices within the same set are adjacent." \cite{bipartiteDef} \\
-			The chromatic number of a bipartite graph is 2. Algorithm \ref{alg:bipartite} \cite{bipartite} describes the steps to test weather a graph is bipartite, using breadth-first search. \\
+			A bipartite graph is a graph which its vertices can be separated into two sets such that there is no connection between any pair of vertices of the same set.\\
+			The chromatic number of a bipartite graph is 2. Algorithm \ref{alg:bipartite} \cite{sedgewick2003} describes the steps to test weather a graph is bipartite, using breadth-first search. \\
 			
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=50mm,scale=0.5]{figures/bipartite.png}
-				\caption{An example of bipartite graphs. This figure is from \protect\cite{bipartiteFig}}
+				\includegraphics[width=50mm,scale=0.5]{figures/bipartite.pdf}
+				\caption{An example of bipartite graphs}
 				\label{fig:bipartite}
 			\end{figure}
 			
@@ -345,8 +344,8 @@
 			
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=50mm,scale=0.5]{figures/cycle.png}
-				\caption{An example of odd cycle graphs. This figure is from \protect\cite{cycleFig}}
+				\includegraphics[width=50mm,scale=0.5]{figures/cycle.pdf}
+				\caption{An example of odd cycle graphs}
 				\label{fig:oddcycle}
 			\end{figure}
 		
@@ -362,8 +361,8 @@
 			A complete graph (Figure \ref{fig:complete}) is a graph where every vertex is connected to all other vertices. The chromatic number of a complete graph is the number of vertices. The method checks weather a graph has the above conditions to determine if it is a complete graph.
 			\begin{figure}[h]
 				\centering
-				\includegraphics[width=50mm,scale=0.5]{figures/complete.png}
-				\caption{An example of complete graphs. This figure is from \protect\cite{completeFig}}
+				\includegraphics[width=50mm,scale=0.5]{figures/complete.pdf}
+				\caption{An example of complete graphs}
 				\label{fig:complete}
 			\end{figure}
 			
