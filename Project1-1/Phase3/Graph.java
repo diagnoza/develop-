@@ -83,6 +83,8 @@ public class Graph {
 
     public void setChromaticNumber(int chromaticNumber) {
         this.chromaticNumber = chromaticNumber;
+        this.upperbound = chromaticNumber;
+        this.lowerbound = chromaticNumber;
     }
 
     //Use this method to test

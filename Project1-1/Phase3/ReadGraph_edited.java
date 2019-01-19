@@ -129,11 +129,6 @@ public class ReadGraph_edited {
         boolean hasAllChromatic = true;
 
         for (Graph subGraph : disconnectedSubGraphs) { //Try to calculate the chromatic number for every subgraph
-            int subUpperbound = CalculateChromatic.getUpperboundGreedy(subGraph.getAdjList(), subGraph.getNumberOfVertices(), subGraph.getEdges());
-            subGraph.setUpperbound(subUpperbound);
-
-            int subLowerbound = CalculateChromatic.getLowerboundGreedy(subGraph.getAdjList(), subGraph.getNumberOfVertices());
-            subGraph.setLowerbound(subLowerbound);
 
             //Check special cases
             if (CalculateChromatic.hasNoVertex(subGraph.getNumberOfVertices())) {
@@ -149,14 +144,6 @@ public class ReadGraph_edited {
                 continue;
             }
 
-            //At this point, the lowerbound of the subgraph is 3, since we have covered all cases for
-            //chromatic number = 0, 1, 2
-            int newSubLowerbound = 3;
-            if (newSubLowerbound > subLowerbound){
-                subGraph.setLowerbound(newSubLowerbound);
-                subLowerbound = newSubLowerbound;
-            }
-
             if (n % 2 == 1 && CalculateChromatic.isCycle(subGraph.getNumberOfVertices(), subGraph.getNumberOfEdges(), subGraph.getAdjList())) {
                 subGraph.setChromaticNumber(3);
                 continue;
@@ -166,6 +153,23 @@ public class ReadGraph_edited {
                 subGraph.setChromaticNumber(subGraph.getNumberOfVertices());
                 continue;
             }
+
+            //Calculate the lower bound and upper bound by greedy
+            int subUpperbound = CalculateChromatic.getUpperboundGreedy(subGraph.getAdjList(), subGraph.getNumberOfVertices(), subGraph.getEdges());
+            subGraph.setUpperbound(subUpperbound);
+
+            int subLowerbound = CalculateChromatic.getLowerboundGreedy(subGraph.getAdjList(), subGraph.getNumberOfVertices());
+            subGraph.setLowerbound(subLowerbound);
+
+            //At this point, the lowerbound of the subgraph is 3, since we have covered all cases for
+            //chromatic number = 0, 1, 2
+            int newSubLowerbound = 3;
+            //Update the lower bound if needed
+            if (newSubLowerbound > subLowerbound){
+                subGraph.setLowerbound(newSubLowerbound);
+                subLowerbound = newSubLowerbound;
+            }
+
             if (subUpperbound == subLowerbound) {
                 //If lower-bound = upper-bound --> chromatic number
                 subGraph.setChromaticNumber(subUpperbound);

@@ -301,7 +301,7 @@ public class CalculateChromatic {
     }
 
     public static int getLowerboundGreedy(ArrayList<LinkedList<Integer>> adjList, int numberOfVertices){
-        final int THRESHOLD = 1500;
+        final int THRESHOLD = 1100;
         List<Integer> startingVertices = new ArrayList<>();
 
         if (numberOfVertices > THRESHOLD){
@@ -342,7 +342,6 @@ public class CalculateChromatic {
                 maxClique = clique.size();
             }
         }
-
         return maxClique; //Return the size of the biggest clique found
     }
 }
