@@ -511,10 +511,10 @@
 		\item For graphs that are disconnected, the results are also good. For example, graph 2, 3, 6, and 17 can be decomposed into 8, 2, 260, 12 and 5 components respectively, so their ranges for chromatic numbers are small (less than or equal to 2).
 		\item For graphs that have big clique sizes compared to the graphs' sizes, the gaps between the upper bounds and lower bounds found are small. For example, graph 8 has the size of 107 and the biggest clique size found is 98, so our algorithms can find its chromatic number.
 	\end{itemize}
-	On the other hand, the algorithms do not give as good results on certain graphs that do not have special structures. For example, graph 13 and 15 are fully connected, not special cases and their biggest clique sizes found are small compared to the graphs' sizes. Therefore, their ranges for chromatic number are higher (where the differences between upper bounds and lower bounds are both 5).
+	On the other hand, the algorithms do not give as good results on certain graphs that do not have special structures. For example, graph 13 and 15 are fully connected, they are none of the special cases and their biggest clique sizes found are small compared to the graphs' sizes. Therefore, their ranges for chromatic number are higher (where the differences between upper bounds and lower bounds are both 5).
 	
 	\chapter{Conclusion}
-	
+	In this project, the answer to the problem of finding chromatic number for a graph is given. This is a non-deterministic polynomial-time complete problem, so the approach is to use multiple combined algorithms to find the smallest range for the chromatic number. A greedy algorithm is used to find the lower bounds; while another greedy algorithm and the genetic algorithm are used to find the upper bounds. Algorithms for testing special cases and brute-force algorithm are used to find the chromatic numbers if possible. Graph decomposition helps impove the execution time and the results of other methods. This approach can be used as a starting point for solving the graph coloring problem and more enhanced methods such as linear programming or constraint satisfaction can be used for further research.
 	
 	\bibliographystyle{apacite}
 	\bibliography{references}
