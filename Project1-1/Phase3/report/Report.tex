@@ -493,7 +493,7 @@
 				\hline
 				17 & 106 & 12 & 92, 2, 3, 1 (9 times) &11&8& 0\\
 				\hline
-				18 & 131 & 5 & 26, 25, 29, 26, 25 &0&10& 1\\
+				18 & 131 & 5 & 26 (2 times), 25 (2 times), 29 &0&10& 1\\
 				\hline
 				19 & 143 & 1 & 143 &0&11& 0\\
 				\hline
@@ -505,7 +505,13 @@
 		\label{tab:prop}
 	\end{table}
 	\chapter{Discussion}
-	
+	As can be seen from the results, our algorithms perform well to find the chromatic number on several types of graphs:
+	\begin{itemize}
+		\item For graphs that are special cases, the chromatic numbers can be found quickly, even if the graphs' sizes are large. For example, the sizes of graph 5 and graph 12 are 4007 and 744 respectively, but since they are bipartite graphs, their chromatic numbers were found in less than 1 minute.
+		\item For graphs that are disconnected, the results are also good. For example, graph 2, 3, 6, and 17 can be decomposed into 8, 2, 260, 12 and 5 components respectively, so their ranges for chromatic numbers are small (less than or equal to 2).
+		\item For graphs that have big clique sizes compared to the graphs' sizes, the gaps between the upper bounds and lower bounds found are small. For example, graph 8 has the size of 107 and the biggest clique size found is 98, so our algorithms can find its chromatic number.
+	\end{itemize}
+	On the other hand, the algorithms do not give as good results on certain graphs that do not have special structures. For example, graph 13 and 15 are fully connected, not special cases and their biggest clique sizes found are small compared to the graphs' sizes. Therefore, their ranges for chromatic number are higher (where the differences between upper bounds and lower bounds are both 5).
 	
 	\chapter{Conclusion}
 	
