@@ -114,8 +114,6 @@ public class MultigraphsExperiment {
         }
 
 
-        //**********************************************************************************************************************************************************
-
         final int THRESHOLD_FOR_BRUTEFORCE = 20;
 
         //ArrayList of linked lists, for each and every node contains its adjacent nodes
