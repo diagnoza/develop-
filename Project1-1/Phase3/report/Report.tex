@@ -121,7 +121,7 @@
 	\pagenumbering{arabic}
 	The chromatic number of a graph is the minimum number of colors needed to color the vertices of the graph such that no two adjacent vertices share the same color. In this project, we provide an approach to find the smallest range of the chromatic number of a graph. \\
 	
-	Formally, a graph G=(V,E) where V is the set of vertices and E is the set of edges that connect the vertices. In this project, the input graphs are undirected graphs. In addition, a vertex must not connect to itself and the number of edges between two vertices must not exceed 1.  Graph coloring is the problem of coloring the vertices of a graph such that no two adjacent vertices share the same color. Graph coloring is one of the important topics of graph theory and is used in various research areas of computer science such as data mining and networking.\\
+	Formally, a graph is defined as G=(V,E) where V is the set of vertices and E is the set of edges that connect the vertices. In this project, the input graphs are undirected graphs. In addition, a vertex must not connect to itself and the number of edges between two vertices must not exceed 1.  Graph coloring is the problem of coloring the vertices of a graph such that no two adjacent vertices share the same color. Graph coloring is one of the important topics of graph theory and is used in various research areas of computer science such as data mining and networking.\\
 	
 	The smallest number of colors used in graph coloring is called the chromatic number. The purpose of this project is to find the chromatic number of a graph. If the chromatic number cannot be found, we try to find the closest upper bound and lower bound.\\
 	
@@ -133,6 +133,7 @@
 	This chapter describes the approach used for finding the lower bound, upper bound and if possible, the chromatic number of a graph. 
 	\section{Overview}
 	The proposed approach is a combination of different methods. Since the execution time is normally limited, methods that give out results fast are executed first. Algorithm \ref{alg:overview} describes the general work flow.\\
+	
 	\begin{algorithm}
 		\caption{General work flow}
 		\label{alg:overview}
@@ -182,7 +183,7 @@
 			\STATE geneticAlgorithm(graph)
 		\end{algorithmic}
 	\end{algorithm}
-	The proposed approach works as follows. First, a greedy algorithm calculates the upper bound of the given graph (line 1). Then, the given graph is decomposed into connected components. Each component is checked to see if it is one of the special cases where the chromatic number can be concluded immediately (line 3 - 7). Five special cases are considered.
+	The proposed approach works as follows. First, a greedy algorithm calculates an upper bound of the given graph (line 1). Then, the given graph is decomposed into connected components. Each component is checked to see if it is one of the special cases where the chromatic number can be concluded immediately (line 3 - 7). Five special cases are considered.
 	\begin{itemize}
 		\item No-vertex graph: chromatic number is 0
 		\item No-edge graph: chromatic number is 1
@@ -190,11 +191,11 @@
 		\item Odd cycle graph: chromatic number is 3
 		\item Complete graph: chromatic number is the number of vertices
 	\end{itemize}
-	If a component is none of the special cases then a lower bound of the component is 3, since the first three cases have covered all graphs with chromatic number below 3 (line 8). It is then compared to the lower bound computed by a greedy algorithm to decide the final lower bound (line 10 - 12). Then an upper bound of the component is computed by another greedy algorithm (line 13). The reason for running the greedy algorithm for upper bound on both the original graph and its components is that the result upper bounds are sometimes different, so we run both on the original graph and its components to increase the chance that a better upper bound is found. However, the greedy algorithm for lower bound normally gives the same results after running on both the original graph and its components, so it is run only on the components. Next, if the lower bound and upper bound are equal, then the chromatic number can be concluded (line 14 - 17). \\
+	If a component is none of the special cases then a lower bound of the component is 3, since the first three cases have covered all graphs with chromatic number below 3 (line 8). It is then compared to the lower bound computed by a greedy algorithm to decide the final lower bound (line 10 - 12). Then an upper bound of the component is computed by another greedy algorithm (line 13). The reason for running the greedy algorithm for upper bound on both the original graph and its components is that the resulting upper bounds are sometimes different, so we run both on the original graph and its components to increase the chance that a better upper bound is found. However, the greedy algorithm for lower bound normally gives the same results after running on both the original graph and its components, so it is run only on the components. Next, if the lower bound and upper bound are equal, then the chromatic number can be concluded (line 14 - 17). \\
 	
 	If the chromatic number of a component still cannot be calculated, a brute-force algorithm is used (line 18 - 20). However, only components with number of vertices below 20 are proccessed with the brute-force algorithm since the brute-force algorithm normally takes a long time to execute on bigger graphs. Without time restriction, it might be possible to increase the threshold for brute-force.\\
 	
-	After proccessing on the components, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the components is a upper bound of the original graph (line 22). This new upper bound is then compared to the previously computed upper bound (line 1) to output the better one. Similarily, the biggest lower bound among the components is a lower bound of the original graph (line 26). \\
+	After proccessing on the components, the upper bound, the lower bound and possibly the chromatic number of the original graph can be concluded. The biggest upper bound among the components is an upper bound of the original graph (line 22). This new upper bound is then compared to the previously computed upper bound (line 1) to output the better one. Similarily, the biggest lower bound among the components is a lower bound of the original graph (line 26). \\
 	
 	If the chromatic numbers of all components have been found, then the chromatic number of the original graph is the biggest chromatic number among those of the components (line 27 - 29). If it is not the case, then the biggest chromatic number found on the components is another lower bound for the original graph (line 30).\\
 	
@@ -244,12 +245,12 @@
 %				
 %			\end{algorithmic}
 %		\end{algorithm}
-		The proposed graph decomposition algorithm is based on breadth-first search. A none-classified vertex from the original graph is first added to a component. Then the vertex is expanded to find all its neighbors and the neighbors are added to the same component. The same is done for all neighbors and the neighbors' neighbors, ect. untill no more vertex connecting to the component's vertices can be found. The process is repeated until all vertices in the original graph are classified into connected components.\\
+		The proposed graph decomposition algorithm is based on breadth-first search. A none-classified vertex from the original graph is first added to a component. Then the vertex is expanded to find all its neighbors and the neighbors are added to the same component. The same is done for all neighbors and the neighbors' neighbors, etc. untill no more vertex connecting to the component's vertices can be found. The process is repeated until all vertices in the original graph are classified into connected components.\\
 		
 		Note that the vertices of the input graphs in this project are represented by successive numbers. All algorithms are implemented based on this data structure. Therefore, after classifying the vertices into components, each component is then converted to the standard form, where the indexes of vertices are successive numbers.
 		
 		\section{Greedy algorithm for upper bound}
-		Greedy algorithm for upper bound \cite{jensen2011graph} provides an efficient way of coloring a graph. However, it does not guarantee that the coloring is optimal. Therefore, greedy algorithm can be used to calculate a upper bound.\\
+		Greedy algorithm for upper bound \cite{jensen2011graph} provides an efficient way of coloring a graph. However, it does not guarantee that the coloring is optimal. Therefore, greedy algorithm can be used to calculate an upper bound.\\
 		
 %		\begin{algorithm}
 %			\caption{Greedy algorithm for upper bound}
@@ -284,8 +285,7 @@
 		\section{Special cases}
 		This section describes the algorithms used to test whether a graph is one of the special graphs. These algorithms have low complexity, therefore their execution times are short, even when the input graphs are large. However, the uses of these algorithms are limited, since the special cases tested are only a few of many types of graphs.
 			\subsection{Bipartite}
-			A bipartite graph is a graph where vertices can be separated into two sets such that there is no connection between any pair of vertices of the same set.\\
-			The chromatic number of a bipartite graph is 2.  An algorithm based on breadth-first search \cite{sedgewick2003}  is used to test whether a graph is bipartite. \\
+			A bipartite graph is a graph where vertices can be separated into two sets such that there is no connection between any pair of vertices of the same set. The chromatic number of a bipartite graph is 2.  An algorithm based on breadth-first search \cite{sedgewick2003}  is used to test whether a graph is bipartite. \\
 			
 			\begin{figure}[h]
 				\centering
@@ -332,7 +332,7 @@
 				\label{fig:oddcycle}
 			\end{figure}
 		
-			The method for testing if a graph is an odd cycle checks for three condition:
+			The method for testing if a graph is an odd cycle checks for three conditions:
 			\begin{itemize}
 				\item The number of vertices is equal to the number of edges
 				\item Every vertex has two neighbors
@@ -353,7 +353,7 @@
 			
 			
 		\section{Brute-force algorithm}
-		 The brute-force algorithm works as follows. Given a fixed number of colors, the brute-force algorithm generates every possible coloring and checks if it is a valid one. In order to check the validity of coloring, it iterates through the array representing nodes' colors and searches for a conflict, that is, two connected nodes assigned the same color. The number of colors gradually increases until a valid coloring is found. The first number of colors when a valid coloring is found is the chromatic number.\\
+		 The brute-force algorithm works as follows. Given a fixed number of colors, the brute-force algorithm generates every possible coloring and checks if it is a valid one. In order to check the validity of coloring, it iterates through the array representing vertices' colors and searches for a conflict, that is, two connected vertices assigned the same color. The number of colors gradually increases until a valid coloring is found. The first number of colors when a valid coloring is found is the chromatic number.\\
 		
 		Brute-force algorithm has a high computational complexity. Although finding the chromatic numbers is guaranteed sooner or later, in reality, the execution time of brute-force depends on the sizes of input graphs and how big their chromatic numbers are.\\
 		
@@ -398,9 +398,9 @@
 				\hline
 				2 & 5 & 3 & $-$ & 2\\
 				\hline
-				3 & 8 & 6 & $-$ & 2\\
+				3 & 6 & 6 & 6 & 0\\
 				\hline
-				4 & 7 & 4 & $-$ & 3\\
+				4 & 5 & 4 & $-$ & 1\\
 				\hline
 				5 & 2 & $-$ & 2 & 0\\
 				\hline
@@ -418,7 +418,7 @@
 				\hline
 				12 & 2 & $-$ & 2 & 0\\
 				\hline
-				13 & 14 & 9 & $-$ & 5\\
+				13 & 11 & 9 & $-$ & 2\\
 				\hline
 				14 & 5 & 3 & $-$ & 2\\
 				\hline
@@ -451,9 +451,9 @@
 				\hline
 				2 & 456 & 8 & 448, 2, 1 (6 times) &7&3& 2\\
 				\hline
-				3 & 218 & 2 & 212, 6 &1&3& 2\\
+				3 & 218 & 2 & 212, 6 &1&3& 0\\
 				\hline
-				4 & 107 & 1 & 107 &0&4& 3\\
+				4 & 107 & 1 & 107 &0&4& 1\\
 				\hline
 				5 & 4007 & 1 & 4007 &1&$-$& 0\\
 				\hline
@@ -471,7 +471,7 @@
 				\hline
 				12 & 744 & 1 & 744 &1&$-$& 0\\
 				\hline
-				13 & 85 & 1 & 85 &0&9& 5\\
+				13 & 85 & 1 & 85 &0&9& 2\\
 				\hline
 				14 & 907 & 1 & 907 &0&3& 2\\
 				\hline
@@ -499,14 +499,14 @@
 		\item For graphs that are disconnected, the algorithm also gives good results. For example, graph 2, 3, 6, and 17 can be decomposed into 8, 2, 260, 12 and 5 components respectively, so their ranges for chromatic numbers are small (less than or equal to 2).
 		\item For graphs that have big clique sizes compared to the graphs' sizes, the gaps between the upper bounds and lower bounds found are small. For example, graph 8 has the size of 107 and the biggest clique size found is 98, so our algorithms can find its chromatic number. This shows that the bigger the clique is, the more likely it can be found.
 	\end{itemize}
-	On the other hand, the algorithms do not give good results on certain graphs that do not have special structures. For example, graph 13 and 15 are fully connected. They are none of the special cases and their biggest clique sizes found are small compared to the graphs' sizes. Therefore, their ranges for chromatic number are higher (where the differences between upper bounds and lower bounds are both 5).
+	On the other hand, the algorithms do not give good results on certain graphs that do not have special structures. For example, graph 15 is fully connected. The graph is none of the special cases and its biggest clique size found is small compared to the graph's size. Therefore, the range for the chromatic number of graph 15 is higher (where the difference between the upper bound and lower bound is 5).
 	
 	\chapter{Conclusion}
-	In this project, the problem of finding chromatic number for a graph is partially solved. This is a NP complete problem, so the proposed approach is to use multiple combined algorithms to find the smallest range for the chromatic number. A greedy algorithm is used to find the lower bounds while another greedy algorithm and the genetic algorithm are used to find the upper bounds. Algorithms for testing special cases and a brute-force algorithm are used to find the chromatic numbers if possible. Graph decomposition helps impove the execution time and the results of other methods. \\
+	In this project, the problem of finding chromatic number for a graph is partially solved. This is a NP-complete problem, so the proposed approach is to use multiple combined algorithms to find the smallest range for the chromatic number. A greedy algorithm is used to find the lower bounds while another greedy algorithm and the genetic algorithm are used to find the upper bounds. Algorithms for testing special cases and a brute-force algorithm are used to find the chromatic numbers if possible. Graph decomposition helps impove the execution time and the results of other methods. \\
 	
 	The experiment results show that the proposed approach perform well on graphs with special structures, even if the graphs' sizes are big. For large graphs without special structures, the results are unpredictable. \\
 	
-	The results from the experiments give insights into the proposed approach. Greedy algorithms often give decent results with short execution time, but do not guarantee the optimal results. On the other hand, brute-force algorithm guarantees the optimal results, but has high complexity, therefore it can only be used on graphs with small number of vertices. Genetic algorithm normally gives better results than greedy algorithm, but the execution time is longer, and the results are also not guaranteed to be optimal. Special cases testing algorithms such as bipartite testing, complete graph testing have low complexity, thus they can give out the results fast. However, the use of special cases testing algorithms is limited on graphs with special structures. \\
+	The results from the experiments give insights into the proposed approach. Greedy algorithms often give decent results with short execution time, but do not guarantee the optimal results. On the other hand, brute-force algorithm guarantees the optimal results, but has high complexity, therefore it can only be used on graphs with small number of vertices. Genetic algorithm normally gives better results than greedy algorithm, but the execution time is longer, and the results are also not guaranteed to be optimal. Special cases testing algorithms such as bipartite testing and complete graph testing have low complexity, thus they can give out the results fast. However, the use of special cases testing algorithms is limited on graphs with special structures. \\
 	
 	The approach proposed in this report can be used as a starting point for solving the graph coloring problem. Advanced methods such as linear programming or constraint satisfaction can be used for further research.
 	
