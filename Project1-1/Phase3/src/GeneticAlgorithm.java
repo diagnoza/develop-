@@ -51,18 +51,15 @@ public class GeneticAlgorithm {
         
         while (!done) {
         	HeapSort.sort(PopulationContainer);
-        	//System.out.println(PopulationContainer[0].getFitness());
         	Selection();
         	Crossover();
         	Mutation();
         	CalculateFitness();
         }
-//        System.out.println(done);
-//        System.out.println("SUCCESS");
+
         for(int j = 0; j < POPULATION_SIZE; j++)
         if(children[j].getFitness() == 1) {
         		for(int i = 0; i < numberOfNodes; i++){
-//        			System.out.println(children[j].NodesColors[i]);
         			Main.sa[i] = children[j].NodesColors[i];
         		}
         		break;

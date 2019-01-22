@@ -10,21 +10,7 @@ public class CalculateChromatic {
             nodes[e[i].u - 1]++;
             nodes[e[i].v - 1]++;
         }
-        /*System.out.println("The maximum is: "+maximum);*/
         return nodes;
-    }
-
-
-    public static int Brooks(int[] nodes, int n) {
-
-        //Maximum is set to the minimum number of edges possible, which is 0
-        int maximum = 0;
-        //Returns the number of edges for the node that has the highest number of them
-        for (int i = 0; i < n; i++) {
-            maximum = Math.max(maximum, nodes[i]);
-        }
-
-        return maximum;
     }
 
 
@@ -34,10 +20,8 @@ public class CalculateChromatic {
 
         if (n == 0) {
 
-            //System.out.println("this graph doesnt exist");
             return true;
         }
-        //System.out.println("this graph  exist");
 
         return false;
     }
@@ -166,7 +150,6 @@ public class CalculateChromatic {
             if (chromaticOld != 0) {
                 counter++;
                 if (isValid(adjList, colors, n)) {
-//                    System.out.println("Algorithm succeds after " + counter + " attempts");
                     return chromatic;
                 }
             }
@@ -196,39 +179,6 @@ public class CalculateChromatic {
                 if (colors[i] == colors[adjList.get(i + 1).get(j) - 1]) return false;
 
         return true;
-    }
-
-
-    //Initial approach to the brute force problem could benefit from sorting the vertexDegree array,
-    //but later on we have changed our minds, as so this method remains unused.
-    //It is correct however, and might still prove useful later on.
-
-
-    public static void quicksort(int left, int right, int[] nodes, int[] vertexDegree) {
-
-        int i, j, pivot;
-
-        i = (left + right) / 2;
-        pivot = vertexDegree[i];
-        vertexDegree[i] = vertexDegree[right];
-        for (j = i = left; i < right; i++)
-            if (vertexDegree[i] < pivot) {
-
-                int temp = vertexDegree[i];
-                vertexDegree[i] = vertexDegree[j];
-                vertexDegree[j] = temp;
-
-                temp = nodes[i];
-                nodes[i] = nodes[j];
-                nodes[j] = temp;
-
-                j++;
-            }
-        vertexDegree[right] = vertexDegree[j];
-        vertexDegree[j] = pivot;
-        if (left < j - 1) quicksort(left, j - 1, nodes, vertexDegree);
-        if (j + 1 < right) quicksort(j + 1, right, nodes, vertexDegree);
-
     }
 
     /**
@@ -295,7 +245,8 @@ public class CalculateChromatic {
                 }
                 usedColors.add(colors[vertices[i]]);
             }
-            Main.sa[i] = colors[vertices[i]];
+            if (numberOfVertices == Main.N)
+                Main.sa[i] = colors[vertices[i]];
         }
 
         return usedColors.size();

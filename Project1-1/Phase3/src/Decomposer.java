@@ -66,10 +66,7 @@ public class Decomposer {
 
             graphs.add(smallGraph);
         }
-//        System.out.println("Number of disconnected graphs: " + graphs.size());
-//        for (Graph graph: graphs){
-//            System.out.print(graph.getNumberOfVertices() + " ");
-//        }
+
         return graphs;
     }
 }
